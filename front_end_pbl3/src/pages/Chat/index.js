@@ -72,6 +72,7 @@ function Chat() {
             body: JSON.stringify({ content: message }),
         });
         socket?.emit('sendMessageToAdmin', userId);
+        socket?.emit('getNotificationToAdmin', userId);
         const resData = await res.json()
         setMessages({ resData, userId: userId })
         setMessage('');

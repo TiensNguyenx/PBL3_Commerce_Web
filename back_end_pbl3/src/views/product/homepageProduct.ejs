@@ -1,0 +1,253 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page Product</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<style>
+    .title {
+        font-size: 25px;
+        font-weight: 600;
+        padding-bottom: 10px;
+    }
+
+    .table-container {
+        padding: 15px 20px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+        background-color: rgb(180, 178, 178);
+    }
+</style>
+
+<body>
+    <div class="topnav">
+        <a href="/admin/user">Home User</a>
+        <a href="/admin/user/create">Create User</a>
+        <a class="active" href="/admin/product">Home Products</a>
+        <a href="/admin/product/create">Create Product</a>
+        <a href="/admin/coupon">Home Coupons</a>
+        <a href="/admin/coupon/create">Create Coupon</a>
+        <a href="/admin/order">Home Orders</a>
+        <a href="/admin/payment">Home Payments</a>
+        <a href="/admin/order/all-order">Home Order Management</a>
+        <a href="/admin/logout">Logout</a>
+    </div>
+    <div class="table-container" id="ListContainer" style="display: none;">
+        <div class="title">List Products
+            <br>
+            <label for="search">Tìm kiếm:</label>
+            <input type="text" id="search" name="search" placeholder="Nhập từ khóa...">
+            <button onclick="performSearch()">Tìm kiếm</button>
+            <label for="sort"><br>Sắp xếp theo:</label>
+            <select id="sort" name="sort">
+                <option>Chọn kiểu sắp xếp</option>
+                <option value="name-asc">Tên A - Z</option>
+                <option value="name-desc">Tên Z - A</option>
+                <option value="createdAt-asc">Cũ đến mới</option>
+                <option value="createdAt-desc">Mới đến cũ</option>
+                <option value="new_price-asc">Giá thấp đến cao</option>
+                <option value="new_price-desc">Giá cao đến thấp</option>
+                <option value="countInStock-asc">Số lượng trong kho thấp đến cao</option>
+                <option value="countInStock-desc">Số lượng trong kho cao đến thấp</option>
+                <option value="total_rate-asc">Đánh giá sao thấp đến cao</option>
+                <option value="total_rate-desc">Đánh giá sao cao đến thấp</option>
+                <option value="selled-asc">Đã bán ít đến nhiều</option>
+                <option value="selled-desc">Đã bán nhiều đến ít</option>
+                <option value="comments-asc">Lượt đánh giá ít đến nhiều</option>
+                <option value="comments-desc">Lượt đánh giá nhiêu đến ít</option>
+            </select>
+            <label for="markBrand">RAZER</label>
+            <input type="checkbox" id="markBrand1" name="RAZER"> 
+            <label for="markBrand">LOGITECH</label>
+            <input type="checkbox" id="markBrand2" name="LOGITECH"> 
+            <label for="markBrand">CORSAIR</label>
+            <input type="checkbox" id="markBrand3" name="CORSAIR"> 
+            <label for="markBrand">STEELSERIES</label>
+            <input type="checkbox" id="markBrand4" name="STEELSERIES"> 
+            <label for="markBrand">DUCKY</label>
+            <input type="checkbox" id="markBrand5" name="DUCKY"> 
+            <label for="type"><br>Hãng:</label>
+            <select id="type" name="type">
+                <option>Chọn hãng</option>
+                <option value="RAZER">RAZER</option>
+                <option value="LOGITECH">LOGITECH</option>
+                <option value="CORSAIR">CORSAIR</option>
+                <option value="STEELSERIES">STEELSERIES</option>
+                <option value="DUCKY">DUCKY</option>
+            </select>
+        </div>
+        <% var errorMes=errorMes %>
+            <% if (errorMes) { %>
+                <script>
+                    alert('<%= errorMes %>');
+                </script>
+                <% } %>
+                    <% var nameSearch %>
+                        <div><strong>Từ khoá tìm kiếm:</strong>
+                            <%= nameSearch %>
+                        </div>
+                        <br>
+                        <% var nameSort %>
+                            <div><strong>Sắp xếp theo:</strong>
+                                <%= nameSort %>
+                            </div>
+                            <br>
+                        <% var type %>
+                            <div><strong>Hãng:</strong>
+                                <%= type %>
+                            </div>
+                            <br>
+                        <% var count %>
+                            <div><strong>Số lượng:</strong>
+                                <%= count %>
+                            </div>
+                            <table>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Guarantee</th>
+                                    <th>New Price</th>
+                                    <th>Old Price</th>
+                                    <th>Type</th>
+                                    <th>Count In Stock</th>
+                                    <th>Total Rate</th>
+                                    <th>Total Comment</th>
+                                    <th>Sold</th>
+                                    <th>Action</th>
+                                </tr>
+
+                                <!-- loop for each  -->
+                                <% var listProducts %>
+                                <% if(listProducts) {%>
+                                <% listProducts.forEach(function(product){ %>
+                                    <tr>
+                                        <td>
+                                            <%= product._id %>
+                                        </td>
+                                        <td>
+                                            <%= product.name %>
+                                        </td>
+                                        <td>
+                                            <%= product.description %>
+                                        </td>
+                                        <td>
+                                            <%= product.guarantee %>
+                                        </td>
+                                        <td>
+                                            <%= product.new_price.toLocaleString('vi-VN', { style: 'currency' ,
+                                                currency: 'VND' }) %>
+                                        </td>
+                                        <td>
+                                            <%= product.old_price.toLocaleString('vi-VN', { style: 'currency' ,
+                                                currency: 'VND' }) %>
+                                        </td>
+                                        <td>
+                                            <%= product.type %>
+                                        </td>
+                                        <td>
+                                            <%= product.countInStock %>
+                                        </td>
+                                        <td>
+                                            <%= product.total_rate %>
+                                        </td>
+                                        <td>
+                                            <%= product.comments.length %>
+                                        </td>
+                                        <td>
+                                            <%= product.sold %>
+                                        </td>
+                                        <td>
+                                            <form action="/admin/product/rating/<%= product._id %>" method="get">
+                                                <button type="submit">Rating</button>
+                                            </form>
+                                            <form action="/admin/product/update/<%= product._id %>" method="get">
+                                                <button type="submit">Edit</button>
+                                            </form>
+                                            <form action="/admin/product/delete-product/<%= product._id %>"
+                                                method="post">
+                                                <button type="submit">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                <%}%>
+                            </table>
+    </div>
+    <script>
+        const access_token = localStorage.getItem('access_token');
+        fetch('/admin/auth', {
+            method: 'POST',
+            headers: {
+                'token': access_token,
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Unauthorized') {
+                    alert('You are not authorized to access this page');
+                    window.location.href = '/admin';
+                } else {
+                    document.getElementById('ListContainer').style.display = 'block';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        document.getElementById('sort').addEventListener('change', function (event) {
+            const sortValue = event.target.value;
+            const brandCheckbox1 = document.getElementById('markBrand1');
+            const brandCheckbox2 = document.getElementById('markBrand2');
+            const brandCheckbox3 = document.getElementById('markBrand3');
+            const brandCheckbox4 = document.getElementById('markBrand4');
+            const brandCheckbox5 = document.getElementById('markBrand5');
+
+            const [sortName, sortType] = sortValue.split('-');
+
+            if(brandCheckbox1.checked){
+                const brand = brandCheckbox1.name;
+                window.location.href = `/admin/product/sort?sort=${sortName}&sort=${sortType}&sort=${sortValue}&brand=${brand}`;
+            }else if(brandCheckbox2.checked){
+                const brand = brandCheckbox2.name;
+                window.location.href = `/admin/product/sort?sort=${sortName}&sort=${sortType}&sort=${sortValue}&brand=${brand}`;
+            }else if(brandCheckbox3.checked){
+                const brand = brandCheckbox3.name;
+                window.location.href = `/admin/product/sort?sort=${sortName}&sort=${sortType}&sort=${sortValue}&brand=${brand}`;
+            }else if(brandCheckbox4.checked){
+                const brand = brandCheckbox4.name;
+                window.location.href = `/admin/product/sort?sort=${sortName}&sort=${sortType}&sort=${sortValue}&brand=${brand}`;
+            }else if(brandCheckbox5.checked){
+                const brand = brandCheckbox5.name;
+                window.location.href = `/admin/product/sort?sort=${sortName}&sort=${sortType}&sort=${sortValue}&brand=${brand}`;
+            }
+            else{
+                window.location.href = `/admin/product/sort?sort=${sortName}&sort=${sortType}&sort=${sortValue}`;
+            }
+        });
+        document.getElementById('type').addEventListener('change', function (event) {
+            const type = event.target.value;
+            let searchName = "";
+            window.location.href = `/admin/product/search?type=${type}`;
+        });
+        function performSearch() {
+            const searchName = document.getElementById('search').value;
+            window.location.href = `/admin/product/search?search=${searchName}`;
+        }
+    </script>
+</body>
+
+</html>

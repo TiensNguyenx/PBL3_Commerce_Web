@@ -1,0 +1,81 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<style>
+    .title {
+        font-size: 25px;
+        font-weight: 600;
+        padding-bottom: 10px;
+    }
+
+    .table-container {
+        padding: 15px 20px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+        background-color: rgb(180, 178, 178);
+    }
+</style>
+
+<body>
+    <div class="topnav">
+        <a href="/admin/user">Home User</a>
+        <a href="/admin/user/create">Create Users</a>
+        <a href="/admin/product/create">Home Products</a>
+        <a href="/admin/product/create">Create Product</a>
+        <a href="/admin/coupon">Home Coupon</a>
+        <a href="/admin/coupon/create">Create Coupon</a>
+        <a href="/admin/order">Home Orders</a>
+        <a href="/admin/payment">Home Payments</a>
+        <a href="/admin/order/all-order">Home Order Management</a>
+        <a class="active" href="/admin">Login</a>
+    </div>
+    <div class="login">
+        <div class="title">Login Page</div>
+        <h1>Login</h1>
+        <% var error = error %>
+        <% if (error) { %>
+            <p style="color: red;"><%= error %></p>
+        <% } %>
+        <% var access_token = access_token %>
+        <% if (access_token) { %>
+            <script>
+                localStorage.setItem('access_token', '<%= access_token %>');
+                window.location.href = '/admin/user/';
+            </script>
+        <% } %>
+    <form method="post" action="/admin/login">
+        <fieldset>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit">Login</button>
+            </fieldset>
+    </form>
+    </div>
+    <script>
+        localStorage.removeItem('access_token');
+    </script>
+</body>
+
+</html>

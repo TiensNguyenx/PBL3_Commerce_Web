@@ -1,0 +1,158 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Product</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="/admin/user">Home Users</a>
+        <a href="/admin/user/create">Create User</a>
+        <a href="/admin/product/">Home Products</a>
+        <a class="active" href="/admin/product/create">Create Product</a>
+        <a href="/admin/coupon">Home Coupons</a>
+        <a href="/admin/coupon/create">Create Coupon</a>
+        <a href="/admin/order">Home Orders</a>
+        <a href="/admin/payment">Home Payments</a>
+        <a href="/admin/order/all-order">Home Order Management</a>
+        <a href="/admin/logout">Logout</a>
+    </div>
+    <div class="form-add-new" id="ListContainer" style="display: none;">
+        <form action="/admin/product/create-product" method="post">
+            <fieldset>
+                <legend>Add new Product:</legend>
+                <div class="input-group">
+                    <label>
+                        Name:
+                    </label>
+                    <input type="text" name="name" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Description Name:
+                    </label>
+                    <input type="text" name="name_description" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Product Code:
+                    </label>
+                    <input type="text" name="product_code" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Product Type: 
+                    </label>
+                    <input type="text" name="product_type" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Connection Standard: 
+                    </label>
+                    <input type="text" name="connection" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Switch Type: 
+                    </label>
+                    <input type="text" name="switch_type" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Durability: 
+                    </label>
+                    <input type="text" name="durability" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Format:
+                    </label>
+                    <input type="text" name="format" />
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        Guarantee:
+                    </label>
+                    <input type="text" name="guarantee" />
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        New price:
+                    </label>
+                    <input type="text" name="new_price" />
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        Old Price:
+                    </label>
+                    <input type="text" name="old_price" />
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        Image:
+                    </label>
+                    <input type="text" name="image" />
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        Type:
+                    </label>
+                    <input type="text" name="type" />
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        Count In Stock:
+                    </label>
+                    <input type="text" name="countInStock" />
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        Total rate:
+                    </label>
+                    <input type="text" name="total_rate" />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Sold:
+                    </label>
+                    <input type="text" name="sold" />
+                </div>
+                <div>
+                    <button onclick="alert('Create product successfully')"> Save </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script>
+        const access_token = localStorage.getItem('access_token');
+        fetch('/admin/auth', {
+            method: 'POST',
+            headers: {
+                'token': access_token,
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Unauthorized') {
+                alert('You are not authorized to access this page');
+                window.location.href = '/admin';
+            } else {
+                document.getElementById('ListContainer').style.display = 'block';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    </script>
+</body>
+
+</html>

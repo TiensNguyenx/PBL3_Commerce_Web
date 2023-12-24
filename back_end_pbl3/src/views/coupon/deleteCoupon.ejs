@@ -1,0 +1,65 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete A Coupon</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="/admin/user">Home Users</a>
+        <a href="/admin/user/create">Create User</a>
+        <a href="/admin/product">Home Products</a>
+        <a href="/admin/product/create">Create Product</a>
+        <a href="/admin/coupon">Home Coupon</a>
+        <a href="/admin/coupon/create">Create Coupon</a>
+        <a href="/admin/order">Home Orders</a>
+        <a href="/admin/payment">Home Payments</a>
+        <a href="/admin/order/all-order">Home Order Management</a>
+        <a href="/admin/logout">Logout</a>
+    </div>
+    <div class="form-delete">
+        <form action="/admin/coupon/delete-coupon" method="post">
+            <fieldset>
+                <legend>Delete Coupons:</legend>
+                <div class="input-group d-none">
+                    <label>
+                        ID:
+                    </label>
+                    <input 
+                    type="text" 
+                    name="couponId" 
+                    value="<%= couponEdit.id %>"
+                    />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Are you sure to delete this user with coupon:
+                    </label>
+                    <input 
+                    type="text" 
+                    name="name" 
+                    value="<%= couponEdit.name %>"
+                    />
+                </div>
+                <div class="input-group">
+                    <label>
+                        Value:
+                    </label>
+                    <input 
+                    type="text" 
+                    name="value" 
+                    value="<%= couponEdit.value %>"
+                    />
+                </div>
+                <div>
+                    <button onclick="alert('Delete coupon successfully')"> Confirm </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>

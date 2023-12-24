@@ -1,0 +1,22 @@
+.containner {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(51, 51, 51);
+    height: 60px;
+    align-items: center;
+    div {
+        color: white;
+    }
+    a {
+        padding: 20px 16px;
+        &:hover {
+            cursor: pointer;
+            background-color: #dddddd;
+            color: black;
+        }
+    }
+}
+.active {
+    background-color: #04aa6d;
+    color: white;
+}

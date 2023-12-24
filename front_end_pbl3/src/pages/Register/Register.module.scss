@@ -1,0 +1,60 @@
+.container {
+    background-color: var(--white-background);
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+.wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 50px 0;
+    align-items: center;
+    width: 100%;
+    background-color: var(--primary);
+}
+.input-box input {
+    width: 400px;
+    padding: 15px 15px 15px 40px;
+    border-radius: 40px;
+}
+.icon {
+    position: absolute;
+    right: 367px;
+    top: 16px;
+    font-size: 2rem;
+}
+.input-box {
+    position: relative;
+}
+.remember-forgot {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+.btn {
+    width: 400px;
+    padding: 15px;
+    background-color: var(--white-background);
+    border-radius: 40px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.register-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.icon-eye {
+    position: absolute;
+    font-size: 2.3rem;
+    right: 16px;
+    top: 9px;
+}
+button[disabled='disabled'],
+button:disabled {
+    cursor: not-allowed;
+}

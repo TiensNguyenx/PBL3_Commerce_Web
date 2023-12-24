@@ -122,86 +122,86 @@ const publicRoutes = [
     {
         path: '/admin',
         component: HomeUser,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
     {
         path: '/admin/coupons',
         component: HomeCoupons,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
     {
         path: '/admin/createproduct',
         component: CreateProduct,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
     {
         path: '/admin/createcoupons',
         component: CreateCoupons,
-        layout: Fragment
+        layout: HeaderOnly
     },
     {
         path: '/admin/createuser',
         component: CreateUser,
-        layout: Fragment
+        layout: HeaderOnly
     },
     {
         path: '/admin/order',
         component: HomeOrder,
-        layout: Fragment
+        layout: HeaderOnly
     },
     {
         path: '/admin/ordermanagement',
         component: HomeOrderManagement,
-        layout: Fragment
+        layout: HeaderOnly
     },
     {
         path: '/admin/payment',
         component: HomePayment,
-        layout: Fragment
+        layout: HeaderOnly
     },
     {
         path: '/admin',
         component: HomeUser,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
     {
         path: '/admin/coupons',
         component: HomeCoupons,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
     {
         path: '/admin/createproduct',
         component: CreateProduct,
-        layout: Fragment
+        layout: HeaderOnly
     },
     {
         path: '/admin/createcoupons',
         component: CreateCoupons,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
 
     {
         path: '/admin/payment',
         component: HomePayment,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
     {
         path: '/admin/product',
         component: HomeProduct,
-        layout: Fragment
+        layout: HeaderOnly
 
     },
     {
         path: '/admin/user',
         component: HomeUser,
-        layout: Fragment
+        layout: HeaderOnly
     },
     {
         path: '/admin/chat',

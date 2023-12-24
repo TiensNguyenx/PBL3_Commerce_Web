@@ -28,16 +28,12 @@ function AdminChat() {
 
     useEffect(() => {
         setSocket(io("http://localhost:8080"));
-        if(socket){
-          console.log('socket :>> ', socket.connected);
-        }
       }, []);
 
     useEffect(() => {
         const checkActive = localStorage.getItem('userId')
         socket?.emit('addUser', checkActive);
         socket?.on('getUsers', (users) => {
-            console.log('activeUsers :>> ', users);
             users = users.filter(user => user.nameUser !== 'admin');
             setActiveUsers(users);
             setUsers(users);
@@ -45,7 +41,6 @@ function AdminChat() {
         socket?.on('getMessageToAdmin',(user) =>{
             fetchMessages(user)
         })
-        console.log('users :>> ', users);
     }, [socket])
 
     useEffect(() => {
@@ -101,7 +96,6 @@ function AdminChat() {
                                 {
                                     activeUsers.length > 0 ?
                                         activeUsers.map((users) => {
-                                            console.log('users :>> ', users);
                                             return (
                                                 <div className={cx('user-wrapper')} onClick={() => fetchMessages(users)}>
                                                     <div className={cx('user-containner')}>

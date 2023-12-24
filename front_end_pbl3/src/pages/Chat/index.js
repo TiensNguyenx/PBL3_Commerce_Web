@@ -11,6 +11,8 @@ import { CiMicrophoneOn } from "react-icons/ci";
 import { FaLocationArrow } from "react-icons/fa6";
 import Footer from "~/components/Layout/components/Footer";
 import logoShop from "../../assets/images/logoShop.png";
+import { toast } from 'react-toastify';
+
 import { io } from 'socket.io-client';
 
 
@@ -38,8 +40,10 @@ function Chat() {
         });
         const checkActive = localStorage.getItem('userId')
         socket?.emit('addUser', checkActive);
-        socket?.on('getMessage', () => {
-            fetchMessages(userId)
+        socket?.on('getMessage', (user) => {
+            console.log('user :>> ', user);
+            fetchMessages(user)
+            toast.success(`Shop đã gửi tin nhắn cho bạn`);
         })
     }, [socket])
 
@@ -72,7 +76,6 @@ function Chat() {
             body: JSON.stringify({ content: message }),
         });
         socket?.emit('sendMessageToAdmin', userId);
-        socket?.emit('getNotificationToAdmin', userId);
         const resData = await res.json()
         setMessages({ resData, userId: userId })
         setMessage('');

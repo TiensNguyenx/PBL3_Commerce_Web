@@ -11,6 +11,8 @@ import { CiMicrophoneOn } from "react-icons/ci";
 import { FaLocationArrow } from "react-icons/fa6";
 import Footer from "~/components/Layout/components/Footer";
 import logoShop from "../../../assets/images/logoShop.png";
+import { toast } from 'react-toastify';
+
 import { io } from 'socket.io-client';
 
 const cx = classNames.bind(styles);
@@ -24,11 +26,12 @@ function AdminChat() {
     const userId = localStorage.getItem('userId')
     const [receive, setIdReceive] = useState([])
     const chatWrapperRef = useRef(null);
-    const messagesEndRef = useRef(null); 
+    const messagesEndRef = useRef(null);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
         setSocket(io("http://localhost:8080"));
-      }, []);
+    }, []);
 
     useEffect(() => {
         const checkActive = localStorage.getItem('userId')
@@ -38,8 +41,9 @@ function AdminChat() {
             setActiveUsers(users);
             setUsers(users);
         });
-        socket?.on('getMessageToAdmin',(user) =>{
+        socket?.on('getMessageToAdmin', (user) => {
             fetchMessages(user)
+            toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
         })
     }, [socket])
 
@@ -49,6 +53,7 @@ function AdminChat() {
     }, [messages]);
 
     const fetchMessages = async (user) => {
+        setSelectedUser(user);
         setIdReceive({
             idReceive: user.userId,
             idSocket: user.socketId
@@ -66,13 +71,13 @@ function AdminChat() {
     const handleTypeMessage = (e) => {
         setMessage(e.target.value);
     }
-    const sendMessage = async () =>{
-        const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${receive.idReceive}`,{
+    const sendMessage = async () => {
+        const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${receive.idReceive}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({content:message}),
+            body: JSON.stringify({ content: message }),
         });
         socket?.emit('sendMessage', receive.idSocket);
         const resData = await res.json()
@@ -93,22 +98,31 @@ function AdminChat() {
                         <div className='w-[25%] h-screen bg-light px-8 py-16 overflow-y-scroll'>
                             <div className='text-primary text-lg'>People</div>
                             <div>
-                                {
-                                    activeUsers.length > 0 ?
-                                        activeUsers.map((users) => {
-                                            return (
-                                                <div className={cx('user-wrapper')} onClick={() => fetchMessages(users)}>
-                                                    <div className={cx('user-containner')}>
-                                                        <img className={cx('user-img')} src="https://connectme-html.themeyn.com/images/avatar/1.jpg" alt=""></img>
-                                                        <div className={cx('user-info')}>
-                                                            <div className={cx('user-name')}>{users?.nameUser}</div>
-                                                            <div className={cx('user-mess')}>{users?.emailUser}</div>
-                                                        </div>
-                                                    </div>
+                                {activeUsers.length > 0 ? (
+                                    activeUsers.map((user) => (
+                                        <div
+                                            key={user.userId}
+                                            className={cx('user-wrapper', {
+                                                'user-selected': selectedUser?.userId === user.userId,
+                                            })}
+                                            onClick={() => fetchMessages(user)}
+                                        >
+                                            <div className={cx('user-containner')}>
+                                                <img
+                                                    className={cx('user-img')}
+                                                    src="https://connectme-html.themeyn.com/images/avatar/1.jpg"
+                                                    alt=""
+                                                />
+                                                <div className={cx('user-info')}>
+                                                    <div className={cx('user-name')}>{user?.nameUser}</div>
+                                                    <div className={cx('user-mess')}>{user?.emailUser}</div>
                                                 </div>
-                                            )
-                                        }) : <div className='text-center text-lg font-semibold mt-24'>No Conversations</div>
-                                }
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className='text-center text-lg font-semibold mt-24'>No Conversations</div>
+                                )}
                             </div>
                         </div>
                     </div>

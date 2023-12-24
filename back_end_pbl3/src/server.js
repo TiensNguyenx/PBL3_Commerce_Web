@@ -65,12 +65,13 @@ io.on('connection', socket => {
     socket.on('sendMessage', async (socketId) => { 
         console.log('socketId :>> ', socketId);
         const user = users.find(user => user.socketId === socketId);
-        io.to(socketId).emit('getMessage');
+        io.to(socketId).emit('getMessage',user);
         });
     socket.on('sendMessageToAdmin', async (userId) => { 
         const user = users.find(user => user.userId === userId);
         io.emit('getMessageToAdmin', user);
     });
+
     socket.on('disconnect', () => {
         users = users.filter(user => user.socketId !== socket.id);
         io.emit('getUsers', users);

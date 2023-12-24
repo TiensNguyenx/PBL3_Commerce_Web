@@ -206,7 +206,7 @@ const publicRoutes = [
     {
         path: '/admin/chat',
         component: AdminChat,
-        layout: Fragment
+        layout: HeaderOnly
     }
 
 ]

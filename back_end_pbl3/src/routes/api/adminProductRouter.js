@@ -15,8 +15,8 @@ router.post('/delete-product/:id', deleteProduct);
 
 router.get('/rating/:id', getRatingProduct);
 
-// router.get('/sort', sortProduct);
+router.get('/sort', sortProduct);
 
-// router.get('/search', searchProduct);
+router.get('/search', searchProduct);
 
 module.exports = router; //export default router

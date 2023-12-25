@@ -159,6 +159,34 @@ const deleteProduct = async (req, res) => {
   }
 }
 
+const sortProduct = async (req, res) => {
+  try {
+    let brand = null;
+    const sortName = req.query.sortName;
+    const sortType = req.query.sortType;
+    brand = req.query.brand;
+    const response = await CRUDProductService.sortProduct(sortName, sortType, brand);
+    return res.status(200).json(response)
+  } catch (e) {
+    return res.status(404).json({
+      message: e
+    })
+  }
+}
+
+const searchProduct = async (req, res) => {
+  try {
+    let type = null;
+    const searchName = req.query.searchName;
+    type = req.query.type;
+    const response = await CRUDProductService.searchProduct(searchName, type);
+    return res.status(200).json(response)
+  } catch (e) {
+    return res.status(404).json({
+      message: e
+    })
+  }
+}
 module.exports = {
   getHomepage,
   getRatingProduct,
@@ -166,4 +194,6 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  sortProduct,
+  searchProduct
 };

@@ -7,12 +7,12 @@ const bcrypt = require('bcrypt');
 const { generalAccessToken } = require('./JwtService');
 
 const createUser = async (newUser) => {
+    return new Promise(async (resolve, reject) => {
+        const { name, email, password, confirmPassword, phone } = newUser;
 
-        const {name, email, password, confirmPassword, phone} = newUser;
-
-        try{
-            const checkUser = await User.findOne({email:email});
-            if(checkUser){
+        try {
+            const checkUser = await User.findOne({ email: email });
+            if (checkUser) {
                 resolve({
                     status: 'error',
                     message: 'Email already exists'
@@ -20,60 +20,73 @@ const createUser = async (newUser) => {
             }
             const hashPassword = await bcrypt.hash(password, 10);
             const createUser = await User.create({
-                name,  
+                name,
                 email,
                 password: hashPassword,
                 confirmPassword: hashPassword,
                 phone
             })
+            if (createUser) {
+                resolve({
+                    status: "success",
+                    message: "Get create user successfully",
+                    data: createUser,
+                });
+            }
+
+        } catch (error) {
+            reject(error)
+        }
+    });
+};
+
+
+const updateUser = async (id, data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const updateUser = await User.findByIdAndUpdate(id, data, { new: true })
             resolve({
                 status: "success",
-                message: "Get create user successfully",
-                data: createUser,
+                message: "Update user successfully",
+                data: updateUser,
             });
-        }catch(error){
-           return error
+        } catch (error) {
+            reject(error)
         }
-}
-
-
-const updateUser = async (id,data) => {
-        try{
-        const updateUser = await User.findByIdAndUpdate(id,data, {new: true})
-        resolve({
-            status: "success",
-            message: "Update user successfully",
-            data: updateUser,
-        });
-        }catch(error){
-            return error
-        }
-}
+    });
+};
 
 const deleteUser = async (id) => {
-    try{
-     const deleteUser = await User.findByIdAndDelete(id)
-    resolve({
-        status: "success",
-        message: "Delete user successfully",
+    return new Promise(async (resolve, reject) => {
+        try {
+            const deleteUser = await User.findByIdAndDelete(id)
+            if (!deleteUser) {
+                resolve({
+                    status: 'error',
+                    message: 'The user is not exist'
+                })
+            }
+            resolve({
+                status: "success",
+                message: "Delete user successfully",
+            });
+        } catch (error) {
+            reject(error)
+        }
     });
-    }
-    catch(error){
-        return error
-    }
-}
+};
 
 const getAllUser = () => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             const allUser = await User.find()
             resolve({
                 status: "success",
                 message: "Get all user successfully",
                 data: allUser,
             });
-        }catch(error){
-            reject(error) 
+        } catch (error) {
+            reject(error)
         }
     })
 }
@@ -83,7 +96,7 @@ const getOrderUser = (id) => {
         try {
             const order = await Order.find({
                 user: id
-            }).sort({createdAt: -1, updatedAt: -1})
+            }).sort({ createdAt: -1, updatedAt: -1 })
             if (order === null) {
                 resolve({
                     status: 'error',
@@ -91,8 +104,8 @@ const getOrderUser = (id) => {
                 })
             }
             resolve(order)
-        } catch (e) {
-            reject(e)
+        } catch (error) {
+            reject(error)
         }
     })
 }
@@ -102,7 +115,7 @@ const getPaymentUser = (id) => {
         try {
             const payment = await Payment.find({
                 user: id
-            }).sort({createdAt: -1, updatedAt: -1})
+            }).sort({ createdAt: -1, updatedAt: -1 })
             if (payment === null) {
                 resolve({
                     status: 'error',
@@ -110,20 +123,20 @@ const getPaymentUser = (id) => {
                 })
             }
             resolve(payment)
-        } catch (e) {
-            reject(e)
+        } catch (error) {
+            reject(error)
         }
     })
 }
 
 const getDetailUser = (id) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             const user = await User.findOne({
                 _id: id
             })
 
-            if(user == null){
+            if (user == null) {
                 resolve({
                     status: 'error',
                     message: 'The user is not exist'
@@ -131,8 +144,8 @@ const getDetailUser = (id) => {
             }
 
             resolve(user)
-        }catch(error){
-            reject(error) 
+        } catch (error) {
+            reject(error)
         }
     })
 }

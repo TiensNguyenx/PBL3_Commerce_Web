@@ -26,7 +26,7 @@ function HomeUser() {
         setUser(resData.data)
     }, [])
     return (
-        <div>
+        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>
@@ -41,7 +41,7 @@ function HomeUser() {
                     {user.map((item, index) => {
                         return (
                             <Row>
-                                <Col>{item._id}</Col>
+                                <Col>{item.id}</Col>
                                 <Col style={{ textAlign: 'center' }}>{item.email}</Col>
                                 <Col>{item.name}</Col>
                                 <Col style={{ marginLeft: '30px' }}>{item.phone}</Col>

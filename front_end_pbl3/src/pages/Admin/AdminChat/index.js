@@ -103,7 +103,7 @@ function AdminChat() {
         }
     }
     return (
-        <div>
+        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
             <div className={cx('wrapper')}>
                 <div className={cx('containener')}>
                     <div className={cx('sidebar')}>

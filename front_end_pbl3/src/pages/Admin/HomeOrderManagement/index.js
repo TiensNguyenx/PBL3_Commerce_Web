@@ -13,7 +13,7 @@ function HomeOrderManagement() {
         }
     }, [])
     return (
-        <div>
+        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
         </div>
     );

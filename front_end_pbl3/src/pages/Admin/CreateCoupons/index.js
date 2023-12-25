@@ -18,7 +18,7 @@ function CreateCoupons() {
         }
     }, [])
     return (
-        <div className={cx('containner')} >
+        <div className={cx('containner')} style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }} >
             <HeaderAdmin />
             <div className={cx('form-containner')}>
                 <Form >

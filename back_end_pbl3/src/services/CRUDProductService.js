@@ -12,7 +12,7 @@ const createProduct = async (newProduct) => {
             if(checkProduct){
                 resolve({
                     status: 'error',
-                    message: 'Name already exists'
+                    message: 'Product already exists'
                 })
             }
 
@@ -43,7 +43,6 @@ const createProduct = async (newProduct) => {
         }
 }
 
-
 const updateProduct = async (id,data) => {
     try{
         await Product.findByIdAndUpdate(id,data, {new: true})
@@ -61,53 +60,65 @@ const deleteProduct = async (id) => {
     }
 }
 
-const getAllProduct = (sortName, sortType, searchName, type, brand) => {
+const getAllProduct = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let allProduct;
-            if (searchName) {
-                const regex = new RegExp(searchName, 'i');
-                allProduct = await Product.find({
-                    $or: [
-                        { name: { $regex: regex } },
-                        { description: { $regex: regex } },
-                        { type	: { $regex: regex } },
-                    ]
-                });
-            }
-            else if (type) {
-                const regex = new RegExp(type, 'i');
-                allProduct = await Product.find({
-                    $or: [
-                        { name: { $regex: regex } },
-                        { description: { $regex: regex } },
-                        { type	: { $regex: regex } },
-                    ]
-                });
-            }else if(brand){
-                const regex = new RegExp(brand, 'i');
-                const objectSort = { [sortName]: sortType };
-                allProduct = await Product.find({
-                    $or: [
-                        { name: { $regex: regex } },
-                        { description: { $regex: regex } },
-                        { type	: { $regex: regex } },
-                    ]
-                }).sort(objectSort);
-            }
-            else if (sortName && sortType) {
-                const objectSort = { [sortName]: sortType };
-                allProduct = await Product.find().sort(objectSort);
-            } else {
-                allProduct = await Product.find().sort({ createdAt: -1, updatedAt: -1 });
-            }
-
+            const allProduct = await Product.find().sort({ createdAt: -1, updatedAt: -1 });
             resolve(allProduct);
         } catch (error) {
             reject(error);
         }
     });
 };
+
+
+// const getAllProduct = (sortName, sortType, searchName, type, brand) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             let allProduct;
+//             if (searchName) {
+//                 const regex = new RegExp(searchName, 'i');
+//                 allProduct = await Product.find({
+//                     $or: [
+//                         { name: { $regex: regex } },
+//                         { description: { $regex: regex } },
+//                         { type	: { $regex: regex } },
+//                     ]
+//                 });
+//             }
+//             else if (type) {
+//                 const regex = new RegExp(type, 'i');
+//                 allProduct = await Product.find({
+//                     $or: [
+//                         { name: { $regex: regex } },
+//                         { description: { $regex: regex } },
+//                         { type	: { $regex: regex } },
+//                     ]
+//                 });
+//             }else if(brand){
+//                 const regex = new RegExp(brand, 'i');
+//                 const objectSort = { [sortName]: sortType };
+//                 allProduct = await Product.find({
+//                     $or: [
+//                         { name: { $regex: regex } },
+//                         { description: { $regex: regex } },
+//                         { type	: { $regex: regex } },
+//                     ]
+//                 }).sort(objectSort);
+//             }
+//             else if (sortName && sortType) {
+//                 const objectSort = { [sortName]: sortType };
+//                 allProduct = await Product.find().sort(objectSort);
+//             } else {
+//                 allProduct = await Product.find().sort({ createdAt: -1, updatedAt: -1 });
+//             }
+
+//             resolve(allProduct);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// };
 
 const getDetailsProduct = (id) => {
     return new Promise(async (resolve, reject) => {
@@ -178,11 +189,11 @@ const getRatingProduct = (id) => {
             if(product == null){
                 resolve({
                     status: 'error',
-                    message: 'The user is not exist'
+                    message: 'The product is not exist'
                 })
             }
 
-            resolve(product)
+            resolve(product.comments)
         }catch(error){
             reject(error) 
         }

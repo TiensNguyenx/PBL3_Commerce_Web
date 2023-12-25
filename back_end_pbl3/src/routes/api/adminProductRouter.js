@@ -1,25 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { getHomepage, getCreateProduct, getRatingPage, getUpdatePage, postCreateProduct, postUpdateProduct, postDeleteProduct, postHandleRemoveProduct } = require('../../controllers/adminProductController');
+const { getHomepage, getDetailProduct, getRatingProduct, createProduct, updateProduct, deleteProduct,sortProduct,searchProduct } = require('../../controllers/adminProductController');
+const { getDetailsProduct } = require('../../services/ProductService');
 
 router.get('/', getHomepage);
 
-router.get('/create', getCreateProduct);
+router.post('/create-product', createProduct);
 
-router.get('/rating/:id', getRatingPage);
+router.post('/update-product/:id', getDetailProduct);
 
-router.get('/update/:id', getUpdatePage);
+router.post('/update-product/:id', updateProduct);
 
-router.post('/create-product', postCreateProduct);
+router.post('/delete-product/:id', deleteProduct);
 
-router.post('/update-product', postUpdateProduct);
+router.get('/rating/:id', getRatingProduct);
 
-router.post('/delete-product/:id', postDeleteProduct);
+// router.get('/sort', sortProduct);
 
-router.post('/delete-product', postHandleRemoveProduct);
-
-router.get('/sort', getHomepage);
-
-router.get('/search', getHomepage);
+// router.get('/search', searchProduct);
 
 module.exports = router; //export default router

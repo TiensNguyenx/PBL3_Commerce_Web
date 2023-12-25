@@ -19,14 +19,18 @@ const createUser = async (newUser) => {
                 })
             }
             const hashPassword = await bcrypt.hash(password, 10);
-            await User.create({
+            const createUser = await User.create({
                 name,  
                 email,
                 password: hashPassword,
                 confirmPassword: hashPassword,
                 phone
             })
-
+            resolve({
+                status: "success",
+                message: "Get create user successfully",
+                data: createUser,
+            });
         }catch(error){
            return error
         }
@@ -35,7 +39,12 @@ const createUser = async (newUser) => {
 
 const updateUser = async (id,data) => {
         try{
-        await User.findByIdAndUpdate(id,data, {new: true})
+        const updateUser = await User.findByIdAndUpdate(id,data, {new: true})
+        resolve({
+            status: "success",
+            message: "Update user successfully",
+            data: updateUser,
+        });
         }catch(error){
             return error
         }
@@ -43,7 +52,11 @@ const updateUser = async (id,data) => {
 
 const deleteUser = async (id) => {
     try{
-     await User.findByIdAndDelete(id)
+     const deleteUser = await User.findByIdAndDelete(id)
+    resolve({
+        status: "success",
+        message: "Delete user successfully",
+    });
     }
     catch(error){
         return error

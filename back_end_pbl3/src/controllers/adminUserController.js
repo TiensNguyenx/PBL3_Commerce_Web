@@ -24,7 +24,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.params.id;
         const data = req.body;
         const response = await CRUDUserService.updateUser(userId, data)
         return res.status(200).json(response)
@@ -37,7 +37,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.params.id;
         const response = await CRUDUserService.deleteUser(userId)
         return res.status(200).json(response)
     } catch (e) {

@@ -14,8 +14,16 @@ function HomeUser() {
             navigate('/')
         }
     }, [])
-    useEffect(() => {
-        //callApi 
+    useEffect(() => async () => {
+        const res = await fetch(`http://localhost:3002/admin/user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const resData = await res.json()
+        console.log(resData.data)
+        setUser(resData.data)
     }, [])
     return (
         <div>
@@ -33,7 +41,7 @@ function HomeUser() {
                     {user.map((item, index) => {
                         return (
                             <Row>
-                                <Col>{item.id}</Col>
+                                <Col>{item._id}</Col>
                                 <Col style={{ textAlign: 'center' }}>{item.email}</Col>
                                 <Col>{item.name}</Col>
                                 <Col style={{ marginLeft: '30px' }}>{item.phone}</Col>

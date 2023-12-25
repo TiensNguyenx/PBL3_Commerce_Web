@@ -1,82 +1,94 @@
-const CRUDUserService = require('../services/CRUDUserService');  
+const CRUDUserService = require('../services/CRUDUserService');
 const User = require('../models/UserModel');
 const getHomepage = async (req, res) => {
     try {
-        const listUsers = await CRUDUserService.getAllUser();
-        return res.render('user/homepageUser.ejs', { listUsers: listUsers , count : listUsers.length});
+        const response = await CRUDUserService.getAllUser();
+        return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
-            message: e.message || 'Error fetching users',
-        });
+            message: e
+        })
     }
 }
 
-const postCreateUser = async (req, res) => {
-    await CRUDUserService.createUser(req.body); 
-    res.redirect('/admin/user/');
+const createUser = async (req, res) => {
+    try {
+        const response = await CRUDUserService.createUser(req.body);
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
 }
 
-const getCreateUser = (req, res) => {
-    res.render('user/createUser.ejs');
+const updateUser = async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const data = req.body;
+        const response = await CRUDUserService.updateUser(userId, data)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const response = await CRUDUserService.deleteUser(userId)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const getDetailUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const response = await CRUDUserService.deleteUser(userId)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
 }
 
 const getOrderUser = async (req, res) => {
-    const userId = req.params.id;
-    const user = await User.findOne({ _id: userId }); 
-    const listOrders = await CRUDUserService.getOrderUser(userId);
-    return res.render('user/orderUser.ejs', { listOrders: listOrders , count : listOrders.length, nameUser : user.name});
+    try {
+        const userId = req.params.id;
+        const response = await CRUDUserService.getOrderUser(userId);
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
 }
 
 const getPaymentUser = async (req, res) => {
+    try {
     const userId = req.params.id;
-    const user = await User.findOne({ _id: userId }); 
-    const listPayments = await CRUDUserService.getPaymentUser(userId);
-    return res.render('user/paymentUser.ejs', { listPayments: listPayments , count : listPayments.length, nameUser : user.name});
+    const response =  await CRUDUserService.getPaymentUser(userId);
+    return res.status(200).json(response)
+} catch (e) {
+    return res.status(404).json({
+        message: e
+    })
 }
-
-
-
-const getUpdatePage = async (req, res) => {
-
-    const userId = req.params.id;
-
-    let user = await CRUDUserService.getDetailsUser(userId);
-
-    res.render('user/editUser.ejs', { userEdit : user });//{userEdit : user} = {userEdit : results[0]}
-}
-
-const postUpdateUser = async (req, res) => {
-    const userId = req.body.userId;
-    const data = req.body;
-
-    await CRUDUserService.updateUser(userId, data)
-
-    res.redirect('/admin/user/');
-
-}
-
-const postDeleteUser = async (req, res) => {
-    const userId = req.params.id;
-    let user = await CRUDUserService.getDetailsUser(userId);
-
-    res.render('user/deleteUser.ejs', { userEdit : user });
-}
-
-const postHandleRemoveUser = async (req, res) => {
-    const userId = req.body.userId;
-    await CRUDUserService.deleteUser(userId)
-    
-    return res.redirect('/admin/user/');
 }
 
 module.exports = {
     getHomepage,
-    postCreateUser,
-    getCreateUser,
+    createUser,
+    getDetailUser,
     getOrderUser,
-    getUpdatePage,
-    postUpdateUser,
-    postDeleteUser,
-    postHandleRemoveUser,
+    updateUser,
+    deleteUser,
     getPaymentUser
 }

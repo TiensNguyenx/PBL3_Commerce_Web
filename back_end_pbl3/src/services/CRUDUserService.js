@@ -54,7 +54,11 @@ const getAllUser = () => {
     return new Promise(async (resolve, reject) => {
         try{
             const allUser = await User.find()
-                resolve(allUser)
+            resolve({
+                status: "success",
+                message: "Get all user successfully",
+                data: allUser,
+            });
         }catch(error){
             reject(error) 
         }
@@ -99,7 +103,7 @@ const getPaymentUser = (id) => {
     })
 }
 
-const getDetailsUser = (id) => {
+const getDetailUser = (id) => {
     return new Promise(async (resolve, reject) => {
         try{
             const user = await User.findOne({
@@ -141,7 +145,7 @@ module.exports = {
     updateUser,
     deleteUser,
     getAllUser,
-    getDetailsUser,
+    getDetailUser,
     deleteManyUser,
     getOrderUser,
     getPaymentUser

@@ -1,24 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const { getHomepage, getCreateUser, getOrderUser, getPaymentUser, getUpdatePage, postCreateUser, postUpdateUser, postDeleteUser, postHandleRemoveUser } = require('../../controllers/adminUserController');
+const { getHomepage, createUser, getOrderUser, getPaymentUser, getUpdatePage, updateUser, deleteUser, getDetailUser} = require('../../controllers/adminUserController');
 const { authMiddleware} = require('../../middleware/authMiddleware');
 
 router.get('/', getHomepage);
 
-router.get('/create', getCreateUser);
+router.get('/detail-user/:id', getDetailUser);
 
-router.get('/order/:id', getOrderUser);
+router.post('/create-user', createUser);
 
-router.get('/payment/:id', getPaymentUser);
+router.post('/update-user/:id', updateUser);
 
-router.get('/update/:id', getUpdatePage);
+router.post('/delete-user/:id', deleteUser);
 
-router.post('/create-user', postCreateUser);
+// router.get('/order/:id', getOrderUser);
 
-router.post('/update-user', postUpdateUser);
-
-router.post('/delete-user/:id', postDeleteUser);
-
-router.post('/delete-user', postHandleRemoveUser);
+// router.get('/payment/:id', getPaymentUser);
 
 module.exports = router; //export default router

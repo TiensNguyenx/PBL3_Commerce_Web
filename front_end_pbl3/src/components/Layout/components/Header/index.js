@@ -62,12 +62,12 @@ function Header() {
                             {user && user.auth === true ? (<div className={cx('count-cart')}>{lengthCart}</div>) : ''}
                         </div>
                     </Link>
-                    <Link to={user.isAdmin ? '/admin/chat' : '/chat'}>
+                    <a href={user.isAdmin ? '/admin/chat' : '/chat'}>
                         <div className={cx('item')}>
                             <button className={cx('icon')}>  <BsChatDots style={{ width: '2rem', height: '2rem' }} /></button>
                             <span className={cx('subtiltle')}>Liên hệ</span>
                         </div>
-                    </Link>
+                    </a>
 
                     {user && user.auth === true ? (
                         <div className={cx('item')} >

@@ -41,7 +41,7 @@ let users = [];
 io.on('connection', socket => {
     socket.broadcast.emit("hello","Chào mừng bạn đến với TB Technology");
     socket.on('addUser', async  userId => { 
-        console.log('userId :>> ', userId);
+        console.log('have user connect:>> ', users);    
         const checkuser = await User.findById(userId);
         nameUser = checkuser.name; 
         emailUser = checkuser.email;
@@ -75,7 +75,7 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         users = users.filter(user => user.socketId !== socket.id);
         io.emit('getUsers', users);
-        console.log('users :>> ', users);   
+        console.log('have user disconnect:>> ', users);   
     });
     //io.emit('getUsers', socket.userId);
 });

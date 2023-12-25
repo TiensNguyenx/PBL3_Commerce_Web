@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getProductByNameService } from "~/Services/ProductServices";
+import { io } from 'socket.io-client';
 
 
 import ProductSlider from "~/components/Layout/components/ProductSlider";
@@ -17,7 +18,14 @@ function Home() {
     const [corsairProduct, setCorsairProduct] = useState([])
     const [duckyProduct, setDuckyProduct] = useState([])
     const [steelseriesProduct, setSteelseriesProduct] = useState([])
+    const [socket, setSocket] = useState(null)
+
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setSocket(io("http://localhost:8080"));
+    }, []);
+
     useEffect(() => {
         renderProductLogitech()
         renderProductRazer()

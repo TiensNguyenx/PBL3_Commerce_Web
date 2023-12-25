@@ -27,7 +27,7 @@ function Chat() {
     const [messages, setMessages] = useState({})
     const userId = localStorage.getItem('userId')
     const chatWrapperRef = useRef(null);
-    const messagesEndRef = useRef(null); 
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
         setSocket(io('http://localhost:8080'))
@@ -35,6 +35,9 @@ function Chat() {
     }, [])
 
     useEffect(() => {
+        socket?.on('getUsers', (updatedUsers) => {
+            setUsers(updatedUsers); // Cập nhật danh sách users
+        });
         socket?.on('hello', (msg) => {
             console.log('msg :>> ', msg);
         });
@@ -51,6 +54,10 @@ function Chat() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
         chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
     }, [messages]);
+
+    const isAdminOnline = () => {
+        return users.some(user => user.nameUser === 'admin');
+    }
 
     const fetchMessages = async (user) => {
         const res = await fetch(`http://localhost:3002/api/conversation/${userId}`, {
@@ -97,7 +104,9 @@ function Chat() {
                                 <img className={cx('user-img')} src={logoShop} alt=""></img>
                                 <div className={cx('user-info')}>
                                     <div className={cx('user-name')}>TB Technology</div>
-                                    <div className={cx('user-status')}>Active</div>
+                                    <div className={cx('user-status')}>
+                                        {isAdminOnline() ? 'Online' : 'Offline'}
+                                    </div>
                                 </div>
                             </div>
                             <div className={cx('user-option')}>

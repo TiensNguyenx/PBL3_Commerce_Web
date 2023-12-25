@@ -14,8 +14,16 @@ function HomeUser() {
             navigate('/')
         }
     }, [])
-    useEffect(() => {
-        //callApi 
+    useEffect(() => async () => {
+        const res = await fetch(`http://localhost:3002/admin/user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const resData = await res.json()
+        console.log(resData.data)
+        setUser(resData.data)
     }, [])
     return (
         <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
@@ -32,7 +40,7 @@ function HomeUser() {
                     </Row>
                     {user.map((item, index) => {
                         return (
-                            <Row key={index}>
+                            <Row>
                                 <Col>{item.id}</Col>
                                 <Col style={{ textAlign: 'center' }}>{item.email}</Col>
                                 <Col>{item.name}</Col>

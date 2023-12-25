@@ -18,7 +18,7 @@ function HomeUser() {
         //callApi 
     }, [])
     return (
-        <div>
+        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>
@@ -32,7 +32,7 @@ function HomeUser() {
                     </Row>
                     {user.map((item, index) => {
                         return (
-                            <Row>
+                            <Row key={index}>
                                 <Col>{item.id}</Col>
                                 <Col style={{ textAlign: 'center' }}>{item.email}</Col>
                                 <Col>{item.name}</Col>

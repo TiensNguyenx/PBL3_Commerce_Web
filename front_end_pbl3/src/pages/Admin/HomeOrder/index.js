@@ -8,7 +8,7 @@ const cx = classNames.bind(styles)
 function HomeOrder() {
 
     return (
-        <div>
+        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>

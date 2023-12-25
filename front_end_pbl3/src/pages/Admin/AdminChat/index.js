@@ -12,7 +12,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import Footer from "~/components/Layout/components/Footer";
 import logoShop from "../../../assets/images/logoShop.png";
 import { toast } from 'react-toastify';
-
+import avatarUser from '../../../assets/images/avatarUser.jpg'
 import { io } from 'socket.io-client';
 
 const cx = classNames.bind(styles);
@@ -28,7 +28,7 @@ function AdminChat() {
     const chatWrapperRef = useRef(null);
     const messagesEndRef = useRef(null);
     const [selectedUser, setSelectedUser] = useState(null);
-
+    const [userName, setUserName] = useState('');
     useEffect(() => {
         setSocket(io("http://localhost:8080"));
     }, []);
@@ -54,6 +54,7 @@ function AdminChat() {
 
     const fetchMessages = async (user) => {
         setSelectedUser(user);
+        setUserName(user?.nameUser);
         setIdReceive({
             idReceive: user.userId,
             idSocket: user.socketId
@@ -84,6 +85,23 @@ function AdminChat() {
         setMessages({ resData, userId: userId })
         setMessage('');
     }
+    function formatTimeAgo(timeSent) {
+        var now = new Date();
+        timeSent = new Date(timeSent);
+        var timeDifference = now - timeSent;
+        var minutesAgo = Math.floor(timeDifference / (1000 * 60));
+        var hoursAgo = Math.floor(minutesAgo / 60);
+        var daysAgo = Math.floor(hoursAgo / 24);
+        if (minutesAgo < 1) {
+            return "Vừa gửi";
+        } else if (minutesAgo < 60) {
+            return "Đã gửi từ " + minutesAgo + " phút trước";
+        } else if (hoursAgo < 24) {
+            return "Đã gửi từ " + hoursAgo + " giờ trước";
+        } else {
+            return "Đã gửi từ " + daysAgo + " ngày trước";
+        }
+    }
     return (
         <div>
             <div className={cx('wrapper')}>
@@ -95,14 +113,14 @@ function AdminChat() {
                         <div className={cx('sidebar-search')}>
                             <input type="text" placeholder="Search contact / chat" />
                         </div>
-                        <div className='w-[25%] h-screen bg-light px-8 py-16 overflow-y-scroll'>
+                        <div>
                             <div className='text-primary text-lg'>People</div>
                             <div>
                                 {activeUsers.length > 0 ? (
                                     activeUsers.map((user) => (
                                         <div
                                             key={user.userId}
-                                            className={cx('user-wrapper', {
+                                            className={cx('user-chat', {
                                                 'user-selected': selectedUser?.userId === user.userId,
                                             })}
                                             onClick={() => fetchMessages(user)}
@@ -110,7 +128,7 @@ function AdminChat() {
                                             <div className={cx('user-containner')}>
                                                 <img
                                                     className={cx('user-img')}
-                                                    src="https://connectme-html.themeyn.com/images/avatar/1.jpg"
+                                                    src={avatarUser}
                                                     alt=""
                                                 />
                                                 <div className={cx('user-info')}>
@@ -129,10 +147,10 @@ function AdminChat() {
                     <div className={cx('chat-space')}>
                         <div className={cx('option')}>
                             <div className={cx('user-containner')}>
-                                <img className={cx('user-img')} src={logoShop} alt=""></img>
+                                {userName ? (<img className={cx('user-img')} src={avatarUser} alt=""></img>) : ''}
                                 <div className={cx('user-info')}>
-                                    <div className={cx('user-name')}>TB Technology</div>
-                                    <div className={cx('user-status')}>Active</div>
+                                    <div className={cx('user-name')}> {userName}</div>
+                                    <div className={cx('user-status')}>{userName ? 'Active' : ''}</div>
                                 </div>
                             </div>
                             <div className={cx('user-option')}>
@@ -145,9 +163,15 @@ function AdminChat() {
                             <div className={cx('history')}>
                                 {messages.resData?.message?.map((msg) => (
                                     <div key={msg._id} className={cx('message', { 'message-admin': msg.fullName === 'admin', 'message-user': msg.fullName !== 'admin' })}>
-                                        <div className={cx('message-sender')}>{msg.fullName}</div>
-                                        <div className={cx('message-content')}>{msg.content}</div>
-                                        <div className={cx('message-timestamp')}>{new Date(msg.timestamps).toLocaleString()}</div>
+                                        <div className={cx('message-wrapper', msg.fullName === 'admin' ? 'admin-wrapper' : 'user-wrapper')}>
+                                            <div className={cx(msg.fullName === 'admin' ? 'avatar-admin' : 'avatar-user', 'col-left')}><img src={msg.fullName === 'admin' ? logoShop : avatarUser} alt=""></img></div>
+                                            <div className={cx('col-right')}>
+                                                <div className={cx('message-sender')}>{msg.fullName}</div>
+                                                <div className={cx('message-content')}>{msg.content}</div>
+                                                <div className={cx('message-timestamp')}>{formatTimeAgo(msg.timestamps)}</div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 ))}
                                 <div ref={messagesEndRef} />

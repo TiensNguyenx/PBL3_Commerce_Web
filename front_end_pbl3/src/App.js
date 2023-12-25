@@ -9,14 +9,14 @@ import { ToastContainer, } from 'react-toastify';
 import { UserContext } from "./context/UserContext";
 import DefalutInformation from "./components/Layout/components/DefaultInformation";
 function App() {
-  const { loginContext, user } = useContext(UserContext)
+  const { loginContext } = useContext(UserContext)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       loginContext(localStorage.getItem('token'))
     }
   }, [])
-  console.log(user.isAdmin)
+
   return (
     <>
       <PayPalScriptProvider options={{ "client-id": "ASTZlA7vExZP1LfA0qLiwOfFnRUvdBPfJlpcKPxxgnF0ldF8afKqjxWIMr1tbo3rsc1hp2gG2PmubaK5" }}>

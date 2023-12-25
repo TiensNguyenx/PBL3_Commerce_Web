@@ -17,7 +17,7 @@ import { io } from 'socket.io-client';
 
 
 const cx = classNames.bind(styles);
- 
+
 function Chat() {
 
     const [socket, setSocket] = useState(null)
@@ -27,8 +27,8 @@ function Chat() {
     const [messages, setMessages] = useState({})
     const userId = localStorage.getItem('userId')
     const chatWrapperRef = useRef(null);
-    const messagesEndRef = useRef(null); 
-
+    const messagesEndRef = useRef(null);
+    const [adminStatus, setAdminStatus] = useState({ isAdminOnline: false, lastDisconnect: null });
     useEffect(() => {
         setSocket(io('http://localhost:8080'))
         fetchMessages(userId)

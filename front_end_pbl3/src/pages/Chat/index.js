@@ -12,14 +12,14 @@ import { FaLocationArrow } from "react-icons/fa6";
 import Footer from "~/components/Layout/components/Footer";
 import logoShop from "../../assets/images/logoShop.png";
 import { toast } from 'react-toastify';
-
+import avatarUser from '../../assets/images/avatarUser.jpg'
 import { io } from 'socket.io-client';
 
 
 const cx = classNames.bind(styles);
 
 function Chat() {
-
+    const [adminStatus, setAdminStatus] = useState({ isAdminOnline: false, lastDisconnect: null });
     const [socket, setSocket] = useState(null)
     const [message, setMessage] = useState('');
     const [users, setUsers] = useState([])
@@ -28,7 +28,7 @@ function Chat() {
     const userId = localStorage.getItem('userId')
     const chatWrapperRef = useRef(null);
     const messagesEndRef = useRef(null);
-    const [adminStatus, setAdminStatus] = useState({ isAdminOnline: false, lastDisconnect: null });
+
     useEffect(() => {
         setSocket(io('http://localhost:8080'))
         fetchMessages(userId)
@@ -61,12 +61,6 @@ function Chat() {
             socket?.off('getUsers');
         };
     }, [socket])
-
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
-    }, [messages]);
-
     const getAdminOfflineDuration = () => {
         if (!adminStatus.lastDisconnect) return '';
 
@@ -76,6 +70,11 @@ function Chat() {
         const seconds = ((diff % 60000) / 1000).toFixed(0);
         return `${minutes} phút, ${seconds} giây`;
     };
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
+    }, [messages]);
+
     const fetchMessages = async (user) => {
         const res = await fetch(`http://localhost:3002/api/conversation/${userId}`, {
             method: 'GET',
@@ -104,7 +103,23 @@ function Chat() {
         setMessages({ resData, userId: userId })
         setMessage('');
     }
-
+    function formatTimeAgo(timeSent) {
+        var now = new Date();
+        timeSent = new Date(timeSent);
+        var timeDifference = now - timeSent;
+        var minutesAgo = Math.floor(timeDifference / (1000 * 60));
+        var hoursAgo = Math.floor(minutesAgo / 60);
+        var daysAgo = Math.floor(hoursAgo / 24);
+        if (minutesAgo < 1) {
+            return "Vừa gửi";
+        } else if (minutesAgo < 60) {
+            return "Đã gửi từ " + minutesAgo + " phút trước";
+        } else if (hoursAgo < 24) {
+            return "Đã gửi từ " + hoursAgo + " giờ trước";
+        } else {
+            return "Đã gửi từ " + daysAgo + " ngày trước";
+        }
+    }
     return (
         <div>
             <div className={cx('wrapper')}>
@@ -121,11 +136,9 @@ function Chat() {
                                 <img className={cx('user-img')} src={logoShop} alt=""></img>
                                 <div className={cx('user-info')}>
                                     <div className={cx('user-name')}>TB Technology</div>
-                                    <div className={cx('user-status')}>
-                                        {adminStatus.isAdminOnline
-                                            ? 'Online'
-                                            : `Offline (đã ${getAdminOfflineDuration()})`}
-                                    </div>
+                                    <div className={cx('user-status')}> {adminStatus.isAdminOnline
+                                        ? 'Online'
+                                        : `Offline (đã ${getAdminOfflineDuration()})`}</div>
                                 </div>
                             </div>
                             <div className={cx('user-option')}>
@@ -138,9 +151,15 @@ function Chat() {
                             <div className={cx('history')}>
                                 {messages.resData?.message?.map((msg) => (
                                     <div key={msg._id} className={cx('message', { 'message-admin': msg.fullName === 'admin', 'message-user': msg.fullName !== 'admin' })}>
-                                        <div className={cx('message-sender')}>{msg.fullName}</div>
-                                        <div className={cx('message-content')}>{msg.content}</div>
-                                        <div className={cx('message-timestamp')}>{new Date(msg.timestamps).toLocaleString()}</div>
+                                        <div className={cx('message-wrapper', msg.fullName === 'admin' ? 'admin-wrapper' : 'user-wrapper')}>
+                                            <div className={cx(msg.fullName === 'admin' ? 'avatar-admin' : 'avatar-user', 'col-left')}><img src={msg.fullName === 'admin' ? logoShop : avatarUser} alt=""></img></div>
+                                            <div className={cx('col-right')}>
+                                                <div className={cx('message-sender')}>{msg.fullName}</div>
+                                                <div className={cx('message-content')}>{msg.content}</div>
+                                                <div className={cx('message-timestamp')}>{formatTimeAgo(msg.timestamps)}</div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 ))}
                                 <div ref={messagesEndRef} />

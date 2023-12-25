@@ -38,6 +38,8 @@ mongoose.connect(process.env.MONGODB_URI)
 })
 
 let users = [];
+let lastAdminDisconnectTime = null;
+
 io.on('connection', socket => {
     socket.broadcast.emit("hello","Chào mừng bạn đến với TB Technology");
     socket.on('addUser', async  userId => { 
@@ -73,9 +75,23 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
+        const disconnectedUser = users.find(user => user.socketId === socket.id);
+        if (disconnectedUser && disconnectedUser.nameUser === 'admin') {
+            lastAdminDisconnectTime = new Date(); // Cập nhật thời gian ngắt kết nối của admin
+        }
         users = users.filter(user => user.socketId !== socket.id);
         io.emit('getUsers', users);
-        console.log('have user disconnect:>> ', users);   
+        console.log('have user disconnect:>> ', users);
+    });
+    socket.on('checkAdminStatus', () => {
+        const adminUser = users.find(user => user.nameUser === 'admin');
+        const isAdminOnline = !!adminUser;
+        const lastDisconnect = lastAdminDisconnectTime ? lastAdminDisconnectTime.toISOString() : null;
+
+        io.to(socket.id).emit('adminStatus', { 
+            isAdminOnline, 
+            lastDisconnect 
+        });
     });
     //io.emit('getUsers', socket.userId);
 });

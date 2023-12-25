@@ -28,6 +28,8 @@ function Chat() {
     const userId = localStorage.getItem('userId')
     const chatWrapperRef = useRef(null);
     const messagesEndRef = useRef(null);
+    const [adminStatus, setAdminStatus] = useState({ isAdminOnline: false, lastDisconnect: null });
+
 
     useEffect(() => {
         setSocket(io('http://localhost:8080'))
@@ -36,7 +38,14 @@ function Chat() {
 
     useEffect(() => {
         socket?.on('getUsers', (updatedUsers) => {
-            setUsers(updatedUsers); // Cập nhật danh sách users
+            setUsers(updatedUsers);
+            socket?.emit('checkAdminStatus');
+            socket?.on('adminStatus', status => {
+                setAdminStatus({
+                    isAdminOnline: status.isAdminOnline,
+                    lastDisconnect: status.lastDisconnect ? new Date(status.lastDisconnect) : null
+                });
+            });
         });
         socket?.on('hello', (msg) => {
             console.log('msg :>> ', msg);
@@ -48,6 +57,11 @@ function Chat() {
             fetchMessages(user)
             toast.success(`Shop đã gửi tin nhắn cho bạn`);
         })
+
+        return () => {
+            socket?.off('adminStatus');
+            socket?.off('getUsers');
+        };
     }, [socket])
 
     useEffect(() => {
@@ -55,10 +69,15 @@ function Chat() {
         chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
     }, [messages]);
 
-    const isAdminOnline = () => {
-        return users.some(user => user.nameUser === 'admin');
-    }
+    const getAdminOfflineDuration = () => {
+        if (!adminStatus.lastDisconnect) return '';
 
+        const now = new Date();
+        const diff = now.getTime() - adminStatus.lastDisconnect.getTime();
+        const minutes = Math.floor(diff / 60000);
+        const seconds = ((diff % 60000) / 1000).toFixed(0);
+        return `${minutes} phút, ${seconds} giây`;
+    };
     const fetchMessages = async (user) => {
         const res = await fetch(`http://localhost:3002/api/conversation/${userId}`, {
             method: 'GET',
@@ -105,7 +124,9 @@ function Chat() {
                                 <div className={cx('user-info')}>
                                     <div className={cx('user-name')}>TB Technology</div>
                                     <div className={cx('user-status')}>
-                                        {isAdminOnline() ? 'Online' : 'Offline'}
+                                        {adminStatus.isAdminOnline
+                                            ? 'Online'
+                                            : `Offline (đã ${getAdminOfflineDuration()})`}
                                     </div>
                                 </div>
                             </div>

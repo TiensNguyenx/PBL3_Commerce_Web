@@ -50,7 +50,7 @@ const deleteUser = async (req, res) => {
 const getDetailUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const response = await CRUDUserService.deleteUser(userId)
+        const response = await CRUDUserService.getDetailUser(userId)
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({

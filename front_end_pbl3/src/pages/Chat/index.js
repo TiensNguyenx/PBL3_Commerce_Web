@@ -12,7 +12,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import Footer from "~/components/Layout/components/Footer";
 import logoShop from "../../assets/images/logoShop.png";
 import { toast } from 'react-toastify';
-
+import avatarUser from '../../assets/images/avatarUser.jpg'
 import { io } from 'socket.io-client';
 
 
@@ -27,7 +27,7 @@ function Chat() {
     const [messages, setMessages] = useState({})
     const userId = localStorage.getItem('userId')
     const chatWrapperRef = useRef(null);
-    const messagesEndRef = useRef(null); 
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
         setSocket(io('http://localhost:8080'))
@@ -80,7 +80,23 @@ function Chat() {
         setMessages({ resData, userId: userId })
         setMessage('');
     }
-
+    function formatTimeAgo(timeSent) {
+        var now = new Date();
+        timeSent = new Date(timeSent);
+        var timeDifference = now - timeSent;
+        var minutesAgo = Math.floor(timeDifference / (1000 * 60));
+        var hoursAgo = Math.floor(minutesAgo / 60);
+        var daysAgo = Math.floor(hoursAgo / 24);
+        if (minutesAgo < 1) {
+            return "Vừa gửi";
+        } else if (minutesAgo < 60) {
+            return "Đã gửi từ " + minutesAgo + " phút trước";
+        } else if (hoursAgo < 24) {
+            return "Đã gửi từ " + hoursAgo + " giờ trước";
+        } else {
+            return "Đã gửi từ " + daysAgo + " ngày trước";
+        }
+    }
     return (
         <div>
             <div className={cx('wrapper')}>
@@ -110,9 +126,15 @@ function Chat() {
                             <div className={cx('history')}>
                                 {messages.resData?.message?.map((msg) => (
                                     <div key={msg._id} className={cx('message', { 'message-admin': msg.fullName === 'admin', 'message-user': msg.fullName !== 'admin' })}>
-                                        <div className={cx('message-sender')}>{msg.fullName}</div>
-                                        <div className={cx('message-content')}>{msg.content}</div>
-                                        <div className={cx('message-timestamp')}>{new Date(msg.timestamps).toLocaleString()}</div>
+                                        <div className={cx('message-wrapper', msg.fullName === 'admin' ? 'admin-wrapper' : 'user-wrapper')}>
+                                            <div className={cx(msg.fullName === 'admin' ? 'avatar-admin' : 'avatar-user', 'col-left')}><img src={msg.fullName === 'admin' ? logoShop : avatarUser} alt=""></img></div>
+                                            <div className={cx('col-right')}>
+                                                <div className={cx('message-sender')}>{msg.fullName}</div>
+                                                <div className={cx('message-content')}>{msg.content}</div>
+                                                <div className={cx('message-timestamp')}>{formatTimeAgo(msg.timestamps)}</div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 ))}
                                 <div ref={messagesEndRef} />

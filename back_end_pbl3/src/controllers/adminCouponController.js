@@ -1,63 +1,67 @@
-const CRUDCouponService = require('../services/CRUDCouponService');  
+const CRUDCouponService = require('../services/CRUDCouponService');
 const getHomepage = async (req, res) => {
     try {
-        const listCoupons = await CRUDCouponService.getAllCoupon();
-        return res.render('coupon/homepageCoupon.ejs', { listCoupons: listCoupons , count : listCoupons.length});
+        const response = await CRUDCouponService.getAllCoupon();
+        return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
-            message: e.message || 'Error fetching coupon',
-        });
+            message: e
+        })
     }
 }
 
-const postCreateCoupon = async (req, res) => {
-    await CRUDCouponService.createCoupon(req.body); 
-    res.redirect('/admin/coupon/');
+const createCoupon = async (req, res) => {
+    try {
+        const response = await CRUDCouponService.createCoupon(req.body);
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
 }
 
-const getCreateCoupon= (req, res) => {
-    res.render('coupon/createCoupon.ejs');
+const getDetailsCoupon = async (req, res) => {
+    try {
+        const couponId = req.params.id;
+        const response = await CRUDCouponService.getDetailsCoupon(couponId);
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
 }
 
-const getUpdatePage = async (req, res) => {
-
-    const couponId = req.params.id;
-
-    let coupon = await CRUDCouponService.getDetailsCoupon(couponId);
-
-    res.render('coupon/editCoupon.ejs', { couponEdit : coupon });
+const updateCoupon = async (req, res) => {
+    try {
+        const couponId = req.body.couponId;
+        const data = req.body;
+        const response = await CRUDCouponService.updateCoupon(couponId, data)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
 }
 
-const postUpdateCoupon = async (req, res) => {
-    const couponId = req.body.couponId;
-    const data = req.body;
-
-    await CRUDCouponService.updateCoupon(couponId, data)
-
-    res.redirect('/admin/coupon/');
-
-}
-
-const postDeleteCoupon = async (req, res) => {
-    const couponId = req.params.id;
-    let coupon = await CRUDCouponService.getDetailsCoupon(couponId);
-
-    res.render('coupon/deleteCoupon.ejs', { couponEdit : coupon });
-}
-
-const postHandleRemoveCoupon = async (req, res) => {
-    const couponId = req.body.couponId;
-    await CRUDCouponService.deleteCoupon(couponId)
-    
-    return res.redirect('/admin/coupon/');
+const deleteCoupon = async (req, res) => {
+    try {
+        const couponId = req.body.couponId;
+        const response = await CRUDCouponService.deleteCoupon(couponId)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
 }
 
 module.exports = {
     getHomepage,
-    postCreateCoupon,
-    getCreateCoupon,
-    getUpdatePage,
-    postUpdateCoupon,
-    postDeleteCoupon,
-    postHandleRemoveCoupon
+    createCoupon,
+    getDetailsCoupon,
+    updateCoupon,
+    deleteCoupon
 }

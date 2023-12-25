@@ -1,19 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { getHomepage, getCreateCoupon, getUpdatePage, postCreateCoupon, postUpdateCoupon, postDeleteCoupon, postHandleRemoveCoupon } = require('../../controllers/adminCouponController');
+const { getHomepage,createCoupon,getDetailsCoupon,updateCoupon,deleteCoupon } = require('../../controllers/adminCouponController');
 
 router.get('/', getHomepage);
 
-router.get('/create', getCreateCoupon);
+router.get('/create', createCoupon);
 
-router.get('/update/:id', getUpdatePage);
+router.get('/detail-coupon/:id', getDetailsCoupon);
 
-router.post('/create-coupon', postCreateCoupon);
+router.post('/update-coupon/:id', updateCoupon);
 
-router.post('/update-coupon', postUpdateCoupon);
-
-router.post('/delete-coupon/:id', postDeleteCoupon);
-
-router.post('/delete-coupon', postHandleRemoveCoupon);
+router.post('/delete-coupon/:id', deleteCoupon);
 
 module.exports = router; //export default router

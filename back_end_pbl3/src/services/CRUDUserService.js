@@ -142,7 +142,6 @@ const getDetailUser = (id) => {
                     message: 'The user is not exist'
                 })
             }
-
             resolve(user)
         } catch (error) {
             reject(error)

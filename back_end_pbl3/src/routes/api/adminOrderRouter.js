@@ -1,24 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { getHomepage, getAllOrderManagementByYear, getDetailsOrderItems, getDetailsOrderAddress, getAllOrderManagement} = require('../../controllers/adminOrderController');
+const { getHomepage, getAllOrderManagementByYear, getDetailsOrder,getDetailsOrderItems, sortOrder, getAllOrderManagement} = require('../../controllers/adminOrderController');
 
 router.get('/', getHomepage);
 
-router.get('/details/:id', getDetailsOrderItems);
+router.get('/detail-order/:id', getDetailsOrder);
 
-router.get('/sort', getHomepage);
+router.get('/detail-order-item/:id', getDetailsOrderItems);
 
-router.get('/details-payment/:id', getHomepage);
+router.get('/sort', sortOrder);
 
-router.get('/all-order', getAllOrderManagement);
+router.get('/all-order-chart', getAllOrderManagement);
 
-router.get('/all-order-by-year', getAllOrderManagementByYear);
-// router.post('/create-coupon', postCreateCoupon);
-
-// router.post('/update-coupon', postUpdateCoupon);
-
-// router.post('/delete-coupon/:id', postDeleteCoupon);
-
-// router.post('/delete-coupon', postHandleRemoveCoupon);
+router.get('/all-order-chart-by-year', getAllOrderManagementByYear);
 
 module.exports = router; //export default router 

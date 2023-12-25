@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getHomepage} = require('../../controllers/adminPaymentController');
+const { getHomepage, getDetailPayment,sortPayment} = require('../../controllers/adminPaymentController');
 
 router.get('/', getHomepage);
 
-router.get('/sort', getHomepage);
+router.get('/detail-payment/:id', getDetailPayment);
+
+router.get('/sort', sortPayment);
 
 module.exports = router;

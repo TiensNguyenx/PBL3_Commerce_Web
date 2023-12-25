@@ -2,32 +2,43 @@ const Order = require('../models/OrderModel');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const getAllOrder = (sortName, sortType, nameSort) => {
-    return new Promise(async (resolve, reject) => {
-        try{
-            let allOrder;
-            if(nameSort === 'Nhận tại cửa hàng'){
-                allOrder = await Order.find({
-                    shippingMethod: 'nhan tai cua hang'
-                });
-            }else if(nameSort === 'Giao hàng tận nơi'){
-                allOrder = await Order.find({
-                    shippingMethod: 'giao hang tan noi'
-                });
-            }
-            else if (sortName && sortType) {
-                const objectSort = { [sortName]: sortType };
-                allOrder = await Order.find().sort(objectSort);
-            } else {
-                allOrder = await Order.find().sort({ createdAt: -1, updatedAt: -1 });
-            }
+// const getAllOrder = (sortName, sortType, nameSort) => {
+//     return new Promise(async (resolve, reject) => {
+//         try{
+//             let allOrder;
+//             if(nameSort === 'Nhận tại cửa hàng'){
+//                 allOrder = await Order.find({
+//                     shippingMethod: 'nhan tai cua hang'
+//                 });
+//             }else if(nameSort === 'Giao hàng tận nơi'){
+//                 allOrder = await Order.find({
+//                     shippingMethod: 'giao hang tan noi'
+//                 });
+//             }
+//             else if (sortName && sortType) {
+//                 const objectSort = { [sortName]: sortType };
+//                 allOrder = await Order.find().sort(objectSort);
+//             } else {
+//                 allOrder = await Order.find().sort({ createdAt: -1, updatedAt: -1 });
+//             }
 
+//             resolve(allOrder);
+//         }catch(error){
+//             reject(error) 
+//         }
+//     })
+// }
+
+const getAllOrder = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const allOrder = await Order.find().sort({ createdAt: -1, updatedAt: -1 });
             resolve(allOrder);
-        }catch(error){
-            reject(error) 
+        } catch (error) {
+            reject(error);
         }
-    })
-}
+    });
+};
 
 const getDetailsOrder = (id) => {
     return new Promise(async (resolve, reject) => {
@@ -49,6 +60,69 @@ const getDetailsOrder = (id) => {
         }
     })
 }
+
+const getDetailsOrderItems = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try{
+            const order = await Order.findOne({
+                _id: id
+            })
+
+            if(order == null){
+                resolve({
+                    status: 'error',
+                    message: 'The order is not exist'
+                })
+            }
+
+            resolve(order.items)
+        }catch(error){
+            reject(error) 
+        }
+    })
+}
+
+const getDetailsOrderAddress = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try{
+            const order = await Order.findOne({
+                _id: id
+            })
+
+            if(order == null){
+                resolve({
+                    status: 'error',
+                    message: 'The order is not exist'
+                })
+            }
+            if(order.shopAddress){
+                resolve(order.shopAddress)
+            }
+            if(order.shippingAddress){
+                resolve(order.shippingAddress)
+            }
+        }catch(error){
+            reject(error) 
+        }
+    })
+}
+const sortOrder = (sortName, sortType) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let allOrder;
+            if (sortName && sortType) {
+                const objectSort = { [sortName]: sortType };
+                allOrder = await Order.find().sort(objectSort);
+            } else {
+                allOrder = await Order.find().sort({ createdAt: -1, updatedAt: -1 });
+            }
+            resolve(allOrder);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
 
 const getUniqueYears = () => {
     return new Promise(async (resolve, reject) => {
@@ -148,6 +222,9 @@ const getAllOrderManagement = async () => {
 module.exports = {
     getAllOrder,
     getDetailsOrder,
+    getDetailsOrderItems,
+    getDetailsOrderAddress,
+    sortOrder,
     getAllOrderManagement,
     getUniqueYears,
     getAllOrderManagementByYear

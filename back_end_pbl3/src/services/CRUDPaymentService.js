@@ -1,36 +1,74 @@
 const Payment = require('../models/PaymentModel')
 
-const getAllPayment = (sortName, sortType, nameSort) => {
+// const getAllPayment = (sortName, sortType, nameSort) => {
+//     return new Promise(async (resolve, reject) => {
+//         try{
+//             let allPayment;
+//             if(nameSort === 'Thanh toán khi nhận hàng'){
+//                 allPayment = await Payment.find({
+//                     paymentMethod: 'thanh toan khi nhan hang'
+//                 });
+//             }else if(nameSort === 'Thanh toán bằng Paypal'){
+//                 allPayment = await Payment.find({
+//                     paymentMethod: 'thanh toan bang paypal'
+//                 });
+//             }
+//             else if (sortName && sortType) {
+//                 const objectSort = { [sortName]: sortType };
+//                 allPayment = await Payment.find().sort(objectSort);
+//             } else {
+//                 allPayment = await Payment.find().sort({ createdAt: -1, updatedAt: -1 });
+//             }
+
+//             resolve(allPayment);
+//         }catch(error){
+//             reject(error) 
+//         }
+//     })
+// }
+
+const getAllPayment = () => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
+            const allPayment = await Payment.find().sort({ createdAt: -1, updatedAt: -1 });
+            resolve(allPayment);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+const getDetailPayment = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const payment = await Payment.findById(id);
+            resolve(payment);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+const sortPayment = (sortName, sortType) => {
+    return new Promise(async (resolve, reject) => {
+        try {
             let allPayment;
-            if(nameSort === 'Thanh toán khi nhận hàng'){
-                allPayment = await Payment.find({
-                    paymentMethod: 'thanh toan khi nhan hang'
-                });
-            }else if(nameSort === 'Thanh toán bằng Paypal'){
-                allPayment = await Payment.find({
-                    paymentMethod: 'thanh toan bang paypal'
-                });
-            }
-            else if (sortName && sortType) {
+            if (sortName && sortType) {
                 const objectSort = { [sortName]: sortType };
                 allPayment = await Payment.find().sort(objectSort);
             } else {
                 allPayment = await Payment.find().sort({ createdAt: -1, updatedAt: -1 });
             }
-
             resolve(allPayment);
-        }catch(error){
-            reject(error) 
+        } catch (error) {
+            reject(error);
         }
-    })
+    });
 }
 
 const getAllPaymentManagement = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const allPayments = await Payment.find({}); // Lấy tất cả các thanh toán
+            const allPayments = await Payment.find({}); 
             const paidPaymentsCount = allPayments.filter(payment => payment.isPaid === true).length;
             const unpaidPaymentsCount = allPayments.filter(payment => payment.isPaid === false).length;
 
@@ -79,6 +117,8 @@ const getAllPaymentManagementByYear = async (selectedYear) => {
 
 module.exports = {
     getAllPayment,
+    getDetailPayment,
+    sortPayment,
     getAllPaymentManagement,
     getAllPaymentManagementByYear
 }

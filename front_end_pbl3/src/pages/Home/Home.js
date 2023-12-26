@@ -6,8 +6,9 @@ import { useState, useEffect } from "react";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getProductByNameService } from "~/Services/ProductServices";
-import { io } from 'socket.io-client';
+import { toast } from 'react-toastify';
 
+import socket from "../socket";
 
 import ProductSlider from "~/components/Layout/components/ProductSlider";
 const cx = classNames.bind(styles)
@@ -18,13 +19,27 @@ function Home() {
     const [corsairProduct, setCorsairProduct] = useState([])
     const [duckyProduct, setDuckyProduct] = useState([])
     const [steelseriesProduct, setSteelseriesProduct] = useState([])
-    const [socket, setSocket] = useState(null)
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        setSocket(io("http://localhost:8080"));
-    }, []);
+        const checkActive = localStorage.getItem('userId')
+        const checkAdmin = localStorage.getItem('isAdmin')
+        if (checkActive) {
+            socket?.emit('addUser', checkActive);
+            socket?.on('getMessage', (user) => {
+                toast.success(`Shop đã gửi tin nhắn cho bạn`);
+            })
+            socket?.on('getMessageToAdmin', (user) => {
+                console.log('checkAdmin :>> ', checkAdmin);
+                if (checkAdmin  === "true") {
+                    console.log('user :>> ', user);
+                    toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
+                }
+            })
+        }
+
+    }, [socket])
 
     useEffect(() => {
         renderProductLogitech()
@@ -72,7 +87,7 @@ function Home() {
     return (
         <div className={cx('wrapper')}>
 
-           
+
             <div id="logitech" className={cx('titleProduct')}>BÀN PHÍM LOGITECH</div>
             <div className={cx('container')} >
                 <div className={cx('header')} onClick={() => handleSeeAll('logitech')}>Xem tất cả <FaAngleDoubleRight style={{ color: '#a22327' }} /></div>

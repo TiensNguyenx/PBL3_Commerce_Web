@@ -8,12 +8,12 @@ function HomeOrderManagement() {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     useEffect(() => {
-        if (!localStorage.getItem('isAdmin')) {
+        if (!user.isAdmin) {
             navigate('/')
         }
-    }, [])
+    }, [user])
     return (
-        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
+        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
         </div>
     );

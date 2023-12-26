@@ -10,17 +10,17 @@ import { Container } from 'react-bootstrap';
 import { useEffect } from "react";
 import { getAllCouponService } from "~/Services/CouponServices";
 import { useNavigate } from "react-router-dom";
-;
-
+import { UserContext } from '~/context/UserContext';
+import { useContext } from 'react';
 const cx = classNames.bind(styles);
 function HomeCoupons() {
     const navigate = useNavigate();
-
+    const { user } = useContext(UserContext);
     useEffect(() => {
-        if (!localStorage.getItem('isAdmin')) {
+        if (!user.isAdmin) {
             navigate('/')
         }
-    }, [])
+    }, [user])
     const [coupons, setCoupons] = useState([]);
     const renderCoupons = async () => {
         const res = await getAllCouponService('ship');
@@ -30,7 +30,7 @@ function HomeCoupons() {
         renderCoupons();
     }, []);
     return (
-        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
+        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>

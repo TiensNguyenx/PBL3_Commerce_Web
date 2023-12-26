@@ -13,12 +13,12 @@ function CreateCoupons() {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     useEffect(() => {
-        if (!localStorage.getItem('isAdmin')) {
+        if (!user.isAdmin) {
             navigate('/')
         }
-    }, [])
+    }, [user])
     return (
-        <div className={cx('containner')} style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }} >
+        <div className={cx('containner')} style={!user ? { display: 'none' } : { display: 'block' }} >
             <HeaderAdmin />
             <div className={cx('form-containner')}>
                 <Form >

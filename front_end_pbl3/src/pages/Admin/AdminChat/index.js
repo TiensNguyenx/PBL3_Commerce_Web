@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import styles from "./AdminChat.module.scss";
-import { useState, useEffect, useRef } from 'react';
-
+import { useState, useEffect, useRef, useContext } from 'react';
+import { UserContext } from "~/context/UserContext";
 import { AiOutlinePicture } from "react-icons/ai";
 import { IoMdVideocam } from "react-icons/io";
 import { FaSearch, FaPhoneAlt } from "react-icons/fa";
@@ -14,7 +14,7 @@ import logoShop from "../../../assets/images/logoShop.png";
 import { toast } from 'react-toastify';
 import avatarUser from '../../../assets/images/avatarUser.jpg'
 import { io } from 'socket.io-client';
-
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 function AdminChat() {
@@ -29,10 +29,16 @@ function AdminChat() {
     const messagesEndRef = useRef(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [userName, setUserName] = useState('');
+    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
     useEffect(() => {
         setSocket(io("http://localhost:8080"));
     }, []);
-
+    useEffect(() => {
+        if (!user.isAdmin) {
+            navigate('/')
+        }
+    }, [user])
     useEffect(() => {
         const checkActive = localStorage.getItem('userId')
         socket?.emit('addUser', checkActive);
@@ -103,7 +109,7 @@ function AdminChat() {
         }
     }
     return (
-        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
+        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
             <div className={cx('wrapper')}>
                 <div className={cx('containener')}>
                     <div className={cx('sidebar')}>

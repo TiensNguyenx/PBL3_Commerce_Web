@@ -30,11 +30,12 @@ function CreateProduct() {
     const [countInStock, setCountInStock] = useState('')
     const [toltalRate, setTotalRate] = useState('')
     const [sold, setSold] = useState('')
+    const { user } = useContext(UserContext);
     useEffect(() => {
-        if (!localStorage.getItem('isAdmin')) {
+        if (!user.isAdmin) {
             navigate('/')
         }
-    }, [])
+    }, [user])
     const handleCreateProduct = async () => {
         const res = await createProduct(name, description, productCode, productType, connectionStandard, switchType,
             durability, format, guarantee, newPrice, oldPrice, image, type, countInStock, toltalRate, sold)
@@ -50,7 +51,7 @@ function CreateProduct() {
         isRenderUserContext();
     }
     return (
-        <div className={cx('containner')} style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }} >
+        <div className={cx('containner')} style={!user.isAdmin ? { display: 'none' } : { display: 'block' }} >
             <HeaderAdmin />
             <div className={cx('form-containner')}>
                 <Form >

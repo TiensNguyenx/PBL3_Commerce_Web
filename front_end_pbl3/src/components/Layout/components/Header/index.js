@@ -31,15 +31,12 @@ function Header() {
     function handleClose() {
         setIsShowModalConfirm(false);
     }
-
     getLengthCartContext()
-    const isAdmin = localStorage.getItem('isAdmin')
-
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <div >
-                    <Link to={isAdmin ? '/admin' : '/'}><img className={cx('logo')} src={require('../../../../assets/images/logoShop.png')} alt=''></img></Link>
+                    <Link to={user.isAdmin ? '/admin' : '/'}><img className={cx('logo')} src={require('../../../../assets/images/logoShop.png')} alt=''></img></Link>
                 </div>
                 <div className={cx('input')} >
 

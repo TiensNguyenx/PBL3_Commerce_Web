@@ -7,6 +7,7 @@ const UserContext = React.createContext({ email: '', auth: false });
 const UserProvider = ({ children }) => {
     const [user, setUser] = React.useState({ email: '', auth: false });
     const [lengthCart, setLengthCart] = React.useState(0);
+    const [renderUser, setRenderUser] = React.useState(false);
 
     const loginContext = (token) => {
 
@@ -58,6 +59,9 @@ const UserProvider = ({ children }) => {
                 })
         }
     }
+    const isRenderUserContext = () => {
+        setRenderUser(!renderUser)
+    }
     const decreaseLength = () => {
         setLengthCart(lengthCart - 1)
     }
@@ -87,7 +91,7 @@ const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, loginContext, logout, setUser, handleAddCartContext, lengthCart, getLengthCartContext, decreaseLength, increaseLength, resetLength }}>
+        <UserContext.Provider value={{ user, loginContext, logout, setUser, handleAddCartContext, lengthCart, getLengthCartContext, decreaseLength, increaseLength, resetLength, isRenderUserContext }}>
             {children}
         </UserContext.Provider>
     );

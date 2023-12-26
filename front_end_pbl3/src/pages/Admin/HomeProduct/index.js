@@ -1,6 +1,6 @@
 import HeaderAdmin from "~/components/Layout/components/HeaderAdmin";
 import Form from 'react-bootstrap/Form';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -10,13 +10,20 @@ import Container from 'react-bootstrap/Container';
 import { getAllProductService, getProductByNameService } from "~/Services/ProductServices";
 import { useNavigate } from "react-router-dom";
 import { handleSortService } from '~/Services/ProductServices'
+import ModalWatchRatingAdmin from "~/components/Layout/components/ModalWatchRatingAdmin";
+import { deleteProduct } from '~/Services/AdminServices'
+import ModalEditProduct from "~/components/Layout/components/ModalEditProduct";
+import { UserContext } from "~/context/UserContext";
 
 const cx = classNames.bind(styles);
 function HomeProduct() {
     const navigate = useNavigate();
+    const { isRenderUserContext } = useContext(UserContext);
     const [sortType, setSortType] = useState('');
     const [sortBy, setSortBy] = useState('');
-
+    const [isShowModalRating, setIsShowModalRating] = useState(false);
+    const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+    const [idProduct, setIdProduct] = useState('');
     useEffect(() => {
         if (!localStorage.getItem('isAdmin')) {
             navigate('/')
@@ -25,10 +32,12 @@ function HomeProduct() {
     const [product, setProduct] = useState([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
-        getAllProductService(0, 100).then((res) => {
-            setProduct(res.data.data);
-        })
-    }, [])
+        renderProduct();
+    }, [isRenderUserContext])
+    const renderProduct = async () => {
+        const res = await getAllProductService(0, 100);
+        setProduct(res.data.data);
+    }
     const handleTypeSearch = (e) => {
         setSearch(e.target.value);
     }
@@ -65,6 +74,22 @@ function HomeProduct() {
             const rest = await handleSortService(0, 100, sortBy, sortType);
             setProduct(rest.data.data);
         }
+    }
+    const handleDeleteProduct = async (id) => {
+        await deleteProduct(id);
+        renderProduct();
+    }
+    const handleClose = () => {
+        setIsShowModalRating(false);
+        setIsShowModalEdit(false);
+    }
+    const handleWatchRating = async (id) => {
+        setIsShowModalRating(true);
+        setIdProduct(id);
+    }
+    const handleEditProduct = (id) => {
+        setIsShowModalEdit(true);
+        setIdProduct(id);
     }
     return (
         <div className={cx('containner')} style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
@@ -139,9 +164,9 @@ function HomeProduct() {
                                 <Col className={cx('center-text')}>{item.countInStock}</Col>
                                 <Col className={cx('center-text')}>{item.sold}</Col>
                                 <Col style={{ marginTop: '5px' }}>
-                                    <Row> <Button variant="success" size="lg" style={{ width: '100px', marginBottom: '10px' }}>Sửa</Button>{' '}</Row>
-                                    <Row><Button variant="danger" size="lg" style={{ width: '100px', marginBottom: '10px' }}>Xóa</Button>{' '}</Row>
-                                    <Row> <Button variant="info" size="lg" style={{ width: '100px', marginBottom: '10px' }}>Xem đánh giá </Button>{' '}</Row>
+                                    <Row> <Button variant="success" size="lg" style={{ width: '100px', marginBottom: '10px' }} onClick={() => handleEditProduct(item._id)}>Sửa</Button>{' '}</Row>
+                                    <Row><Button variant="danger" size="lg" style={{ width: '100px', marginBottom: '10px' }} onClick={() => handleDeleteProduct(item._id)}>Xóa</Button>{' '}</Row>
+                                    <Row> <Button variant="info" size="lg" style={{ width: '100px', marginBottom: '10px' }} onClick={() => handleWatchRating(item._id)}>Xem đánh giá </Button>{' '}</Row>
                                 </Col>
 
                             </Row>
@@ -149,6 +174,8 @@ function HomeProduct() {
                     })}
                 </Container>
             </div>
+            <ModalWatchRatingAdmin show={isShowModalRating} handleClose={handleClose} idProduct={idProduct} />
+            <ModalEditProduct show={isShowModalEdit} handleClose={handleClose} idProduct={idProduct} />
         </div>
     );
 }

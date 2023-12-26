@@ -57,30 +57,7 @@ function Register() {
 
                     if (data.status === 'success') {
                         toast.success('Đăng ký thành công')
-                        navigate('/')
-                        setTimeout(() => {
-                            fetch('http://localhost:3002/api/user/sign-in', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ email, password }),
-                            })
-                                .then((res) => {
-                                    if (res.status === 200) {
-
-                                        return res.json()
-                                    }
-                                }
-                                )
-                                .then((data) => {
-                                    if (data.status === "success") {
-                                        localStorage.setItem('token', data.access_token)
-
-                                        loginContext(data.access_token);
-                                    }
-                                })
-                        }, 1000)
+                        navigate('/login')
                     }
                     else {
                         toast.error(data.message)
@@ -91,9 +68,6 @@ function Register() {
         }
 
         event.preventDefault();
-
-
-
     }
 
     function handleOnChangeConfirmPassword(event) {

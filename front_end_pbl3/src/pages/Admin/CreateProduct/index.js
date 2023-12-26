@@ -6,18 +6,49 @@ import Button from 'react-bootstrap/Button';
 import styles from './CreateProduct.module.scss';
 import classNames from 'classnames/bind';
 import { UserContext } from "~/context/UserContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { createProduct } from '~/Services/AdminServices';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 function CreateProduct() {
     const navigate = useNavigate();
-    const { user } = useContext(UserContext);
+    const { isRenderUserContext } = useContext(UserContext);
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [productCode, setProductCode] = useState('')
+    const [productType, setProductType] = useState('')
+    const [connectionStandard, setConnectionStandard] = useState('')
+    const [switchType, setSwitchType] = useState('')
+    const [durability, setDurability] = useState('')
+    const [format, setFormat] = useState('')
+    const [guarantee, setGuarantee] = useState('')
+    const [newPrice, setNewPrice] = useState('')
+    const [oldPrice, setOldPrice] = useState('')
+    const [image, setImage] = useState('')
+    const [type, setType] = useState('')
+    const [countInStock, setCountInStock] = useState('')
+    const [toltalRate, setTotalRate] = useState('')
+    const [sold, setSold] = useState('')
     useEffect(() => {
         if (!localStorage.getItem('isAdmin')) {
             navigate('/')
         }
     }, [])
+    const handleCreateProduct = async () => {
+        const res = await createProduct(name, description, productCode, productType, connectionStandard, switchType,
+            durability, format, guarantee, newPrice, oldPrice, image, type, countInStock, toltalRate, sold)
+        console.log(res)
+        if (res.data.status === 'success') {
+            toast.success('Sửa sản phẩm thành công')
+        }
+        else {
+            toast.error('Sửa sản phẩm thất bại')
+
+        }
+
+        isRenderUserContext();
+    }
     return (
         <div className={cx('containner')} style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }} >
             <HeaderAdmin />
@@ -28,7 +59,7 @@ function CreateProduct() {
                             Name
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Name" size="lg" />
+                            <Form.Control type="text" placeholder="Name" size="lg" value={name} onChange={(e) => setName(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -36,7 +67,7 @@ function CreateProduct() {
                             Description
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Desription" size="lg" />
+                            <Form.Control type="text" placeholder="Desription" size="lg" value={description} onChange={(e) => setDescription(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3">
@@ -44,7 +75,7 @@ function CreateProduct() {
                             Produdct Code
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Produdct Code" size="lg" />
+                            <Form.Control type="text" placeholder="Produdct Code" size="lg" value={productCode} onChange={(e) => setProductCode(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -52,7 +83,7 @@ function CreateProduct() {
                             Product Type
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Product Type" size="lg" />
+                            <Form.Control type="text" placeholder="Product Type" size="lg" value={productType} onChange={(e) => setProductType(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -60,7 +91,7 @@ function CreateProduct() {
                             Connection Standard
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Connection Standard" size="lg" />
+                            <Form.Control type="text" placeholder="Connection Standard" size="lg" value={connectionStandard} onChange={(e) => setConnectionStandard(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -68,7 +99,7 @@ function CreateProduct() {
                             Switch Type
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Switch Type" size="lg" />
+                            <Form.Control type="text" placeholder="Switch Type" size="lg" value={switchType} onChange={(e) => setSwitchType(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -76,7 +107,7 @@ function CreateProduct() {
                             Durability
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Durability" size="lg" />
+                            <Form.Control type="text" placeholder="Durability" size="lg" value={durability} onChange={(e) => setDurability(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -84,7 +115,7 @@ function CreateProduct() {
                             Format
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Format" size="lg" />
+                            <Form.Control type="text" placeholder="Format" size="lg" value={format} onChange={(e) => setFormat(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -92,7 +123,7 @@ function CreateProduct() {
                             Guarantee
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Guarantee" size="lg" />
+                            <Form.Control type="text" placeholder="Guarantee" size="lg" value={guarantee} onChange={(e) => setGuarantee(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -100,7 +131,7 @@ function CreateProduct() {
                             New price
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="New price" size="lg" />
+                            <Form.Control type="text" placeholder="New price" size="lg" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -108,7 +139,7 @@ function CreateProduct() {
                             Old Price
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Old Price" size="lg" />
+                            <Form.Control type="text" placeholder="Old Price" size="lg" value={oldPrice} onChange={(e) => setOldPrice(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -116,7 +147,7 @@ function CreateProduct() {
                             Image
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Image" size="lg" />
+                            <Form.Control type="text" placeholder="Image" size="lg" value={image} onChange={(e) => setImage(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -124,7 +155,7 @@ function CreateProduct() {
                             Type
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder=" Type" size="lg" />
+                            <Form.Control type="text" placeholder=" Type" size="lg" value={type} onChange={(e) => setType(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -132,7 +163,7 @@ function CreateProduct() {
                             Count In Stock
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Count In Stock" size="lg" />
+                            <Form.Control type="text" placeholder="Count In Stock" size="lg" value={countInStock} onChange={(e) => setCountInStock(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -140,7 +171,7 @@ function CreateProduct() {
                             Total rate
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Total rate" size="lg" />
+                            <Form.Control type="text" placeholder="Total rate" size="lg" value={toltalRate} onChange={(e) => setTotalRate(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -148,12 +179,12 @@ function CreateProduct() {
                             Sold
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Sold" size="lg" />
+                            <Form.Control type="text" placeholder="Sold" size="lg" value={sold} onChange={(e) => setSold(e.target.value)} />
                         </Col>
                     </Form.Group>
                 </Form>
                 <div className={cx('btn-containner')}>
-                    <Button variant="success" size="lg">Create</Button>{' '}
+                    <Button variant="success" size="lg" onClick={handleCreateProduct}>Create</Button>{' '}
                 </div>
             </div>
 

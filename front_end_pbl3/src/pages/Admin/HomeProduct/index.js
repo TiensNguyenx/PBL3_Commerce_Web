@@ -18,17 +18,17 @@ import { UserContext } from "~/context/UserContext";
 const cx = classNames.bind(styles);
 function HomeProduct() {
     const navigate = useNavigate();
-    const { isRenderUserContext } = useContext(UserContext);
+    const { isRenderUserContext, user } = useContext(UserContext);
     const [sortType, setSortType] = useState('');
     const [sortBy, setSortBy] = useState('');
     const [isShowModalRating, setIsShowModalRating] = useState(false);
     const [isShowModalEdit, setIsShowModalEdit] = useState(false);
     const [idProduct, setIdProduct] = useState('');
     useEffect(() => {
-        if (!localStorage.getItem('isAdmin')) {
+        if (!user.isAdmin) {
             navigate('/')
         }
-    }, []);
+    }, [user]);
     const [product, setProduct] = useState([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
@@ -92,7 +92,7 @@ function HomeProduct() {
         setIdProduct(id);
     }
     return (
-        <div className={cx('containner')} style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
+        <div className={cx('containner')} style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('form-containner')}>
                 <Form >

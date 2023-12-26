@@ -13,19 +13,19 @@ import { UserContext } from "~/context/UserContext";
 const cx = classNames.bind(styles)
 function HomeUser() {
     const navigate = useNavigate();
-    const [user, setUser] = useState([])
+    const [userRender, setUserRender] = useState([])
     const [show, setShow] = useState(false);
     const [showCreate, setShowCreate] = useState(false);
     const [idUser, setIdUser] = useState('')
-    const { isRenderUserContext } = useContext(UserContext)
+    const { isRenderUserContext, user } = useContext(UserContext)
     useEffect(() => {
-        if (!localStorage.getItem('isAdmin')) {
+        if (user.isAdmin === false) {
             navigate('/')
         }
-    }, [])
+    }, [user])
     const renderUser = async () => {
         const res = await getAllUser()
-        setUser(res.data.data)
+        setUserRender(res.data.data)
     }
     useEffect(() => {
         renderUser()
@@ -64,7 +64,7 @@ function HomeUser() {
         return formattedDate;
     }
     return (
-        <div style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
+        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>
@@ -77,7 +77,7 @@ function HomeUser() {
                         <Col className={cx('center')}>Action</Col>
 
                     </Row>
-                    {user.map((item, index) => {
+                    {userRender.map((item, index) => {
                         return (
                             <Row key={index} style={{ border: '1px solid #ccc' }}>
                                 <Col className={cx('center')} style={{ fontSize: '1.2rem' }}>{item._id}</Col>

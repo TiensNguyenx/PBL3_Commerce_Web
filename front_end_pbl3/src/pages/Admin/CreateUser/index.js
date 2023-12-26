@@ -21,11 +21,11 @@ function CreateUser() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     useEffect(() => {
-        if (!localStorage.getItem('isAdmin')) {
+        if (!user.isAdmin) {
             navigate('/')
         }
 
-    }, [user.isAdmin])
+    }, [user])
     const handleCreateUser = async () => {
         const res = await createUser(name, phone, email, password)
         if (res.data.status === 'success') {
@@ -36,7 +36,7 @@ function CreateUser() {
         }
     }
     return (
-        <div className={cx('containner')} style={!localStorage.getItem('isAdmin') ? { display: 'none' } : { display: 'block' }}>
+        <div className={cx('containner')} style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('form-containner')}>
                 <Form >

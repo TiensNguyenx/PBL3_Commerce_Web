@@ -35,7 +35,7 @@ const getDetailsCoupon = async (req, res) => {
 
 const updateCoupon = async (req, res) => {
     try {
-        const couponId = req.body.couponId;
+        const couponId = req.params.id;
         const data = req.body;
         const response = await CRUDCouponService.updateCoupon(couponId, data)
         return res.status(200).json(response)
@@ -48,7 +48,7 @@ const updateCoupon = async (req, res) => {
 
 const deleteCoupon = async (req, res) => {
     try {
-        const couponId = req.body.couponId;
+        const couponId = req.params.id;
         const response = await CRUDCouponService.deleteCoupon(couponId)
         return res.status(200).json(response)
     } catch (e) {

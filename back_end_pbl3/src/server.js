@@ -41,7 +41,6 @@ let users = [];
 let lastAdminDisconnectTime = null;
 
 io.on('connection', socket => {
-    socket.broadcast.emit("hello","Chào mừng bạn đến với TB Technology");
     socket.on('addUser', async  userId => { 
         console.log('have user connect:>> ', users);    
         const checkuser = await User.findById(userId);
@@ -53,12 +52,13 @@ io.on('connection', socket => {
             const user = { userId, nameUser, emailUser, socketId: socket.id };
             users.push(user);
             io.emit('getUsers', users);
+            io.to(socket.id).emit('chatStarted', 'Chào mừng bạn đến với TB Technology');
             console.log('users :>> ', users);    
         }
     });
-
+    io.emit('getUsers', users);
     socket.on('logout', async userId => {
-        const user = await User.findById(userId);
+        const user = await User.findById(userId); 
         console.log('UserLogout :>> ', user.name); 
         //const msg = 'User logout successfully';  
         //io.to(socket.id).emit('logoutUser', msg);

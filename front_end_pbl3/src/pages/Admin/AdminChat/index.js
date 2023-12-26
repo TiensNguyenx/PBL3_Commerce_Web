@@ -40,8 +40,8 @@ function AdminChat() {
         }
     }, [user])
     useEffect(() => {
-        const checkActive = localStorage.getItem('userId')
-        socket?.emit('addUser', checkActive);
+        // const checkActive = localStorage.getItem('userId')
+        // socket?.emit('addUser', checkActive);
         socket?.on('getUsers', (users) => {
             users = users.filter(user => user.nameUser !== 'admin');
             setActiveUsers(users);
@@ -49,7 +49,6 @@ function AdminChat() {
         });
         socket?.on('getMessageToAdmin', (user) => {
             fetchMessages(user)
-            toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
         })
     }, [socket])
 

@@ -13,14 +13,13 @@ import Footer from "~/components/Layout/components/Footer";
 import logoShop from "../../assets/images/logoShop.png";
 import { toast } from 'react-toastify';
 import avatarUser from '../../assets/images/avatarUser.jpg'
-import { io } from 'socket.io-client';
+import socket from "../socket";
 
 
 const cx = classNames.bind(styles);
 
 function Chat() {
     const [adminStatus, setAdminStatus] = useState({ isAdminOnline: false, lastDisconnect: null });
-    const [socket, setSocket] = useState(null)
     const [message, setMessage] = useState('');
     const [users, setUsers] = useState([])
     const [activeUsers, setActiveUsers] = useState([]);
@@ -30,11 +29,13 @@ function Chat() {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        setSocket(io('http://localhost:8080'))
         fetchMessages(userId)
     }, [])
 
     useEffect(() => {
+        socket?.on('chatStarted', (msg) => {
+            toast.success(msg);
+        });
         socket?.on('getUsers', (updatedUsers) => {
             setUsers(updatedUsers);
             socket?.emit('checkAdminStatus');
@@ -45,20 +46,19 @@ function Chat() {
                 });
             });
         });
-        socket?.on('hello', (msg) => {
-            console.log('msg :>> ', msg);
-        });
-        const checkActive = localStorage.getItem('userId')
-        socket?.emit('addUser', checkActive);
+
+        //const checkActive = localStorage.getItem('userId')
+        //socket?.emit('addUser', checkActive);
         socket?.on('getMessage', (user) => {
             console.log('user :>> ', user);
             fetchMessages(user)
-            toast.success(`Shop đã gửi tin nhắn cho bạn`);
+            // toast.success(`Shop đã gửi tin nhắn cho bạn`);
         })
 
         return () => {
             socket?.off('adminStatus');
             socket?.off('getUsers');
+            socket?.off('getMessage');
         };
     }, [socket])
     const getAdminOfflineDuration = () => {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Exception } from "sass";
 
 export const getAllUser = async () => {
     return axios.get('http://localhost:3002/admin/user')
@@ -94,4 +95,21 @@ export const createProduct = async (name, description, product_code, product_typ
         total_rate,
         sold
     })
+}
+export const getDetailCoupon = async (id) => {
+    return axios.get(`http://localhost:3002/admin/coupon/detail-coupon/${id}`)
+}
+export const editCoupon = async (id, name, methodDisCount, description, dateStart, dateEnd, value, image) => {
+    return axios.post(`http://localhost:3002/admin/coupon/update-coupon/${id}`, {
+        name,
+        methodDisCount,
+        description,
+        dateStart,
+        dateEnd,
+        value,
+        image
+    })
+}
+export const deleteCoupon = async (id) => {
+    return axios.post(`http://localhost:3002/admin/coupon/delete-coupon/${id}`)
 }

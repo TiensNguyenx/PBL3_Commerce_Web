@@ -25,10 +25,14 @@ function HomeProduct() {
     const [isShowModalEdit, setIsShowModalEdit] = useState(false);
     const [idProduct, setIdProduct] = useState('');
     useEffect(() => {
-        if (!user.isAdmin) {
+        if (user.isAdmin === false) {
             navigate('/')
         }
+        else {
+            navigate('/admin/product')
+        }
     }, [user]);
+    console.log(user.isAdmin)
     const [product, setProduct] = useState([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
@@ -92,7 +96,7 @@ function HomeProduct() {
         setIdProduct(id);
     }
     return (
-        <div className={cx('containner')} style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
+        <div className={cx('containner')} style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('form-containner')}>
                 <Form >

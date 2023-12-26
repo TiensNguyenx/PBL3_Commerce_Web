@@ -8,12 +8,15 @@ function HomeOrderManagement() {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     useEffect(() => {
-        if (!user.isAdmin) {
+        if (user.isAdmin === false ) {
             navigate('/')
+        }
+        else {
+            navigate('/admin/ordermanagement')
         }
     }, [user])
     return (
-        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
+        <div style={user.isAdmin === false  ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
         </div>
     );

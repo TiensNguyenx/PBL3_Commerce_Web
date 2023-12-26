@@ -17,13 +17,13 @@ function ModalEditProduct({ show, handleClose, idProduct }) {
     const [durability, setDurability] = useState('')
     const [format, setFormat] = useState('')
     const [guarantee, setGuarantee] = useState('')
-    const [newPrice, setNewPrice] = useState('')
-    const [oldPrice, setOldPrice] = useState('')
+    const [newPrice, setNewPrice] = useState(0)
+    const [oldPrice, setOldPrice] = useState(0)
     const [image, setImage] = useState('')
     const [type, setType] = useState('')
-    const [countInStock, setCountInStock] = useState('')
-    const [toltalRate, setTotalRate] = useState('')
-    const [sold, setSold] = useState('')
+    const [countInStock, setCountInStock] = useState(0)
+    const [toltalRate, setTotalRate] = useState(0)
+    const [sold, setSold] = useState(0)
     const handleEditProduct = async () => {
         const res = await editProduct(idProduct, name, description, productCode, productType, connectionStandard, switchType,
             durability, format, guarantee, newPrice, oldPrice, image, type, countInStock, toltalRate, sold)
@@ -37,16 +37,19 @@ function ModalEditProduct({ show, handleClose, idProduct }) {
         }
         handleClose();
         isRenderUserContext();
+        console.log(toltalRate)
     }
+
     const renderDetailProduct = async () => {
         const res = await getDetailProduct(idProduct);
+        console.log(res.data.total_rate)
         setCountInStock(res.data.countInStock || '')
         setGuarantee(res.data.guarantee || '')
         setImage(res.data.image || '')
         setNewPrice(res.data.new_price || '')
         setOldPrice(res.data.old_price || '')
         setSold(res.data.sold || '')
-        setTotalRate(res.data.total_rate || '')
+        setTotalRate(res.data.total_rate || 0)
         setType(res.data.type || '')
         setConnectionStandard(res.data.description.connection || '')
         setDurability(res.data.description.durability || '')
@@ -189,7 +192,7 @@ function ModalEditProduct({ show, handleClose, idProduct }) {
                                 Total rate
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control type="text" placeholder="Total rate" size="lg" value={toltalRate} onChange={(e) => setTotalRate(e.target.value)} />
+                                <Form.Control type="number" placeholder="Total rate" size="lg" value={toltalRate} onChange={(e) => setTotalRate(e.target.value)} />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" >

@@ -32,7 +32,7 @@ function CreateProduct() {
     const [sold, setSold] = useState('')
     const { user } = useContext(UserContext);
     useEffect(() => {
-        if (!user.isAdmin) {
+        if (user.isAdmin === false) {
             navigate('/')
         }
     }, [user])
@@ -51,7 +51,7 @@ function CreateProduct() {
         isRenderUserContext();
     }
     return (
-        <div className={cx('containner')} style={!user.isAdmin ? { display: 'none' } : { display: 'block' }} >
+        <div className={cx('containner')} style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }} >
             <HeaderAdmin />
             <div className={cx('form-containner')}>
                 <Form >

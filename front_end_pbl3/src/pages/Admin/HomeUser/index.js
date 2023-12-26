@@ -64,7 +64,7 @@ function HomeUser() {
         return formattedDate;
     }
     return (
-        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
+        <div style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>

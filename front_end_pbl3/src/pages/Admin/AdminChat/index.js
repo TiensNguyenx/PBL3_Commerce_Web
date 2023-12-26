@@ -35,7 +35,7 @@ function AdminChat() {
         setSocket(io("http://localhost:8080"));
     }, []);
     useEffect(() => {
-        if (!user.isAdmin) {
+        if (user.isAdmin === false) {
             navigate('/')
         }
     }, [user])
@@ -108,7 +108,7 @@ function AdminChat() {
         }
     }
     return (
-        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
+        <div style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }}>
             <div className={cx('wrapper')}>
                 <div className={cx('containener')}>
                     <div className={cx('sidebar')}>

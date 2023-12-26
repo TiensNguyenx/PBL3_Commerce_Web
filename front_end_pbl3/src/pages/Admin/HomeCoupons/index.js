@@ -9,15 +9,19 @@ import classNames from 'classnames/bind';
 import { Container } from 'react-bootstrap';
 import { useEffect } from "react";
 import { getAllCouponService } from "~/Services/CouponServices";
+import { deleteCoupon } from '~/Services/AdminServices';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '~/context/UserContext';
 import { useContext } from 'react';
+import ModalEditCouponAdmin from '~/components/Layout/components/ModalEditCouponAdmin';
 const cx = classNames.bind(styles);
 function HomeCoupons() {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
+    const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+    const [idCoupon, setIdCoupon] = useState('');
     useEffect(() => {
-        if (!user.isAdmin) {
+        if (user.isAdmin === false) {
             navigate('/')
         }
     }, [user])
@@ -29,8 +33,20 @@ function HomeCoupons() {
     useEffect(() => {
         renderCoupons();
     }, []);
+    const handleClose = () => {
+        setIsShowModalEdit(false);
+    }
+    const handleEditCoupon = (idCoupon) => {
+        setIdCoupon(idCoupon);
+        setIsShowModalEdit(true);
+    }
+    const handleDeleteCoupon = async (idCoupon) => {
+        await deleteCoupon(idCoupon);
+        renderCoupons();
+
+    }
     return (
-        <div style={!user.isAdmin ? { display: 'none' } : { display: 'block' }}>
+        <div style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>
@@ -58,8 +74,8 @@ function HomeCoupons() {
                                 <Col className={cx('center-text')}>{item.dateEnd}</Col>
                                 <Col className={cx('center-text')}>{item.value}</Col>
                                 <Col style={{ marginTop: '5px' }} >
-                                    <Row className={cx('center')}> <Button variant="success" size="lg" style={{ width: '100px', marginBottom: '10px' }}>Sửa</Button>{' '}</Row>
-                                    <Row className={cx('center')}><Button variant="danger" size="lg" style={{ width: '100px', marginBottom: '10px' }}>Xóa</Button>{' '}</Row>
+                                    <Row className={cx('center')}> <Button variant="success" size="lg" style={{ width: '100px', marginBottom: '10px' }} onClick={() => handleEditCoupon(item._id)}>Sửa</Button>{' '}</Row>
+                                    <Row className={cx('center')}><Button variant="danger" size="lg" style={{ width: '100px', marginBottom: '10px' }} onClick={() => handleDeleteCoupon(item._id)}>Xóa</Button>{' '}</Row>
 
                                 </Col>
 
@@ -68,6 +84,7 @@ function HomeCoupons() {
                     })}
                 </Container>
             </div>
+            <ModalEditCouponAdmin handleClose={handleClose} show={isShowModalEdit} idCoupon={idCoupon} />
         </div>
     );
 }

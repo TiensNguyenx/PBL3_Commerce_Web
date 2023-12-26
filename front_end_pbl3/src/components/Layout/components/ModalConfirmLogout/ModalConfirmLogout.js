@@ -7,14 +7,11 @@ import { useContext } from 'react';
 import { UserContext } from '~/context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import {io} from 'socket.io-client';
+import socket from '~/pages/socket';
 const cx = classNames.bind()
 function ModalConfirmLogout({ show, handleClose }) {
-    const [socket, setSocket] = useState(null)
     const { logout } = useContext(UserContext);
-    useEffect(() => {
-		setSocket(io('http://localhost:8080'))
-	}, [])
+
     const navigate = useNavigate();
     function handleLogout() {
         const id = localStorage.getItem('userId');

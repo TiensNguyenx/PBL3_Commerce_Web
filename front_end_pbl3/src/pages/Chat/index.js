@@ -33,9 +33,7 @@ function Chat() {
     }, [])
 
     useEffect(() => {
-        socket?.on('chatStarted', (msg) => {
-            toast.success(msg);
-        });
+
         socket?.on('getUsers', (updatedUsers) => {
             setUsers(updatedUsers);
             socket?.emit('checkAdminStatus');
@@ -58,7 +56,6 @@ function Chat() {
         return () => {
             socket?.off('adminStatus');
             socket?.off('getUsers');
-            socket?.off('getMessage');
         };
     }, [socket])
     const getAdminOfflineDuration = () => {

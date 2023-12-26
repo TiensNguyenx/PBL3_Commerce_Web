@@ -150,7 +150,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const response = await CRUDProductService.getDetailsProduct(productId);
+    const response = await CRUDProductService.deleteProduct(productId);
     return res.status(200).json(response)
   } catch (e) {
     return res.status(404).json({

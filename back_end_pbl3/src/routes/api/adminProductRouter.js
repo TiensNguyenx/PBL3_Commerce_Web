@@ -7,7 +7,7 @@ router.get('/', getHomepage);
 
 router.post('/create-product', createProduct);
 
-router.post('/update-product/:id', getDetailProduct);
+router.post('/detail-product/:id', getDetailProduct);
 
 router.post('/update-product/:id', updateProduct);
 

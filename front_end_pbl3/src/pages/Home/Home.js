@@ -28,16 +28,13 @@ function Home() {
         });
         const checkActive = localStorage.getItem('userId')
         const checkAdmin = localStorage.getItem('isAdmin')
-        console.log('checkActive :>> ', checkActive);
         if (checkActive) {
             socket?.emit('addUser', checkActive);
             socket?.on('getMessage', (user) => {
                 toast.success(`Shop đã gửi tin nhắn cho bạn`);
             })
             socket?.on('getMessageToAdmin', (user) => {
-                console.log('checkAdmin :>> ', checkAdmin);
                 if (checkAdmin  === "true") {
-                    console.log('user :>> ', user);
                     toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
                 }
             })

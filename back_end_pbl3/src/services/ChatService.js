@@ -46,7 +46,7 @@ const createMessage = (id, message) => {
                     }
                 }
             })
-            const createMessage = await Conversation.findOne({user: userId})
+            const createMessage = await Conversation.findOne({ user: userId })
             if (createMessage) {
                 resolve({
                     message: createMessage.messages
@@ -63,7 +63,7 @@ const adminCreateMessage = (id, message) => {
         try {
             const userId = id;
             const content = message.content;
-            const admin = await User.find({isAdmin: true})
+            const admin = await User.find({ isAdmin: true })
             await Conversation.findOneAndUpdate({ user: userId }, {
                 $push: {
                     messages: {
@@ -73,7 +73,7 @@ const adminCreateMessage = (id, message) => {
                     }
                 }
             })
-            const createMessage = await Conversation.findOne({user: userId})
+            const createMessage = await Conversation.findOne({ user: userId })
             if (createMessage) {
                 resolve({
                     message: createMessage.messages
@@ -85,8 +85,23 @@ const adminCreateMessage = (id, message) => {
     })
 }
 
+
+const getAllMessage = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const getAllMessage = await Conversation.find();
+            if (getAllMessage) {
+                resolve(getAllMessage)
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
     createConversation,
     createMessage,
-    adminCreateMessage
+    adminCreateMessage,
+    getAllMessage
 }

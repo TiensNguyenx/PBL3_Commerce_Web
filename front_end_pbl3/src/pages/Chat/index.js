@@ -33,11 +33,15 @@ function Chat() {
     }, [])
 
     useEffect(() => {
-        socket?.on('chatStarted', (msg) => {
-            toast.success(msg);
+
+        socket?.emit('checkAdminStatus');
+        socket?.on('adminStatus', status => {
+            setAdminStatus({
+                isAdminOnline: status.isAdminOnline,
+                lastDisconnect: status.lastDisconnect ? new Date(status.lastDisconnect) : null
+            });
         });
-        socket?.on('getUsers', (updatedUsers) => {
-            setUsers(updatedUsers);
+        socket?.on('getUsers', (users) => {
             socket?.emit('checkAdminStatus');
             socket?.on('adminStatus', status => {
                 setAdminStatus({
@@ -50,7 +54,6 @@ function Chat() {
         //const checkActive = localStorage.getItem('userId')
         //socket?.emit('addUser', checkActive);
         socket?.on('getMessage', (user) => {
-            console.log('user :>> ', user);
             fetchMessages(user)
             // toast.success(`Shop đã gửi tin nhắn cho bạn`);
         })
@@ -58,7 +61,6 @@ function Chat() {
         return () => {
             socket?.off('adminStatus');
             socket?.off('getUsers');
-            socket?.off('getMessage');
         };
     }, [socket])
     const getAdminOfflineDuration = () => {

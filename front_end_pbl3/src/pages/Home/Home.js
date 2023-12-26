@@ -9,8 +9,8 @@ import { getProductByNameService } from "~/Services/ProductServices";
 import { toast } from 'react-toastify';
 
 import socket from "../socket";
-
 import ProductSlider from "~/components/Layout/components/ProductSlider";
+
 const cx = classNames.bind(styles)
 
 function Home() {
@@ -23,6 +23,9 @@ function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        socket?.on('chatStarted', (msg) => {
+            toast.success(msg);
+        });
         const checkActive = localStorage.getItem('userId')
         const checkAdmin = localStorage.getItem('isAdmin')
         if (checkActive) {
@@ -31,9 +34,7 @@ function Home() {
                 toast.success(`Shop đã gửi tin nhắn cho bạn`);
             })
             socket?.on('getMessageToAdmin', (user) => {
-                console.log('checkAdmin :>> ', checkAdmin);
                 if (checkAdmin  === "true") {
-                    console.log('user :>> ', user);
                     toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
                 }
             })

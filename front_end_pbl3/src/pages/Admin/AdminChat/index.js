@@ -32,7 +32,7 @@ function AdminChat() {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     useEffect(() => {
-        setSocket(io("http://localhost:8080"));
+        setSocket(io("http://localhost:3002"));
     }, []);
     useEffect(() => {
         if (user.isAdmin === false) {
@@ -43,6 +43,7 @@ function AdminChat() {
         // const checkActive = localStorage.getItem('userId')
         // socket?.emit('addUser', checkActive);
         socket?.on('getUsers', (users) => {
+            console.log('users :>> ', users);
             users = users.filter(user => user.nameUser !== 'admin');
             setActiveUsers(users);
             setUsers(users);

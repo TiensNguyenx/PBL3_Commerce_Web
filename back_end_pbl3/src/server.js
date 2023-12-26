@@ -4,15 +4,21 @@ const dotenv = require('dotenv');
 const {default : mongoose } = require('mongoose');
 const routes = require('./routes/api/api');
 const cors = require('cors');
-const io = require("socket.io")(8080, {
-	cors: {
-	  origin: "http://localhost:3000",
-	},
-});
-const bodyParser = require('body-parser');
 const app = express();
+
+const http = require('http');
+const socketIO = require('socket.io');
+const server = http.createServer(app);
+const io = socketIO(server, {
+    cors: {
+      origin: "http://localhost:3000", // Adjust the origin to match your React client's URL
+      methods: ["GET", "POST"],
+    },
+  });
+
+const bodyParser = require('body-parser');
 dotenv.config();
-const port = process.env.PORT || 3001;
+const PORT = 3002;
 
 app.use(cors())
 app.use(express.json())
@@ -24,7 +30,7 @@ app.use(express.static('public'))
 
 routes(app);
 
-const configViewEngine = require('./config/viewEngine');
+const configViewEngine = require('./config/viewEngine'); 
 configViewEngine(app); 
 
 mongoose.connect(process.env.MONGODB_URI) 
@@ -40,7 +46,7 @@ mongoose.connect(process.env.MONGODB_URI)
 let users = [];
 let lastAdminDisconnectTime = null;
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
     socket.on('addUser', async  userId => { 
         console.log('have user connect:>> ', users);    
         const checkuser = await User.findById(userId);
@@ -96,6 +102,6 @@ io.on('connection', socket => {
     //io.emit('getUsers', socket.userId);
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}.`);
-});      
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });

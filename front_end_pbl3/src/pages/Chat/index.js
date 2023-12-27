@@ -140,7 +140,8 @@ function Chat() {
                                     <div className={cx('user-name')}>TB Technology</div>
                                     <div className={cx('user-status')}> {adminStatus.isAdminOnline
                                         ? 'Online'
-                                        : `Offline (đã ${getAdminOfflineDuration()})`}</div>
+                                        : `Offline ${getAdminOfflineDuration()}`}
+                                    </div>
                                 </div>
                             </div>
                             <div className={cx('user-option')}>

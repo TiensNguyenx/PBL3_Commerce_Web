@@ -24,15 +24,19 @@ function AdminChat() {
     const [activeUsers, setActiveUsers] = useState([]);
     const [messages, setMessages] = useState({})
     const userId = localStorage.getItem('userId')
-    const [receive, setIdReceive] = useState([])
+    const [idreceive, setIdReceive] = useState([])
+    const [idsocket, setIdSocket] = useState([null])
     const chatWrapperRef = useRef(null);
     const messagesEndRef = useRef(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [userName, setUserName] = useState('');
     const { user } = useContext(UserContext);
+    const [allPeople, setAllPeople] = useState([])
+    const [userStatus, setUserStatus] = useState({ isUserOnline: false, lastDisconnect: null });
     const navigate = useNavigate();
     useEffect(() => {
         setSocket(io("http://localhost:3002"));
+        getAllPeople();
     }, []);
     useEffect(() => {
         if (user.isAdmin === false) {
@@ -42,15 +46,35 @@ function AdminChat() {
     useEffect(() => {
         // const checkActive = localStorage.getItem('userId')
         // socket?.emit('addUser', checkActive);
+        socket?.on('userStatus', status => {
+            setUserStatus({
+                isUserOnline: status.isUserOnline,
+                lastDisconnect: status.lastDisconnect ? new Date(status.lastDisconnect) : null
+            });
+        });
         socket?.on('getUsers', (users) => {
-            console.log('users :>> ', users);
             users = users.filter(user => user.nameUser !== 'admin');
+            const idSelect = localStorage.getItem('idSelect')
+            socket?.emit('checkUserStatus', (idSelect));
+            socket?.on('userStatus', status => {
+                setUserStatus({
+                    isUserOnline: status.isUserOnline,
+                    lastDisconnect: status.lastDisconnect ? new Date(status.lastDisconnect) : null
+                });
+            });
             setActiveUsers(users);
-            setUsers(users);
         });
         socket?.on('getMessageToAdmin', (user) => {
-            fetchMessages(user)
+            getAllPeople();
+            const tempUser = {
+                user: user.userId,
+                name: user.nameUser,
+                socketId: user.socketId,
+                email: user.emailUser
+            }
+            fetchMessages(tempUser)
         })
+
     }, [socket])
 
     useEffect(() => {
@@ -58,39 +82,74 @@ function AdminChat() {
         chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
     }, [messages]);
 
-    const fetchMessages = async (user) => {
-        setSelectedUser(user);
-        setUserName(user?.nameUser);
-        setIdReceive({
-            idReceive: user.userId,
-            idSocket: user.socketId
-        })
-        const res = await fetch(`http://localhost:3002/api/conversation/${user.userId}`, {
+    const getAllPeople = async () => {
+        const res = await fetch(`http://localhost:3002/admin/conversation`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
         const resData = await res.json()
-        setMessages({ resData, userId: user.userId })
+        setAllPeople(resData)
+    }
+
+
+    const fetchMessages = async (user) => {
+        socket?.on('getUsers', (users) => {
+            users = users.filter(user => user.nameUser !== 'admin');
+            setActiveUsers(users);
+        });
+        const selectUser = activeUsers.find(u => u.userId === user.user);
+        setSelectedUser(user);
+        setUserName(user?.name);
+        setIdReceive(user.user)
+        localStorage.setItem('idSelect', user.user)
+        socket?.emit('checkUserStatus', (user.user));
+        if (selectUser) {
+            setIdSocket(selectUser.socketId)
+        }else{
+            setIdSocket(null)
+        }
+        const res = await fetch(`http://localhost:3002/api/conversation/${user.user}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const resData = await res.json()
+        setMessages({ resData, userId: user.user })
     }
 
     const handleTypeMessage = (e) => {
         setMessage(e.target.value);
     }
+
     const sendMessage = async () => {
-        const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${receive.idReceive}`, {
+        const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${idreceive}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ content: message }),
         });
-        socket?.emit('sendMessage', receive.idSocket);
+        if (idsocket) {
+            socket?.emit('sendMessage', idsocket);
+        }
         const resData = await res.json()
         setMessages({ resData, userId: userId })
         setMessage('');
     }
+
+    const getUserOfflineDuration = () => {
+        if (!userStatus.lastDisconnect) return '';
+
+        const now = new Date();
+        const diff = now.getTime() - userStatus.lastDisconnect.getTime();
+        const minutes = Math.floor(diff / 60000);
+        const seconds = ((diff % 60000) / 1000).toFixed(0);
+        return `${minutes} phút, ${seconds} giây`;
+    };
+
     function formatTimeAgo(timeSent) {
         var now = new Date();
         timeSent = new Date(timeSent);
@@ -122,12 +181,12 @@ function AdminChat() {
                         <div>
                             <div className='text-primary text-lg'>People</div>
                             <div>
-                                {activeUsers.length > 0 ? (
-                                    activeUsers.map((user) => (
+                                {allPeople.length > 0 ? (
+                                    allPeople.map((user) => (
                                         <div
-                                            key={user.userId}
+                                            key={user.user}
                                             className={cx('user-chat', {
-                                                'user-selected': selectedUser?.userId === user.userId,
+                                                'user-selected': selectedUser?.user === user.user,
                                             })}
                                             onClick={() => fetchMessages(user)}
                                         >
@@ -138,8 +197,8 @@ function AdminChat() {
                                                     alt=""
                                                 />
                                                 <div className={cx('user-info')}>
-                                                    <div className={cx('user-name')}>{user?.nameUser}</div>
-                                                    <div className={cx('user-mess')}>{user?.emailUser}</div>
+                                                    <div className={cx('user-name')}>{user?.name}</div>
+                                                    <div className={cx('user-mess')}>{user?.email}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,7 +215,10 @@ function AdminChat() {
                                 {userName ? (<img className={cx('user-img')} src={avatarUser} alt=""></img>) : ''}
                                 <div className={cx('user-info')}>
                                     <div className={cx('user-name')}> {userName}</div>
-                                    <div className={cx('user-status')}>{userName ? 'Active' : ''}</div>
+                                    <div className={cx('user-status')}> {userStatus.isUserOnline
+                                        ? 'Online'
+                                        : `Offline ${getUserOfflineDuration()}`}
+                                    </div>
                                 </div>
                             </div>
                             <div className={cx('user-option')}>

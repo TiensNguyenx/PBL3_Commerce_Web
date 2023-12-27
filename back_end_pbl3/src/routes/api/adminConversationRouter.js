@@ -6,6 +6,6 @@ router.get('/:id', createConversation);
 
 router.post('/send-message/:id', adminCreateMessage);
 
-router.get('/get-all-message', getAllMessage);
+router.get('/', getAllMessage);
 
 module.exports = router;

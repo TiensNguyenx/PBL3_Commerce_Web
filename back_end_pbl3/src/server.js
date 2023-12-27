@@ -5,16 +5,13 @@ const {default : mongoose } = require('mongoose');
 const routes = require('./routes/api/api');
 const cors = require('cors');
 const app = express();
+const configViewEngine = require('./config/viewEngine'); 
+configViewEngine(app); 
 
 const http = require('http');
-const socketIO = require('socket.io');
+const socketConfig = require('./config/socket');
 const server = http.createServer(app);
-const io = socketIO(server, {
-    cors: {
-      origin: "http://localhost:3000", // Adjust the origin to match your React client's URL
-      methods: ["GET", "POST"],
-    },
-  });
+const io = socketConfig.init(server);
 
 const bodyParser = require('body-parser');
 dotenv.config();
@@ -30,8 +27,7 @@ app.use(express.static('public'))
 
 routes(app);
 
-const configViewEngine = require('./config/viewEngine'); 
-configViewEngine(app); 
+
 
 mongoose.connect(process.env.MONGODB_URI) 
 .then(() => {  

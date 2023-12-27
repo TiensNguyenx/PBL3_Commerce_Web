@@ -38,6 +38,11 @@ function Home() {
                     toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
                 }
             })
+            socket?.on('userPayment', (msg) => {
+                if (checkAdmin  === "true") {
+                toast.success(msg);
+                }
+            });
         }
 
     }, [socket])

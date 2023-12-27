@@ -6,6 +6,7 @@ const Product = require("../models/ProductModel")
 const dotenv = require('dotenv');
 dotenv.config();
 const EmailService = require("../services/EmailService")
+const socketConfig = require('../config/socket');
 
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
@@ -97,6 +98,9 @@ const createPayment = (id,newPayment) => {
             })
             await EmailService.sendEmailCreateOrder(order, paymentMethod, delivery, isPaid, createPayment)
             if(createPayment){
+                const io = socketConfig.getIO();
+                const msg = `${order.name} đã muốn thanh toán đơn hàng `;
+                io.emit('userPayment', (msg));
                 resolve({
                     status: 'success',
                     message: 'Payment created successfully',

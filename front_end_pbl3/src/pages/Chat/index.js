@@ -55,12 +55,13 @@ function Chat() {
         //socket?.emit('addUser', checkActive);
         socket?.on('getMessage', (user) => {
             fetchMessages(user)
-            // toast.success(`Shop đã gửi tin nhắn cho bạn`);
+            toast.success(`Shop đã gửi tin nhắn cho bạn`);
         })
 
         return () => {
             socket?.off('adminStatus');
             socket?.off('getUsers');
+            socket?.off('getMessage');
         };
     }, [socket])
     const getAdminOfflineDuration = () => {

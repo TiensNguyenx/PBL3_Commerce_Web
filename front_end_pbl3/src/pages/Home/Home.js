@@ -19,6 +19,7 @@ function Home() {
     const [corsairProduct, setCorsairProduct] = useState([])
     const [duckyProduct, setDuckyProduct] = useState([])
     const [steelseriesProduct, setSteelseriesProduct] = useState([])
+    const [messageShown, setMessageShown] = useState(false);
 
     const navigate = useNavigate()
 
@@ -30,22 +31,27 @@ function Home() {
         const checkAdmin = localStorage.getItem('isAdmin')
         if (checkActive) {
             socket?.emit('addUser', checkActive);
-            socket?.on('getMessage', (user) => {
-                toast.success(`Shop đã gửi tin nhắn cho bạn`);
-            })
+            if (!messageShown) {
+                socket?.on('getMessage', (user) => {
+                    toast.success(`Shop đã gửi tin nhắn cho bạn`);
+                })
+            }
             socket?.on('getMessageToAdmin', (user) => {
-                if (checkAdmin  === "true") {
+                if (checkAdmin === "true") {
                     toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
                 }
             })
             socket?.on('userPayment', (msg) => {
-                if (checkAdmin  === "true") {
-                toast.success(msg);
+                if (checkAdmin === "true") {
+                    toast.success(msg);
                 }
             });
         }
-
-    }, [socket])
+        return () => {
+            socket?.off('chatStarted');
+            socket?.off('getMessage');
+        };
+    }, [messageShown, socket]);
 
     useEffect(() => {
         renderProductLogitech()

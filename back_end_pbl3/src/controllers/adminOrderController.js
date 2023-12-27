@@ -88,7 +88,8 @@ const sortOrder = async (req, res) => {
         console.log(req.query)
         const sortName = req.query.sortName;
         const sortType = req.query.sortType;
-        const response = await CRUDOrderService.sortOrder(sortName, sortType);
+        const nameSearch = req.query.nameSearch;
+        const response = await CRUDOrderService.sortOrder(sortName, sortType, nameSearch);
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({

@@ -42,12 +42,12 @@ const getAllOrder = () => {
 
 const getDetailsOrder = (id) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             const order = await Order.findOne({
                 _id: id
             })
 
-            if(order == null){
+            if (order == null) {
                 resolve({
                     status: 'error',
                     message: 'The order is not exist'
@@ -55,20 +55,20 @@ const getDetailsOrder = (id) => {
             }
 
             resolve(order)
-        }catch(error){
-            reject(error) 
+        } catch (error) {
+            reject(error)
         }
     })
 }
 
 const getDetailsOrderItems = (id) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             const order = await Order.findOne({
                 _id: id
             })
 
-            if(order == null){
+            if (order == null) {
                 resolve({
                     status: 'error',
                     message: 'The order is not exist'
@@ -76,41 +76,50 @@ const getDetailsOrderItems = (id) => {
             }
 
             resolve(order.items)
-        }catch(error){
-            reject(error) 
+        } catch (error) {
+            reject(error)
         }
     })
 }
 
 const getDetailsOrderAddress = (id) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             const order = await Order.findOne({
                 _id: id
             })
 
-            if(order == null){
+            if (order == null) {
                 resolve({
                     status: 'error',
                     message: 'The order is not exist'
                 })
             }
-            if(order.shopAddress){
+            if (order.shopAddress) {
                 resolve(order.shopAddress)
             }
-            if(order.shippingAddress){
+            if (order.shippingAddress) {
                 resolve(order.shippingAddress)
             }
-        }catch(error){
-            reject(error) 
+        } catch (error) {
+            reject(error)
         }
     })
 }
-const sortOrder = (sortName, sortType) => {
+const sortOrder = (sortName, sortType, nameSearch) => {
     return new Promise(async (resolve, reject) => {
         try {
             let allOrder;
-            if (sortName && sortType) {
+            if (nameSearch === 'nhan tai cua hang') {
+                allOrder = await Order.find({
+                    shippingMethod: 'nhan tai cua hang'
+                });
+            } else if (nameSearch === 'giao hang tan noi') {
+                allOrder = await Order.find({
+                    shippingMethod: 'giao hang tan noi'
+                });
+            }
+            else if (sortName && sortType) {
                 const objectSort = { [sortName]: sortType };
                 allOrder = await Order.find().sort(objectSort);
             } else {
@@ -122,6 +131,7 @@ const sortOrder = (sortName, sortType) => {
         }
     });
 }
+
 
 
 const getUniqueYears = () => {

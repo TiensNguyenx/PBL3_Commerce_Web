@@ -45,7 +45,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 let users = [];
 let lastAdminDisconnectTime = null;
-let lastUserDisconnectTime = null;
+let lastUserDisconnectTime = {};
 io.on('connection', (socket) => {
     socket.on('addUser', async  userId => { 
         console.log('have user connect:>> ', users);    
@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         const disconnectedUser = users.find(user => user.socketId === socket.id);
         if (disconnectedUser) {
-            lastUserDisconnectTime = new Date(); // Cập nhật thời gian ngắt kết nối của admin
+            lastUserDisconnectTime[disconnectedUser.userId] = new Date();// Cập nhật thời gian ngắt kết nối của user
         }
         if (disconnectedUser && disconnectedUser.nameUser === 'admin') {
             lastAdminDisconnectTime = new Date(); // Cập nhật thời gian ngắt kết nối của admin
@@ -99,7 +99,7 @@ io.on('connection', (socket) => {
     socket.on('checkUserStatus', (userId) => {
         const User = users.find(user => user.userId === userId);
         const isUserOnline = !!User;
-        const lastDisconnect = lastUserDisconnectTime ? lastUserDisconnectTime.toISOString() : null;
+        const lastDisconnect = lastUserDisconnectTime[userId] ? lastUserDisconnectTime[userId].toISOString() : null;
         io.to(socket.id).emit('userStatus',  { 
             isUserOnline, 
             lastDisconnect 

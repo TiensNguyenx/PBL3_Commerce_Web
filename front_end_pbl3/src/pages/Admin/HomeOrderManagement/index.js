@@ -8,6 +8,7 @@ import { UserContext } from "~/context/UserContext";
 import HeaderAdmin from "~/components/Layout/components/HeaderAdmin";
 
 import socket from "~/pages/socket";
+const cx = classNames.bind(styles);
 
 function HomeOrderManagement() {
     const navigate = useNavigate();
@@ -16,7 +17,6 @@ function HomeOrderManagement() {
     const [allPayment, setAllPayment] = useState({});
     const [distinctYears, setDistinctYears] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-
     useEffect(() => {
         if (!user.isAdmin) {
             navigate('/');
@@ -91,7 +91,7 @@ function HomeOrderManagement() {
     };
 
     return (
-        <div style={user.isAdmin ? { display: 'block' } : { display: 'none' }}>
+        <div className={cx('containner')} style={user.isAdmin ? { display: 'block' } : { display: 'none' }}>
             <HeaderAdmin />
             <div>
                 <label htmlFor="yearSelect">Chọn năm: </label>

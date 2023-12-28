@@ -2,11 +2,12 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    min-height: 700px;
+    min-height: 600px;
 }
-.containener {
+.containner {
     width: 83.333%;
     display: flex;
+    margin-top: 20px;
 }
 .sidebar {
     width: 20%;
@@ -79,10 +80,10 @@ align-items: center;
 }
 .user-status {
     font-size: 1.2rem;
+    display: flex;
+    align-items: center;
 }
-.user-chat{
 
-}
 .chat-wrapper {
     overflow-y: scroll;
     height: 600px;
@@ -169,3 +170,9 @@ margin-bottom: 20px;
         font-size: 1.5rem;
         font-weight: 600;
     }
+ .online-icon{
+        margin-left: 5px;
+        width: 10px;
+        height: 10px;
+     
+ }

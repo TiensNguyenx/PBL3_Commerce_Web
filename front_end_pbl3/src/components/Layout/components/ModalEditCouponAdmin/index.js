@@ -1,31 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { editCoupon, getDetailCoupon } from '../../../../Services/AdminServices'
+import { UserContext } from '~/context/UserContext';
+import { toast } from 'react-toastify';
 function ModalEditCouponAdmin({ show, handleClose, idCoupon }) {
     const [name, setName] = useState('')
-    const [methodDisCount, setMethodDisCount] = useState('')
+    const [methodDiscount, setMethodDisCount] = useState('')
     const [description, setDescription] = useState('')
     const [dateStart, setDateStart] = useState('')
     const [dateEnd, setDateEnd] = useState('')
     const [value, setValue] = useState('')
     const [image, setImage] = useState('')
+    const { isRenderUserContext } = useContext(UserContext);
     const renderCoupon = async () => {
         const res = await getDetailCoupon(idCoupon)
         console.log(res)
-        setName(res.data.name)
-        setMethodDisCount(res.data.methodDiscount)
-        setDescription(res.data.description)
-        setDateStart(res.data.dateStart)
-        setDateEnd(res.data.dateEnd)
-        setValue(res.data.value)
-        setImage(res.data.image)
+        setName(res.data.name || '')
+        setMethodDisCount(res.data.methodDiscount || '')
+        setDescription(res.data.description || '')
+        setDateStart(res.data.dateStart || '')
+        setDateEnd(res.data.dateEnd || '')
+        setValue(res.data.value || '')
+        setImage(res.data.image || '')
 
 
     }
     const handleEditCoupon = async () => {
-        const res = await editCoupon(idCoupon, name, methodDisCount, description, dateStart, dateEnd, value, image)
+        const res = await editCoupon(idCoupon, name, methodDiscount, description, dateStart, dateEnd, value, image)
         console.log(res)
-
+        handleClose()
+        isRenderUserContext()
+        toast.success('Chỉnh sửa mã giảm giá thành công')
     }
     useEffect(() => {
         if (show) {
@@ -54,7 +59,7 @@ function ModalEditCouponAdmin({ show, handleClose, idCoupon }) {
                                 Method DisCount
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control value={methodDisCount} type="text" placeholder="Method DisCount" size='lg' onChange={(e) => setMethodDisCount(e.target.value)} />
+                                <Form.Control value={methodDiscount} type="text" placeholder="Method DisCount" size='lg' onChange={(e) => setMethodDisCount(e.target.value)} />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" >
@@ -70,7 +75,7 @@ function ModalEditCouponAdmin({ show, handleClose, idCoupon }) {
                                 Date Start
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control value={dateStart} type="text" placeholder="dateStart" size='lg' onChange={(e) => setDateStart(e.target.value)} />
+                                <Form.Control value={dateStart} type="text" placeholder="Date Start" size='lg' onChange={(e) => setDateStart(e.target.value)} />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" >

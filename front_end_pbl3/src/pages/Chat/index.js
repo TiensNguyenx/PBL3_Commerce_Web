@@ -14,8 +14,8 @@ import logoShop from "../../assets/images/logoShop.png";
 import { toast } from 'react-toastify';
 import avatarUser from '../../assets/images/avatarUser.jpg'
 import socket from "../socket";
-
-
+import sideBarleft from '../../assets/images/sideBar1.gif'
+import sideBarRight from '../../assets/images/sideBar2.gif'
 const cx = classNames.bind(styles);
 
 function Chat() {
@@ -127,11 +127,9 @@ function Chat() {
         <div>
             <div className={cx('wrapper')}>
                 <div className={cx('containener')}>
-                    <div className={cx('sidebar')}>
-                        <div className={cx('sidebar-header')}>
-                            Chats
-                        </div>
+                    <div className={cx('sidebar-left')}>
 
+                        <img className={cx('img-sidebar')} src={sideBarleft} alt=""></img>
                     </div>
                     <div className={cx('chat-space')}>
                         <div className={cx('option')}>
@@ -179,7 +177,9 @@ function Chat() {
                         </div>
 
                     </div>
-
+                    <div className={cx('sidebar-right')}>
+                        <img className={cx('img-sidebar')} src={sideBarRight} alt=""></img>
+                    </div>
                 </div>
             </div>
             <Footer />

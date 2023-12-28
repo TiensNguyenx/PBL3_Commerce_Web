@@ -41,11 +41,12 @@ function Cart() {
                 setCarts([])
             }
         }
+        console.log('cart')
     }
 
     useEffect(() => {
         renderCart()
-    }, [user.id])
+    }, [])
     const handleClose = () => {
         setIsShowModalDelete(false);
         setShowModalLogin(false);

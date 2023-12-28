@@ -16,22 +16,30 @@ import ModalConfirmLogout from '../ModalConfirmLogout/ModalConfirmLogout';
 import { useContext, useState } from 'react';
 import { UserContext } from '~/context/UserContext';
 import Search from '../Search';
-
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles)
-
 function Header() {
-
     const { user, lengthCart, getLengthCartContext } = useContext(UserContext);
     const [isShowModalConfirm, setIsShowModalConfirm] = useState(false);
+    const navigate = useNavigate();
     const handleLogout = () => {
-
         setIsShowModalConfirm(true);
     }
     function handleClose() {
         setIsShowModalConfirm(false);
     }
     getLengthCartContext()
+    function navigateChat() {
+        if (localStorage.getItem('userId')) {
+            navigate(user.isAdmin && user.auth ? '/admin/chat' : '/chat')
+        }
+        else {
+            toast.error('Vui lòng đăng nhập để sử dụng chức năng này')
+            navigate('/login')
+        }
+    }
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -59,12 +67,12 @@ function Header() {
                             {user && user.auth === true ? (<div className={cx('count-cart')}>{lengthCart}</div>) : ''}
                         </div>
                     </Link>
-                    <Link to={user.isAdmin ? '/admin/chat' : '/chat'}>
+                    <div onClick={navigateChat}>
                         <div className={cx('item')}>
                             <button className={cx('icon')}>  <BsChatDots style={{ width: '2rem', height: '2rem' }} /></button>
                             <span className={cx('subtiltle')}>Liên hệ</span>
                         </div>
-                    </Link>
+                    </div>
 
                     {user && user.auth === true ? (
                         <div className={cx('item')} >

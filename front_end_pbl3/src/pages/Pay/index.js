@@ -55,15 +55,11 @@ function Pay() {
         }
 
     }
-
-
     useEffect(() => {
         if (!user.id) {
             navigate('/')
         }
     })
-
-
     const renderCart = async () => {
         if (user.id) {
             const res = await renderCartService(user.id)
@@ -76,6 +72,7 @@ function Pay() {
 
             }
         }
+        console.log('cart')
     }
     const handleTabHome = () => {
 

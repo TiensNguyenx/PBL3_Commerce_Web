@@ -14,10 +14,11 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from '~/context/UserContext';
 import { useContext } from 'react';
 import ModalEditCouponAdmin from '~/components/Layout/components/ModalEditCouponAdmin';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 function HomeCoupons() {
     const navigate = useNavigate();
-    const { user } = useContext(UserContext);
+    const { user, isRenderUserContext } = useContext(UserContext);
     const [isShowModalEdit, setIsShowModalEdit] = useState(false);
     const [idCoupon, setIdCoupon] = useState('');
     useEffect(() => {
@@ -32,7 +33,7 @@ function HomeCoupons() {
     }
     useEffect(() => {
         renderCoupons();
-    }, []);
+    }, [isRenderUserContext]);
     const handleClose = () => {
         setIsShowModalEdit(false);
     }
@@ -43,6 +44,7 @@ function HomeCoupons() {
     const handleDeleteCoupon = async (idCoupon) => {
         await deleteCoupon(idCoupon);
         renderCoupons();
+        toast.success('Xóa mã giảm giá thành công')
 
     }
     return (

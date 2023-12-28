@@ -19,8 +19,8 @@ const cx = classNames.bind(styles);
 function HomeProduct() {
     const navigate = useNavigate();
     const { isRenderUserContext, user } = useContext(UserContext);
-    const [sortType, setSortType] = useState('');
-    const [sortBy, setSortBy] = useState('');
+    const [sortType, setSortType] = useState('asc');
+    const [sortBy, setSortBy] = useState('name');
     const [isShowModalRating, setIsShowModalRating] = useState(false);
     const [isShowModalEdit, setIsShowModalEdit] = useState(false);
     const [idProduct, setIdProduct] = useState('');
@@ -51,6 +51,7 @@ function HomeProduct() {
         setSearch('');
     }
     const handleChange = (e) => {
+        console.log(e.target.value)
         if (e.target.value === 'Tên A-Z') {
             setSortBy('name');
             setSortType('asc');

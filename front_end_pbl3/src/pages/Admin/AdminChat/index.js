@@ -15,6 +15,8 @@ import { toast } from 'react-toastify';
 import avatarUser from '../../../assets/images/avatarUser.jpg'
 import { io } from 'socket.io-client';
 import { useNavigate } from "react-router-dom";
+import OnlineIcon from '../../../assets/images/OnlineIcon.png'
+import OfflineIcon from '../../../assets/images/offlineIcon.png'
 const cx = classNames.bind(styles);
 
 function AdminChat() {
@@ -107,7 +109,7 @@ function AdminChat() {
         socket?.emit('checkUserStatus', (user.user));
         if (selectUser) {
             setIdSocket(selectUser.socketId)
-        }else{
+        } else {
             setIdSocket(null)
         }
         const res = await fetch(`http://localhost:3002/api/conversation/${user.user}`, {
@@ -170,7 +172,7 @@ function AdminChat() {
     return (
         <div style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }}>
             <div className={cx('wrapper')}>
-                <div className={cx('containener')}>
+                <div className={cx('containner')}>
                     <div className={cx('sidebar')}>
                         <div className={cx('sidebar-header')}>
                             Chats
@@ -179,7 +181,7 @@ function AdminChat() {
                             <input type="text" placeholder="Search contact / chat" />
                         </div>
                         <div>
-                            <div className='text-primary text-lg'>People</div>
+                            <div className='text-primary text-lg mt-4 ' style={{ fontWeight: '700' }}>People</div>
                             <div>
                                 {allPeople.length > 0 ? (
                                     allPeople.map((user) => (
@@ -209,15 +211,17 @@ function AdminChat() {
                             </div>
                         </div>
                     </div>
-                    <div className={cx('chat-space')}>
+                    <div className={cx('chat-space')} style={selectedUser ? { display: 'block' } : { display: 'none' }}>
                         <div className={cx('option')}>
                             <div className={cx('user-containner')}>
                                 {userName ? (<img className={cx('user-img')} src={avatarUser} alt=""></img>) : ''}
                                 <div className={cx('user-info')}>
                                     <div className={cx('user-name')}> {userName}</div>
+
                                     <div className={cx('user-status')}> {userStatus.isUserOnline
                                         ? 'Online'
                                         : `Offline ${getUserOfflineDuration()}`}
+                                        <img className={cx('online-icon')} src={userStatus.isUserOnline ? OnlineIcon : OfflineIcon} alt=""></img>
                                     </div>
                                 </div>
                             </div>

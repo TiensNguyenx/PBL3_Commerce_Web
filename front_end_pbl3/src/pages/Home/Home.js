@@ -2,11 +2,12 @@ import classNames from "classnames/bind";
 import styles from './Home.module.scss'
 
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getProductByNameService } from "~/Services/ProductServices";
 import { toast } from 'react-toastify';
+import { UserContext } from '~/context/UserContext';
 
 import socket from "../socket";
 import ProductSlider from "~/components/Layout/components/ProductSlider";
@@ -20,6 +21,7 @@ function Home() {
     const [duckyProduct, setDuckyProduct] = useState([])
     const [steelseriesProduct, setSteelseriesProduct] = useState([])
     const [messageShown, setMessageShown] = useState(false);
+    const {logout} = useContext(UserContext);
 
     const navigate = useNavigate()
 
@@ -31,6 +33,11 @@ function Home() {
         const checkAdmin = localStorage.getItem('isAdmin')
         if (checkActive) {
             socket?.emit('addUser', checkActive);
+            socket?.on('checkUserLogin', (msg) => {
+                toast.error(msg);
+                logout();
+                navigate('/login');
+            });
             if (!messageShown) {
                 socket?.on('getMessage', (user) => {
                     toast.success(`Shop đã gửi tin nhắn cho bạn`);
@@ -50,6 +57,9 @@ function Home() {
         return () => {
             socket?.off('chatStarted');
             socket?.off('getMessage');
+            socket?.off('getMessageToAdmin');
+            socket?.off('userPayment');
+            socket?.off('checkUserLogin');
         };
     }, [messageShown, socket]);
 

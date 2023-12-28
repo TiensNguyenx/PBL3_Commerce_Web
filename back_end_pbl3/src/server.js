@@ -43,6 +43,7 @@ let users = [];
 let lastAdminDisconnectTime = null;
 let lastUserDisconnectTime = {};
 io.on('connection', (socket) => {
+
     socket.on('addUser', async  userId => { 
         console.log('have user connect:>> ', users);    
         const checkuser = await User.findById(userId);
@@ -56,12 +57,17 @@ io.on('connection', (socket) => {
             io.emit('getUsers', users);
             io.to(socket.id).emit('chatStarted', 'Chào mừng bạn đến với TB Technology');
             console.log('users :>> ', users);    
+        }else{
+            console.log('User already exists');
+            io.to(socket.id).emit('checkUserLogin', 'User already exists');
         }
     });
-    io.emit('getUsers', users);
+    io.emit('getUsers', users);  
     socket.on('requestGetUser', () => {
         io.emit('getUsers', users);
-    })
+    });
+
+
     socket.on('logout', async userId => {
         const user = await User.findById(userId); 
         console.log('UserLogout :>> ', user.name); 

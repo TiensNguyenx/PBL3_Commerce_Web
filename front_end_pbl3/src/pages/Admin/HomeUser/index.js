@@ -7,9 +7,10 @@ import styles from './HomeUser.module.scss';
 import classNames from 'classnames/bind';
 import { getAllUser } from '../../../Services/AdminServices'
 import ModalEditUserAdmin from "~/components/Layout/components/ModalEditUserAdmin";
-import ModalCreateUserAdmin from "~/components/Layout/components/ModalCreateUserAdmin";
 import { deleteUser } from '../../../Services/AdminServices'
 import { UserContext } from "~/context/UserContext";
+import ModalWatchDetailOrderAdmin from "~/components/Layout/components/ModalWatchDetailOrderAdmin";
+import ModalWatchDetailPaymentAdmin from "~/components/Layout/components/ModalWatchDetailPaymentAdmin";
 const cx = classNames.bind(styles)
 function HomeUser() {
     const navigate = useNavigate();
@@ -18,6 +19,8 @@ function HomeUser() {
     const [showCreate, setShowCreate] = useState(false);
     const [idUser, setIdUser] = useState('')
     const { isRenderUserContext, user } = useContext(UserContext)
+    const [isShowModalDetailOrder, setIsShowModalDetailOrder] = useState(false)
+    const [isShowModalDetailPayment, setIsShowModalDetailPayment] = useState(false)
     useEffect(() => {
         if (user.isAdmin === false) {
             navigate('/')
@@ -37,6 +40,8 @@ function HomeUser() {
     const handleClose = () => {
         setShow(false)
         setShowCreate(false)
+        setIsShowModalDetailOrder(false)
+        setIsShowModalDetailPayment(false)
     }
     const handleDeleteUser = async (idUser) => {
         const res = await deleteUser(idUser)
@@ -45,9 +50,6 @@ function HomeUser() {
     useEffect(() => {
         renderUser()
     }, [isRenderUserContext])
-    const handleCreateUser = (idUser) => {
-        setShowCreate(true)
-    }
     function formatVietnameseDateTime(dateTimeString) {
 
         const date = new Date(dateTimeString);
@@ -62,6 +64,14 @@ function HomeUser() {
         }).format(date);
 
         return formattedDate;
+    }
+    const handleDetailOrder = (idUser) => {
+        setIsShowModalDetailOrder(true)
+        setIdUser(idUser)
+    }
+    const handleDetailPayment = (idUser) => {
+        setIsShowModalDetailPayment(true)
+        setIdUser(idUser)
     }
     return (
         <div style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }}>
@@ -85,10 +95,16 @@ function HomeUser() {
                                 <Col className={cx('center')}>{item.email}</Col>
                                 <Col className={cx('center')}>{item.name}</Col>
                                 <Col className={cx('center')} >{item.phone}</Col>
-                                <Col className={cx('center')}>
-                                    <Button onClick={() => handleCreateUser()} style={{ marginRight: '10px' }} variant="success" size="lg">Tạo</Button>
-                                    <Button onClick={() => handleEditUser(item._id)} style={{ marginRight: '10px' }} variant="primary" size="lg">Sửa</Button>
-                                    <Button onClick={() => handleDeleteUser(item._id)} variant="danger" size="lg">Xóa</Button>
+                                <Col  >
+                                    <Row style={{ width: '50%', margin: 'auto   ' }} >
+                                        <Button onClick={() => handleEditUser(item._id)} style={{ marginBottom: '5px' }} variant="primary" size="lg">Sửa</Button>
+                                        <Button onClick={() => handleDeleteUser(item._id)} style={{ marginBottom: '5px ' }} variant="danger" size="lg">Xóa</Button>
+
+                                    </Row>
+                                    <Row style={{ width: '50%', margin: 'auto' }} >
+                                        <Button onClick={() => handleDetailOrder(item._id)} style={{ marginBottom: '5px' }} variant="info" size="lg">Order Details</Button>
+                                        <Button onClick={() => handleDetailPayment(item._id)} style={{ marginBottom: '5px' }} variant="success" size="lg">Payment Details</Button>
+                                    </Row>
                                 </Col>
                             </Row>
                         )
@@ -98,7 +114,8 @@ function HomeUser() {
                 </Container>
             </div>
             <ModalEditUserAdmin show={show} handleClose={handleClose} idUser={idUser} />
-            <ModalCreateUserAdmin show={showCreate} handleClose={handleClose} />
+            <ModalWatchDetailOrderAdmin show={isShowModalDetailOrder} handleClose={handleClose} idUser={idUser} />
+            <ModalWatchDetailPaymentAdmin show={isShowModalDetailPayment} handleClose={handleClose} idUser={idUser} />
         </div>
     );
 }

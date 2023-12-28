@@ -152,3 +152,9 @@ export const sortPayment = async (sortBy, sortType) => {
 export const getDetailPayment = async (id) => {
     return axios.get(`http://localhost:3002/admin/payment/detail-payment/${id}`)
 }
+export const getDetailOrderUser = async (id) => {
+    return axios.get(`http://localhost:3002/admin/user/order/${id}`)
+}
+export const getDetailPaymentUser = async (id) => {
+    return axios.get(`http://localhost:3002/admin/user/payment/${id}`)
+}

@@ -64,6 +64,22 @@ function HomeOrder() {
         console.log(res)
         setListOrder(res.data)
     }
+    function formatVietnameseDateTime(dateTimeString) {
+
+        const date = new Date(dateTimeString);
+        const formattedDate = new Intl.DateTimeFormat('vi-VN', {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            month: 'numeric',
+            year: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+
+        }).format(date);
+
+        return formattedDate;
+    }
+
     return (
         <div style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }} className={cx('containner')} >
             <HeaderAdmin />
@@ -91,6 +107,7 @@ function HomeOrder() {
                 <Container style={{ maxWidth: '100%' }}>
                     <Row >
                         <Col className={cx('center-text')}>ID</Col>
+                        <Col className={cx('center-text')} style={{ minWidth: '150px' }}>Ngày Order</Col>
                         <Col className={cx('center-text')} style={{ minWidth: '200px' }}>Email</Col>
                         <Col className={cx('center-text')}>Tên</Col>
                         <Col className={cx('center-text')}>Số điện thoại</Col>
@@ -105,7 +122,8 @@ function HomeOrder() {
                         listOrder.map((item, index) => {
                             return (
                                 <Row key={index} style={{ border: '1px solid #ccc' }}>
-                                    <Col style={{ fontSize: '1.1rem', margin: 'auto', minWidth: '86px' }}>{item._id}</Col>
+                                    <Col style={{ fontSize: '1.1rem', margin: 'auto', minWidth: '150px' }}>{item._id}</Col>
+                                    <Col className={cx('center-text')} style={{ fontSize: '1.3rem' }}>{formatVietnameseDateTime(item.createdAt)}</Col>
                                     <Col className={cx('center-text')} style={{ minWidth: '200px', fontSize: '1.3rem' }}>{item.email}</Col>
                                     <Col className={cx('center-text')}>{item.name}</Col>
                                     <Col className={cx('center-text')}>{item.phone}</Col>

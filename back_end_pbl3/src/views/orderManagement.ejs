@@ -6,6 +6,7 @@
     <title>Home Page Order Management</title>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <style>
     .title {
@@ -38,10 +39,9 @@
         display: flex;
     }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 <body>
-    <div class="topnav">
+    <!-- <div class="topnav">
         <a href="/admin/user">Home Users</a>
         <a href="/admin/user/create">Create User</a>
         <a href="/admin/product">Home Products</a>
@@ -52,7 +52,7 @@
         <a href="/admin/payment">Home Payments</a>
         <a class="active" href="/admin/order/all-order">Home Order Management</a>
         <a href="/admin/logout">Logout</a>
-    </div>
+    </div> -->
     
     <div>
         <label for="yearSelect"><br> <strong> Hiển thị theo:</strong></label>
@@ -145,24 +145,24 @@
                 chart.draw(data, options);
             }
         }
-        const access_token = localStorage.getItem('access_token');
-        fetch('/admin/auth', {
-            method: 'POST',
-            headers: {
-                'token': access_token,
-                'Content-Type': 'application/json'
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'Unauthorized') {
-                alert('You are not authorized to access this page');
-                window.location.href = '/admin';
-            } else {
-                document.getElementById('ListContainer').style.display = 'block';
-            }
-        })
-        .catch(error => console.error('Error:', error));
+        // const access_token = localStorage.getItem('access_token');
+        // fetch('/admin/auth', {
+        //     method: 'POST',
+        //     headers: {
+        //         'token': access_token,
+        //         'Content-Type': 'application/json'
+        //     },
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     if (data.message === 'Unauthorized') {
+        //         alert('You are not authorized to access this page');
+        //         window.location.href = '/admin';
+        //     } else {
+        //         document.getElementById('ListContainer').style.display = 'block';
+        //     }
+        // })
+        // .catch(error => console.error('Error:', error));
     </script>
 </body>
 

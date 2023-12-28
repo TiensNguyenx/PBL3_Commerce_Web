@@ -102,7 +102,12 @@ const getAllOrderManagement = async (req, res) => {
         const allOrder = await CRUDOrderService.getAllOrderManagement();
         const allPayment = await CRUDPaymentService.getAllPaymentManagement();
         const distinctYears = await CRUDOrderService.getUniqueYears();
-        return res.render('orderManagement.ejs', { allOrder: allOrder, allPayment: allPayment, distinctYears: distinctYears });
+        const response = {
+            allOrder: allOrder,
+            allPayment: allPayment,
+            distinctYears: distinctYears
+        }
+        return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
             message: e.message || 'Error fetching coupon',
@@ -117,7 +122,12 @@ const getAllOrderManagementByYear = async (req, res) => {
         const allOrder = await CRUDOrderService.getAllOrderManagementByYear(year);
         const allPayment = await CRUDPaymentService.getAllPaymentManagementByYear(year);
         const distinctYears = await CRUDOrderService.getUniqueYears();
-        return res.render('orderManagement.ejs', { allOrder: allOrder, allPayment: allPayment, distinctYears: distinctYears, yearSelected: year });
+        const response = {
+            allOrder: allOrder,
+            allPayment: allPayment,
+            distinctYears: distinctYears
+        }
+        return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
             message: e.message || 'Error fetching coupon',

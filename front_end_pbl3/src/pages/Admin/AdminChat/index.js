@@ -26,8 +26,8 @@ function AdminChat() {
     const [activeUsers, setActiveUsers] = useState([]);
     const [messages, setMessages] = useState({})
     const userId = localStorage.getItem('userId')
-    const [idreceive, setIdReceive] = useState([])
-    const [idsocket, setIdSocket] = useState([null])
+    const [idReceive, setIdReceive] = useState([])
+    const [idSocket, setIdSocket] = useState([null])
     const chatWrapperRef = useRef(null);
     const messagesEndRef = useRef(null);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -108,7 +108,7 @@ function AdminChat() {
         localStorage.setItem('idSelect', user.user)
         socket?.emit('checkUserStatus', (user.user));
         if (selectUser) {
-            setIdSocket(selectUser.socketId)
+            localStorage.setItem('idSocket', selectUser.socketId)
         } else {
             setIdSocket(null)
         }
@@ -127,15 +127,16 @@ function AdminChat() {
     }
 
     const sendMessage = async () => {
-        const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${idreceive}`, {
+        const idSocketSelect = localStorage.getItem('idSocket')
+        const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${idReceive}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ content: message }),
         });
-        if (idsocket) {
-            socket?.emit('sendMessage', idsocket);
+        if (idSocketSelect) {
+            socket?.emit('sendMessage', idSocketSelect);
         }
         const resData = await res.json()
         setMessages({ resData, userId: userId })

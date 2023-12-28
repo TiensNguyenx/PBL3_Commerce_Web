@@ -1,12 +1,12 @@
 const express = require('express');
 const User = require('./models/UserModel');
 const dotenv = require('dotenv');
-const {default : mongoose } = require('mongoose');
+const { default: mongoose } = require('mongoose');
 const routes = require('./routes/api/api');
 const cors = require('cors');
 const app = express();
-const configViewEngine = require('./config/viewEngine'); 
-configViewEngine(app); 
+const configViewEngine = require('./config/viewEngine');
+configViewEngine(app);
 
 const http = require('http');
 const socketConfig = require('./config/socket');
@@ -23,31 +23,31 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
-app.use(express.static('public'))  
+app.use(express.static('public'))
 
 routes(app);
 
 
 
-mongoose.connect(process.env.MONGODB_URI) 
-.then(() => {  
-    console.log('Connected to the database!'); 
-}) 
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log('Connected to the database!');
+    })
 
-.catch((err) => {
-    console.log('Cannot connect to the database!', err);
-    process.exit();
-})
+    .catch((err) => {
+        console.log('Cannot connect to the database!', err);
+        process.exit();
+    })
 
 let users = [];
 let lastAdminDisconnectTime = null;
 let lastUserDisconnectTime = {};
 io.on('connection', (socket) => {
 
-    socket.on('addUser', async  userId => { 
-        console.log('have user connect:>> ', users);    
+    socket.on('addUser', async userId => {
+        console.log('have user connect:>> ', users);
         const checkuser = await User.findById(userId);
-        nameUser = checkuser.name; 
+        nameUser = checkuser.name;
         emailUser = checkuser.email;
         const isUserExist = users.find(user => user.userId === userId);
         if (!isUserExist) {
@@ -56,31 +56,34 @@ io.on('connection', (socket) => {
             users.push(user);
             io.emit('getUsers', users);
             io.to(socket.id).emit('chatStarted', 'Chào mừng bạn đến với TB Technology');
-            console.log('users :>> ', users);    
-        }else{
-            console.log('User already exists');
-            io.to(socket.id).emit('checkUserLogin', 'User already exists');
+            console.log('users :>> ', users);
         }
     });
-    io.emit('getUsers', users);  
+    io.emit('getUsers', users);
     socket.on('requestGetUser', () => {
         io.emit('getUsers', users);
     });
 
+    socket.on('UserLogin', async (userId) => {
+        const user = users.find(user => user.userId === userId);
+        if (user) {
+            io.emit('checkUserLogin', 'Tài khoản của bạn đã đăng nhập ở một nơi khác');
+        }
+    });
 
     socket.on('logout', async userId => {
-        const user = await User.findById(userId); 
-        console.log('UserLogout :>> ', user.name); 
+        const user = await User.findById(userId);
+        console.log('UserLogout :>> ', user.name);
         //const msg = 'User logout successfully';  
         //io.to(socket.id).emit('logoutUser', msg);
     });
 
-    socket.on('sendMessage', async (socketId) => { 
+    socket.on('sendMessage', async (socketId) => {
         console.log('socketId :>> ', socketId);
         const user = users.find(user => user.socketId === socketId);
-        io.to(socketId).emit('getMessage',user);
-        });
-    socket.on('sendMessageToAdmin', async (userId) => { 
+        io.to(socketId).emit('getMessage', user);
+    });
+    socket.on('sendMessageToAdmin', async (userId) => {
         const user = users.find(user => user.userId === userId);
         io.emit('getMessageToAdmin', user);
     });
@@ -102,9 +105,9 @@ io.on('connection', (socket) => {
         const User = users.find(user => user.userId === userId);
         const isUserOnline = !!User;
         const lastDisconnect = lastUserDisconnectTime[userId] ? lastUserDisconnectTime[userId].toISOString() : null;
-        io.to(socket.id).emit('userStatus',  { 
-            isUserOnline, 
-            lastDisconnect 
+        io.to(socket.id).emit('userStatus', {
+            isUserOnline,
+            lastDisconnect
         });
     });
 
@@ -113,9 +116,9 @@ io.on('connection', (socket) => {
         const isAdminOnline = !!adminUser;
         const lastDisconnect = lastAdminDisconnectTime ? lastAdminDisconnectTime.toISOString() : null;
 
-        io.to(socket.id).emit('adminStatus', { 
-            isAdminOnline, 
-            lastDisconnect 
+        io.to(socket.id).emit('adminStatus', {
+            isAdminOnline,
+            lastDisconnect
         });
     });
     //io.emit('getUsers', socket.userId);
@@ -123,4 +126,4 @@ io.on('connection', (socket) => {
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-  });
+});

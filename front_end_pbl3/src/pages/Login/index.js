@@ -11,6 +11,7 @@ import { AiFillEye, AiFillEyeInvisible, AiOutlineLoading3Quarters } from "react-
 import { useEffect, useContext } from 'react';
 import { UserContext } from '~/context/UserContext';
 import { jwtDecode } from "jwt-decode";
+import socket from "../socket";
 const cx = classNames.bind(styles)
 
 
@@ -23,11 +24,22 @@ function Login() {
     const [loadingApi, setLoadingApi] = useState(false);
     const navigate = useNavigate();
     const { loginContext, user, } = useContext(UserContext);
+    const {logout} = useContext(UserContext);
 
     useEffect(() => {
 
         if (user.id) {
+            let check = false;
+            socket.emit('UserLogin' ,(user.id));
+            socket.on('checkUserLogin', (msg) => {
+                check = true;
+                toast.error(msg);
+                logout();
+                navigate('/login');
+            });
+            if(check === false){
             navigate('/')
+            }
         }
     })
     const handleChange = event => {

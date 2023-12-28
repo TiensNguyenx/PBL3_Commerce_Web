@@ -33,11 +33,6 @@ function Home() {
         const checkAdmin = localStorage.getItem('isAdmin')
         if (checkActive) {
             socket?.emit('addUser', checkActive);
-            socket?.on('checkUserLogin', (msg) => {
-                toast.error(msg);
-                logout();
-                navigate('/login');
-            });
             if (!messageShown) {
                 socket?.on('getMessage', (user) => {
                     toast.success(`Shop đã gửi tin nhắn cho bạn`);
@@ -57,9 +52,7 @@ function Home() {
         return () => {
             socket?.off('chatStarted');
             socket?.off('getMessage');
-            socket?.off('getMessageToAdmin');
             socket?.off('userPayment');
-            socket?.off('checkUserLogin');
         };
     }, [messageShown, socket]);
 

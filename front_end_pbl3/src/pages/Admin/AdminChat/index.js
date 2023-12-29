@@ -125,6 +125,17 @@ function AdminChat() {
     }
 
     const handleTypeMessage = (e) => {
+        const idSelect = localStorage.getItem('idSelect')
+        const selectUser = activeUsers.find(u => u.userId === idSelect);
+        if(selectUser){
+            const tempUser = {
+                user: selectUser.userId,
+                name: selectUser.nameUser,
+                socketId: selectUser.socketId,
+                email: selectUser.emailUser
+            }
+            fetchMessages(tempUser)
+        }
         setMessage(e.target.value);
     }
     const handleKeyDown = (e) => {

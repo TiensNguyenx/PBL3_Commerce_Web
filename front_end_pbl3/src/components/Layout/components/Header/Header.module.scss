@@ -75,6 +75,12 @@
     height: 40px;
     cursor: pointer;
     border-radius: 50%;
+    svg {
+        width: 2rem;
+        height: 2rem;
+        margin-left: 2px;
+        margin-bottom: 3px;
+    }
 }
 .subtiltle {
     font-size: 1.4rem;
@@ -146,4 +152,8 @@
     background-color: red;
     border-radius: 50%;
     top: -6px;
+}
+.containner {
+    display: flex;
+    align-items: center;
 }

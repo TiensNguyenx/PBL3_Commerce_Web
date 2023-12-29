@@ -24,7 +24,7 @@ function Login() {
     const [loadingApi, setLoadingApi] = useState(false);
     const navigate = useNavigate();
     const { loginContext, user, } = useContext(UserContext);
-    const {logout} = useContext(UserContext);
+    const { logout } = useContext(UserContext);
 
     // useEffect(() => {
 
@@ -100,17 +100,7 @@ function Login() {
 
                                 )
                                 .then((data) => {
-
-                                    if (data.data.isAdmin) {
-                                        navigate('/admin')
-                                        toast.success('Đăng nhập thành công');
-                                        setLoadingApi(false);
-                                    }
-                                    else {
-                                        navigate('/')
-                                        toast.success('Đăng nhập thành công');
-                                        setLoadingApi(false);
-                                    }
+                                    navigate('/')
 
                                 })
                         }

@@ -21,7 +21,7 @@ function Home() {
     const [duckyProduct, setDuckyProduct] = useState([])
     const [steelseriesProduct, setSteelseriesProduct] = useState([])
     const [messageShown, setMessageShown] = useState(false);
-    const {logout} = useContext(UserContext);
+    const { logout } = useContext(UserContext);
 
     const navigate = useNavigate()
 
@@ -31,15 +31,15 @@ function Home() {
         const checkAdmin = localStorage.getItem('isAdmin')
         if (checkActive) {
             const checkIdSocket = localStorage.getItem('isAddToSocket')
-            if(checkIdSocket === false || checkIdSocket === null){
+            if (checkIdSocket === false || checkIdSocket === null) {
                 socket?.emit('UserLogin', (checkActive));
                 socket?.on('checkUserLogin', (msg) => {
-                    if(msg === 'Tài khoản của bạn đã đăng nhập ở một nơi khác'){
+                    if (msg === 'Tài khoản của bạn đã đăng nhập ở một nơi khác') {
                         toast.error(msg);
                         logout();
                         navigate('/login');
                     }
-                    else{
+                    else {
                         socket?.emit('addUser', checkActive);
                         localStorage.setItem('isAddToSocket', true);
                         socket?.on('chatStarted', (msg) => {
@@ -63,7 +63,7 @@ function Home() {
                     toast.success(msg);
                 }
             });
-           
+
         }
         return () => {
             socket?.off('chatStarted');

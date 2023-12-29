@@ -7,7 +7,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GrNotification, GrLogout } from "react-icons/gr";
 import { BsChatDots } from "react-icons/bs";
 import { AiOutlineDown } from "react-icons/ai"
-
+import { GrUserAdmin } from "react-icons/gr";
 import { BsCartCheck } from "react-icons/bs"
 import { BiUserCircle } from "react-icons/bi"
 import { BsNewspaper } from "react-icons/bs"
@@ -53,35 +53,40 @@ function Header() {
                 </div>
 
                 <div className={cx('list-item')} >
-                    <Link to="/news">
+                    {!user.isAdmin && <Link to="/news" className={cx('containner')}>
                         <div className={cx('item')} >
-                            <button className={cx('icon')}>  <BsNewspaper style={{ width: '2rem', height: '2rem' }} /></button>
+                            <button className={cx('icon')}>  <BsNewspaper /></button>
                             <span className={cx('subtiltle')}>Tin tức</span>
                         </div >
-                    </Link>
-
+                    </Link>}
+                    {user.isAdmin && <Link to="/admin" className={cx('containner')} >
+                        <div className={cx('item')} >
+                            <button className={cx('icon')}>  <GrUserAdmin /></button>
+                            <span className={cx('subtiltle')}>Admin</span>
+                        </div >
+                    </Link>}
                     <Link to="/cart">
-                        <div className={cx('item', 'custom-item')} >
-                            <button className={cx('icon')}> <AiOutlineShoppingCart style={{ width: '2rem', height: '2rem' }} /></button>
+                        <div className={cx('item', 'custom-item', 'containner')} >
+                            <button className={cx('icon')}> <AiOutlineShoppingCart /></button>
                             <span className={cx('subtiltle')}>Giỏ hàng</span>
                             {user && user.auth === true ? (<div className={cx('count-cart')}>{lengthCart}</div>) : ''}
                         </div>
                     </Link>
-                    <div onClick={navigateChat}>
+                    <div onClick={navigateChat} className={cx('containner')}>
                         <div className={cx('item')}>
-                            <button className={cx('icon')}>  <BsChatDots style={{ width: '2rem', height: '2rem' }} /></button>
+                            <button className={cx('icon')}>  <BsChatDots /></button>
                             <span className={cx('subtiltle')}>Liên hệ</span>
                         </div>
                     </div>
 
                     {user && user.auth === true ? (
-                        <div className={cx('item')} >
+                        <div className={cx('item', 'containner')}  >
                             <div >
 
 
                                 <div className={cx('whenlogin')}>
 
-                                    {/* <button className={cx('icon')}> <AiOutlineUser style={{ width: '2rem', height: '2rem' }} /></button> */}
+                                    {/* <button className={cx('icon')}> <AiOutlineUser  /></button> */}
                                     <div className={cx('avatar-user')}>   <img src={avatarUser} alt='avatar' />   <span className={cx('username')} > {user.name} </span></div>
                                     <div>
                                         <ul className={cx('nav')}>
@@ -100,8 +105,8 @@ function Header() {
 
                         </div>
                     ) : (
-                        <div className={cx('item')} >
-                            <Link to='/login'>   <button className={cx('icon')}> <AiOutlineUser style={{ width: '2rem', height: '2rem' }} /></button></Link>
+                        <div className={cx('item', 'containner')} >
+                            <Link to='/login'>   <button className={cx('icon')}> <AiOutlineUser /></button></Link>
                             <span className={cx('subtiltle')}>Đăng nhập</span>
                         </div>
                     )}

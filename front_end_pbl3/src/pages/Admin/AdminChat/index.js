@@ -11,7 +11,7 @@ import { CiMicrophoneOn } from "react-icons/ci";
 import { FaLocationArrow } from "react-icons/fa6";
 import Footer from "~/components/Layout/components/Footer";
 import logoShop from "../../../assets/images/logoShop.png";
-import { toast } from 'react-toastify';
+import SoundMess from '../../../assets/sounds/mess.mp3'
 import avatarUser from '../../../assets/images/avatarUser.jpg'
 import { io } from 'socket.io-client';
 import { useNavigate } from "react-router-dom";
@@ -74,6 +74,8 @@ function AdminChat() {
                 socketId: user.socketId,
                 email: user.emailUser
             }
+            const sound = new Audio(SoundMess)
+            sound.play()
             fetchMessages(tempUser)
         })
 
@@ -125,7 +127,11 @@ function AdminChat() {
     const handleTypeMessage = (e) => {
         setMessage(e.target.value);
     }
-
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    }
     const sendMessage = async () => {
         const idSocketSelect = localStorage.getItem('idSocket')
         const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${idReceive}`, {
@@ -254,7 +260,7 @@ function AdminChat() {
                             <button> <IoMdAdd style={{ fontSize: '2rem' }} /></button>
                             <button> <AiOutlinePicture style={{ fontSize: '2rem' }} /></button>
                             <button> <MdOutlineAddReaction style={{ fontSize: '2rem' }} /></button>
-                            <input onChange={handleTypeMessage} value={message} />
+                            <input onChange={handleTypeMessage} value={message} onKeyDown={handleKeyDown} />
                             <button><CiMicrophoneOn style={{ fontSize: '2rem' }} /></button>
                             <button onClick={sendMessage}><FaLocationArrow style={{ fontSize: '2.2rem' }} /></button>
                         </div>

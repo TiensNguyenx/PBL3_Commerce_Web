@@ -16,6 +16,9 @@ import avatarUser from '../../assets/images/avatarUser.jpg'
 import socket from "../socket";
 import sideBarleft from '../../assets/images/sideBar1.gif'
 import sideBarRight from '../../assets/images/sideBar2.gif'
+import soundMess from '../../assets/sounds/mess.mp3'
+import OnlineIcon from '../../assets/images/OnlineIcon.png'
+import OfflineIcon from '../../assets/images/offlineIcon.png'
 const cx = classNames.bind(styles);
 
 function Chat() {
@@ -56,6 +59,8 @@ function Chat() {
         socket?.on('getMessage', (user) => {
             fetchMessages(user)
             toast.success(`Shop đã gửi tin nhắn cho bạn`);
+            const sound = new Audio(soundMess)
+            sound.play()
         })
 
         return () => {
@@ -88,7 +93,11 @@ function Chat() {
         const resData = await res.json()
         setMessages({ resData, userId: user.userId })
     }
-
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    }
     const handleTypeMessage = (e) => {
         setMessage(e.target.value);
     }
@@ -140,6 +149,7 @@ function Chat() {
                                     <div className={cx('user-status')}> {adminStatus.isAdminOnline
                                         ? 'Online'
                                         : `Offline ${getAdminOfflineDuration()}`}
+                                        <img className={cx('online-icon')} src={adminStatus.isAdminOnline ? OnlineIcon : OfflineIcon} alt=""></img>
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +181,7 @@ function Chat() {
                             <button> <IoMdAdd style={{ fontSize: '2rem' }} /></button>
                             <button> <AiOutlinePicture style={{ fontSize: '2rem' }} /></button>
                             <button> <MdOutlineAddReaction style={{ fontSize: '2rem' }} /></button>
-                            <input onChange={handleTypeMessage} value={message} />
+                            <input onChange={handleTypeMessage} value={message} onKeyDown={handleKeyDown} />
                             <button><CiMicrophoneOn style={{ fontSize: '2rem' }} /></button>
                             <button onClick={sendMessage}><FaLocationArrow style={{ fontSize: '2.2rem' }} /></button>
                         </div>

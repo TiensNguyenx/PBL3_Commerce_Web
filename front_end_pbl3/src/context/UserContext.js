@@ -41,7 +41,7 @@ const UserProvider = ({ children }) => {
                                 isAuthEmail: data.data.isAuth
                             }));
 
-
+                            localStorage.setItem('isAdmin', data.data.isAdmin)
                             localStorage.setItem('userId', data.data._id)
                  
                         }
@@ -83,7 +83,7 @@ const UserProvider = ({ children }) => {
         localStorage.removeItem('token');
         localStorage.removeItem('idPayment');
         localStorage.removeItem('userId');
-    
+        localStorage.removeItem('isAddToSocket');
         setUser((user) => ({
             email: '',
             auth: false,

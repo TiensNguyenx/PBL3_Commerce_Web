@@ -26,13 +26,24 @@ function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        socket?.on('chatStarted', (msg) => {
-            toast.success(msg);
-        });
+
         const checkActive = localStorage.getItem('userId')
         const checkAdmin = localStorage.getItem('isAdmin')
         if (checkActive) {
-            socket?.emit('addUser', checkActive);
+            socket?.emit('UserLogin', (checkActive));
+            socket?.on('checkUserLogin', (msg) => {
+                if(msg === 'Tài khoản của bạn đã đăng nhập ở một nơi khác'){
+                    toast.error(msg);
+                    logout();
+                    navigate('/login');
+                }
+                else{
+                    socket?.emit('addUser', checkActive);
+                    socket?.on('chatStarted', (msg) => {
+                        toast.success(msg);
+                    });
+                }
+            });
             if (!messageShown) {
                 socket?.on('getMessage', (user) => {
                     toast.success(`Shop đã gửi tin nhắn cho bạn`);
@@ -53,6 +64,7 @@ function Home() {
             socket?.off('chatStarted');
             socket?.off('getMessage');
             socket?.off('userPayment');
+            socket?.off('checkUserLogin');
         };
     }, [messageShown, socket]);
 

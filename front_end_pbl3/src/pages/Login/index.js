@@ -26,22 +26,22 @@ function Login() {
     const { loginContext, user, } = useContext(UserContext);
     const {logout} = useContext(UserContext);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (user.id) {
-            let check = false;
-            socket.emit('UserLogin' ,(user.id));
-            socket.on('checkUserLogin', (msg) => {
-                check = true;
-                toast.error(msg);
-                logout();
-                navigate('/login');
-            });
-            if(check === false){
-            navigate('/')
-            }
-        }
-    })
+    //     if (user.id) {
+    //         let check = false;
+    //         socket.emit('UserLogin' ,(user.id));
+    //         socket.on('checkUserLogin', (msg) => {
+    //             check = true;
+    //             toast.error(msg);
+    //             logout();
+    //             navigate('/login');
+    //         });
+    //         if(check === false){
+    //         navigate('/')
+    //         }
+    //     }
+    // })
     const handleChange = event => {
         function isValidEmail(email) {
             return /\S+@\S+\.\S+/.test(email);

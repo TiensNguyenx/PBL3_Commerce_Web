@@ -57,6 +57,13 @@ io.on('connection', (socket) => {
             io.emit('getUsers', users);
             io.to(socket.id).emit('chatStarted', 'Chào mừng bạn đến với TB Technology');
             console.log('users :>> ', users);
+        }else{
+            io.to(isUserExist.socketId).emit('checkUserLogin', 'Tài khoản của bạn đã đăng nhập ở một nơi khác');
+            const user = { userId, nameUser, emailUser, socketId: socket.id };
+            users.push(user);
+            io.emit('getUsers', users);
+            io.to(socket.id).emit('chatStarted', 'Chào mừng bạn đến với TB Technology');
+            console.log('users :>> ', users);
         }
     }); 
     io.emit('getUsers', users);

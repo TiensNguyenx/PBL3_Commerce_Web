@@ -30,24 +30,15 @@ function Home() {
         const checkActive = localStorage.getItem('userId')
         const checkAdmin = localStorage.getItem('isAdmin')
         if (checkActive) {
-            const checkIdSocket = localStorage.getItem('isAddToSocket')
-            if (checkIdSocket === false || checkIdSocket === null) {
-                socket?.emit('UserLogin', (checkActive));
-                socket?.on('checkUserLogin', (msg) => {
-                    if (msg === 'Tài khoản của bạn đã đăng nhập ở một nơi khác') {
-                        toast.error(msg);
-                        logout();
-                        navigate('/login');
-                    }
-                    else {
-                        socket?.emit('addUser', checkActive);
-                        localStorage.setItem('isAddToSocket', true);
-                        socket?.on('chatStarted', (msg) => {
-                            toast.success(msg);
-                        });
-                    }
-                });
-            }
+            socket?.emit('addUser', checkActive);
+            socket?.on('checkUserLogin', (msg) => {
+                alert(msg);
+                logout();
+                window.location.reload();
+            });
+            socket?.on('chatStarted', (msg) => {
+                toast.success(msg);
+            });  
             if (!messageShown) {
                 socket?.on('getMessage', (user) => {
                     toast.success(`Shop đã gửi tin nhắn cho bạn`);

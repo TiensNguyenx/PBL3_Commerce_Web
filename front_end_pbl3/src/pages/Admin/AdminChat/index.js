@@ -17,6 +17,7 @@ import { io } from 'socket.io-client';
 import { useNavigate } from "react-router-dom";
 import OnlineIcon from '../../../assets/images/OnlineIcon.png'
 import OfflineIcon from '../../../assets/images/offlineIcon.png'
+import { toast } from "react-toastify";
 const cx = classNames.bind(styles);
 
 function AdminChat() {
@@ -76,9 +77,14 @@ function AdminChat() {
             }
             const sound = new Audio(SoundMess)
             sound.play()
+            toast.success(`${user.nameUser} đã gửi tin nhắn cho bạn`);
             fetchMessages(tempUser)
         })
-
+        return () => {
+            // socket?.off('userStatus');
+            // socket?.off('getUsers');
+            socket?.off('getMessageToAdmin');
+        };
     }, [socket])
 
     useEffect(() => {

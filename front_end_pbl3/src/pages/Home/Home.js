@@ -34,6 +34,7 @@ function Home() {
             socket?.on('checkUserLogin', (msg) => {
                 alert(msg);
                 logout();
+                navigate('/')
                 window.location.reload();
             });
             socket?.on('chatStarted', (msg) => {
@@ -61,7 +62,6 @@ function Home() {
             socket?.off('getMessage');
             socket?.off('getMessageToAdmin');
             socket?.off('userPayment');
-            socket?.off('checkUserLogin');
         };
     }, [messageShown, socket]);
 

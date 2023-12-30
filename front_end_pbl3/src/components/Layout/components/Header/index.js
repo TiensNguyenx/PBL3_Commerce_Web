@@ -44,7 +44,7 @@ function Header() {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <div >
-                    <Link to={user.isAdmin ? '/admin' : '/'}><img className={cx('logo')} src={require('../../../../assets/images/logoShop.png')} alt=''></img></Link>
+                    <Link to={ '/'}><img className={cx('logo')} src={require('../../../../assets/images/logoShop.png')} alt=''></img></Link>
                 </div>
                 <div className={cx('input')} >
 

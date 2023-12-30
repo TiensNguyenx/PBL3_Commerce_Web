@@ -59,6 +59,7 @@ function Home() {
         return () => {
             socket?.off('chatStarted');
             socket?.off('getMessage');
+            socket?.off('getMessageToAdmin');
             socket?.off('userPayment');
             socket?.off('checkUserLogin');
         };

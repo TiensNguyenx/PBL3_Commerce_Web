@@ -83,7 +83,7 @@ const UserProvider = ({ children }) => {
         localStorage.removeItem('token');
         localStorage.removeItem('idPayment');
         localStorage.removeItem('userId');
-        localStorage.removeItem('isAddToSocket');
+        localStorage.removeItem('addToSocket');
         setUser((user) => ({
             email: '',
             auth: false,

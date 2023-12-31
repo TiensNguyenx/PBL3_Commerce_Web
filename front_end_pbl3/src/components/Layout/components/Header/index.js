@@ -47,43 +47,33 @@ function Header() {
                     <Link to={ '/'}><img className={cx('logo')} src={require('../../../../assets/images/logoShop.png')} alt=''></img></Link>
                 </div>
                 <div className={cx('input')} >
-
                     <div className={cx('btn-list')} ><span style={{ fontSize: '1.5rem' }}>Tất cả danh mục  </span>  <div ><AiOutlineDown /></div></div>
                     <Search />
                 </div>
-
                 <div className={cx('list-item')} >
-                    {!user.isAdmin && <Link to="/news" className={cx('containner')}>
-                        <div className={cx('item')} >
-                            <button className={cx('icon')}>  <BsNewspaper /></button>
-                            <span className={cx('subtiltle')}>Tin tức</span>
-                        </div >
+                    {!user.isAdmin && <Link to="/news" className={cx('item')}>
+                        <button className={cx('icon')}>  <BsNewspaper /></button>
+                        <span className={cx('subtiltle')}>Tin tức</span>
+
                     </Link>}
-                    {user.isAdmin && <Link to="/admin" className={cx('containner')} >
-                        <div className={cx('item')} >
-                            <button className={cx('icon')}>  <GrUserAdmin /></button>
-                            <span className={cx('subtiltle')}>Admin</span>
-                        </div >
+                    {user.isAdmin && <Link to="/admin" className={cx('item')} >
+                        <button className={cx('icon')}>  <GrUserAdmin /></button>
+                        <span className={cx('subtiltle')}>Admin</span>
+
                     </Link>}
-                    <Link to="/cart">
-                        <div className={cx('item', 'custom-item', 'containner')} >
-                            <button className={cx('icon')}> <AiOutlineShoppingCart /></button>
-                            <span className={cx('subtiltle')}>Giỏ hàng</span>
-                            {user && user.auth === true ? (<div className={cx('count-cart')}>{lengthCart}</div>) : ''}
-                        </div>
+                    <Link to="/cart" className={cx('item')} >
+                        <button className={cx('icon')}> <AiOutlineShoppingCart /></button>
+                        <span className={cx('subtiltle')}>Giỏ hàng</span>
+                        {user && user.auth === true ? (<div className={cx('count-cart')}>{lengthCart}</div>) : ''}
+
                     </Link>
-                    <div onClick={navigateChat} className={cx('containner')}>
-                        <div className={cx('item')}>
-                            <button className={cx('icon')}>  <BsChatDots /></button>
-                            <span className={cx('subtiltle')}>Liên hệ</span>
-                        </div>
+                    <div onClick={navigateChat} className={cx('item')}>
+                        <button className={cx('icon')}>  <BsChatDots /></button>
+                        <span className={cx('subtiltle')}>Liên hệ</span>
                     </div>
-
                     {user && user.auth === true ? (
-                        <div className={cx('item', 'containner')}  >
+                        <div className={('item')}  >
                             <div >
-
-
                                 <div className={cx('whenlogin')}>
 
                                     {/* <button className={cx('icon')}> <AiOutlineUser  /></button> */}
@@ -97,15 +87,10 @@ function Header() {
                                         </ul>
                                     </div >
                                 </div>
-
-
-
                             </div>
-
-
                         </div>
                     ) : (
-                        <div className={cx('item', 'containner')} >
+                        <div className={cx('containner')} >
                             <Link to='/login'>   <button className={cx('icon')}> <AiOutlineUser /></button></Link>
                             <span className={cx('subtiltle')}>Đăng nhập</span>
                         </div>

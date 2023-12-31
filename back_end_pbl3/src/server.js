@@ -51,6 +51,9 @@ io.on('connection', (socket) => {
         emailUser = checkuser.email;
         const isUserExist = users.find(user => user.userId === userId);
         if (!isUserExist) {
+            if(users.length > 2 ){
+                socket.emit('checkUserLogin', 'Số lượng người dùng đã đạt giới hạn');
+            }
             console.log('User Login: ', nameUser);
             const user = { userId, nameUser, emailUser, socketId: socket.id };
             users.push(user);

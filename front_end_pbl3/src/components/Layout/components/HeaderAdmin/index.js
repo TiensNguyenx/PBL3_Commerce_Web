@@ -9,7 +9,11 @@ function HeaderAdmin() {
         <div className={cx('containner')}>
             <div className={cx(pathname === '/admin' ? 'active' : '')}
             >
-                <Link to='/admin' >Home Users</Link>
+                <Link to='/admin' >Home Admin</Link>
+            </div>
+            <div className={cx(pathname === '/admin/homeuser' ? 'active' : '')}
+            >
+                <Link to='/admin/homeuser' >Home Users</Link>
             </div>
             <div className={cx(pathname === '/admin/createuser' ? 'active' : '')}
             >

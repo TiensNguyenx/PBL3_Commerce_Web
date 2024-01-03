@@ -11,6 +11,7 @@ import { deleteUser } from '../../../Services/AdminServices'
 import { UserContext } from "~/context/UserContext";
 import ModalWatchDetailOrderAdmin from "~/components/Layout/components/ModalWatchDetailOrderAdmin";
 import ModalWatchDetailPaymentAdmin from "~/components/Layout/components/ModalWatchDetailPaymentAdmin";
+import { authorizeAdmin } from '../../../Services/AdminServices'
 const cx = classNames.bind(styles)
 function HomeUser() {
     const navigate = useNavigate();
@@ -25,7 +26,9 @@ function HomeUser() {
         if (user.isAdmin === false) {
             navigate('/')
         }
+
     }, [user])
+
     const renderUser = async () => {
         const res = await getAllUser()
         setUserRender(res.data.data)
@@ -74,7 +77,7 @@ function HomeUser() {
         setIdUser(idUser)
     }
     return (
-        <div style={user.isAdmin === false ? { display: 'none' } : { display: 'block' }}>
+        <div style={!user.isAdmin || !user ? { display: 'none' } : { display: 'block' }}>
             <HeaderAdmin />
             <div className={cx('product-containner')}>
                 <Container style={{ maxWidth: '100%' }}>

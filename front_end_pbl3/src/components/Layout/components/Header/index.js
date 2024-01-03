@@ -44,7 +44,7 @@ function Header() {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <div >
-                    <Link to={ '/'}><img className={cx('logo')} src={require('../../../../assets/images/logoShop.png')} alt=''></img></Link>
+                    <Link to='/'><img className={cx('logo')} src={require('../../../../assets/images/logoShop.png')} alt=''></img></Link>
                 </div>
                 <div className={cx('input')} >
                     <div className={cx('btn-list')} ><span style={{ fontSize: '1.5rem' }}>Tất cả danh mục  </span>  <div ><AiOutlineDown /></div></div>

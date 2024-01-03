@@ -1,13 +1,12 @@
 import axios from "axios";
-import { Exception } from "sass";
 
-export const getAllUser = async () => {
+export const getAllUser = () => {
     return axios.get('http://localhost:3002/admin/user')
 };
-export const deleteUser = async (id) => {
+export const deleteUser = (id) => {
     return axios.post(`http://localhost:3002/admin/user/delete-user/${id}`)
 }
-export const editUser = async (id, name, phone, email) => {
+export const editUser = (id, name, phone, email) => {
     const dataToUpdate = {};
     if (name.trim() !== '') {
         dataToUpdate.name = name;
@@ -27,10 +26,10 @@ export const editUser = async (id, name, phone, email) => {
     }
 };
 
-export const getDetailUserAdmin = async (id) => {
+export const getDetailUserAdmin = (id) => {
     return axios.get(`http://localhost:3002/admin/user/detail-user/${id}`)
 }
-export const createUser = async (name, phone, email, password) => {
+export const createUser = (name, phone, email, password) => {
     return axios.post('http://localhost:3002/admin/user/create-user',
         {
             name,
@@ -39,16 +38,16 @@ export const createUser = async (name, phone, email, password) => {
             password
         })
 }
-export const deleteProduct = async (id) => {
+export const deleteProduct = (id) => {
     return axios.post(`http://localhost:3002/admin/product/delete-product/${id}`)
 }
-export const ratingProduct = async (id) => {
+export const ratingProduct = (id) => {
     return axios.get(`http://localhost:3002/admin/product/rating/${id}`)
 }
-export const getDetailProduct = async (id) => {
+export const getDetailProduct = (id) => {
     return axios.post(`http://localhost:3002/admin/product/detail-product/${id}`)
 }
-export const editProduct = async (id, name, description, product_code, product_type, connection, switch_type,
+export const editProduct = (id, name, description, product_code, product_type, connection, switch_type,
     durability, format, guarantee, new_price, old_price, image, type, countInStock, total_rate, sold
 ) => {
     return axios.post(`http://localhost:3002/admin/product/update-product/${id}`, {
@@ -72,7 +71,7 @@ export const editProduct = async (id, name, description, product_code, product_t
         sold
     })
 }
-export const createProduct = async (name, description, product_code, product_type, connection, switch_type,
+export const createProduct = (name, description, product_code, product_type, connection, switch_type,
     durability, format, guarantee, new_price, old_price, image, type, countInStock, total_rate, sold
 ) => {
     return axios.post('http://localhost:3002/admin/product/create-product', {
@@ -96,10 +95,10 @@ export const createProduct = async (name, description, product_code, product_typ
         sold
     })
 }
-export const getDetailCoupon = async (id) => {
+export const getDetailCoupon = (id) => {
     return axios.get(`http://localhost:3002/admin/coupon/detail-coupon/${id}`)
 }
-export const editCoupon = async (id, name, methodDiscount, description, dateStart, dateEnd, value, image) => {
+export const editCoupon = (id, name, methodDiscount, description, dateStart, dateEnd, value, image) => {
     return axios.post(`http://localhost:3002/admin/coupon/update-coupon/${id}`, {
         name,
         methodDiscount,
@@ -110,10 +109,10 @@ export const editCoupon = async (id, name, methodDiscount, description, dateStar
         image
     })
 }
-export const deleteCoupon = async (id) => {
+export const deleteCoupon = (id) => {
     return axios.post(`http://localhost:3002/admin/coupon/delete-coupon/${id}`)
 }
-export const createCoupon = async (name, methodDiscount, description, dateStart, dateEnd, value, image) => {
+export const createCoupon = (name, methodDiscount, description, dateStart, dateEnd, value, image) => {
     return axios.get('http://localhost:3002/admin/coupon/create', {
         name,
         methodDiscount,
@@ -124,13 +123,13 @@ export const createCoupon = async (name, methodDiscount, description, dateStart,
         image
     })
 }
-export const getAllDetailOrder = async () => {
+export const getAllDetailOrder = () => {
     return axios.get('http://localhost:3002/admin/order')
 }
-export const getDetailOrder = async (id) => {
+export const getDetailOrder = (id) => {
     return axios.get(`http://localhost:3002/admin/order/detail-order/${id}`)
 }
-export const sortOrder = async (sortBy, sortType) => {
+export const sortOrder = (sortBy, sortType) => {
     if (sortBy === 'totalPrice') {
         return axios.get(`http://localhost:3002/admin/order/sort?sortName=${sortBy}&sortType=${sortType}`)
     }
@@ -138,10 +137,10 @@ export const sortOrder = async (sortBy, sortType) => {
         return axios.get(`http://localhost:3002/admin/order/sort?nameSearch=${sortBy}`)
     }
 }
-export const getAllPayment = async () => {
+export const getAllPayment = () => {
     return axios.get('http://localhost:3002/admin/payment')
 }
-export const sortPayment = async (sortBy, sortType) => {
+export const sortPayment = (sortBy, sortType) => {
     if (sortBy === 'totalPrice') {
         return axios.get(`http://localhost:3002/admin/payment/sort?sortName=${sortBy}&sortType=${sortType}`)
     }
@@ -149,12 +148,21 @@ export const sortPayment = async (sortBy, sortType) => {
         return axios.get(`http://localhost:3002/admin/payment/sort?nameSearch=${sortBy}`)
     }
 }
-export const getDetailPayment = async (id) => {
+export const getDetailPayment = (id) => {
     return axios.get(`http://localhost:3002/admin/payment/detail-payment/${id}`)
 }
-export const getDetailOrderUser = async (id) => {
+export const getDetailOrderUser = (id) => {
     return axios.get(`http://localhost:3002/admin/user/order/${id}`)
 }
-export const getDetailPaymentUser = async (id) => {
+export const getDetailPaymentUser = (id) => {
     return axios.get(`http://localhost:3002/admin/user/payment/${id}`)
+}
+export const authorizeAdmin = (token) => {
+    return axios.post('http://localhost:3002/admin/auth', {}, {
+        headers: {
+            token: token
+        }
+    }
+
+    )
 }

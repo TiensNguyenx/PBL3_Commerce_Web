@@ -28,6 +28,7 @@ import DefalutInformation from "~/components/Layout/components/DefaultInformatio
 import { Fragment } from "react";
 import CreateUser from "~/pages/Admin/CreateUser";
 import HomeProduct from "~/pages/Admin/HomeProduct";
+import HomeAdmin from "~/pages/Admin/HomeAdmin";
 const publicRoutes = [
     {
         path: '/',
@@ -121,6 +122,11 @@ const publicRoutes = [
     },
     {
         path: '/admin',
+        component: HomeAdmin,
+        layout: HeaderOnly
+    },
+    {
+        path: '/admin/homeuser',
         component: HomeUser,
         layout: HeaderOnly
 

@@ -133,7 +133,7 @@ function AdminChat() {
     const handleTypeMessage = (e) => {
         const idSelect = localStorage.getItem('idSelect')
         const selectUser = activeUsers.find(u => u.userId === idSelect);
-        if(selectUser){
+        if (selectUser) {
             const tempUser = {
                 user: selectUser.userId,
                 name: selectUser.nameUser,

@@ -1,20 +1,36 @@
+const path = require('path');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config();
+
+const privateKeyPath = path.resolve(__dirname, '..', 'config', 'private.pem');
+
+
 const generalAccessToken = async (payload) => {
-    const access_token = jwt.sign({
-       payload
-    }, process.env.ACCESS_TOKEN, { expiresIn: '30d' })
-    return access_token;
+    try {
+        const private_key = fs.readFileSync(privateKeyPath);
+        const access_token = jwt.sign({
+            payload
+        }, private_key, {
+            expiresIn: '30d',
+            algorithm: 'RS256'
+        });
+        return access_token;
+    } catch (error) {
+        console.error('Error reading private key:', error);
+        throw error;
+    }
 }
 
 const generalAccessTokenForEmail = async (payload) => {
     const access_token = jwt.sign({
-       payload
-    }, process.env.ACCESS_TOKEN, { expiresIn: '1m' })
+        payload
+    }, process.env.ACCESS_TOKEN, {
+        expiresIn: '1m'
+    });
     return access_token;
 }
-
 
 // const generalRefreshToken = async (payload) => {
 

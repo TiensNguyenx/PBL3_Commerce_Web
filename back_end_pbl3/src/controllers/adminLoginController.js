@@ -1,7 +1,10 @@
 const CRUDLoginService = require('../services/CRUDLoginService');  
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config();
+const path = require('path');
+
 
 // const getHomeLogin = async (req, res) => {
 //     try {
@@ -44,10 +47,12 @@ dotenv.config();
 //     });
 //   }
 // };
+const publickey = path.resolve(__dirname, '..', 'config', 'publickey.crt');
+const cert = fs.readFileSync(publickey);
 
 const postAuth = async (req, res) => {
   const token = req.headers.token
-  jwt.verify(token, process.env.ACCESS_TOKEN, function(err, user){
+  jwt.verify(token, cert,{algorithm: 'RS256'}, function(err, user){
       if(err){
           return res.status(404).json({
               status: 'ERR',

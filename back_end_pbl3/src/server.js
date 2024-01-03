@@ -71,19 +71,19 @@ io.on('connection', (socket) => {
         }
     }); 
     io.emit('getUsers', users);
-    socket.on('requestGetUser', () => {
-        io.emit('getUsers', users);
-    });
+    // socket.on('requestGetUser', () => {
+    //     io.emit('getUsers', users);
+    // });
 
-    socket.on('UserLogin', async (userId) => {
+    // socket.on('UserLogin', async (userId) => {
         
-        const user = users.find(user => user.userId === userId);
-        if (user) {
-            io.to(socket.id).emit('checkUserLogin', 'Tài khoản của bạn đã đăng nhập ở một nơi khác');
-        }else{
-            io.emit('checkUserLogin', 'Tài khoản của bạn đã đăng nhập thành công');
-        }
-    });
+    //     const user = users.find(user => user.userId === userId);
+    //     if (user) {
+    //         io.to(socket.id).emit('checkUserLogin', 'Tài khoản của bạn đã đăng nhập ở một nơi khác');
+    //     }else{
+    //         io.emit('checkUserLogin', 'Tài khoản của bạn đã đăng nhập thành công');
+    //     }
+    // });
 
     socket.on('logout', async userId => {
         const user = await User.findById(userId);

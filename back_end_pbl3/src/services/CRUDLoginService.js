@@ -1,4 +1,5 @@
 const User = require('../models/UserModel');
+const Notification = require('../models/NotificationModel');
 const dotenv = require('dotenv');
 dotenv.config();
 const bcrypt = require('bcrypt');
@@ -45,6 +46,39 @@ const getLogin = async(userLogin) => {
         }
 }
 
+const postNotification = (data) => {
+    return new Promise(async (resolve, reject) => {
+    const {content} = data;
+    try {
+        const notification = await Notification.create({ content });
+        resolve({
+            status: 'OK',
+            message: 'Notification created successfully',
+            notification,
+        });
+    } catch (error) {
+        reject(error);
+    }
+});
+}
+
+const getNotification = () => {
+    return new Promise(async (resolve, reject) => {
+    try {
+        const notifications = await Notification.find();
+        resolve({
+            status: 'OK',
+            message: 'Notifications found successfully',
+            notifications,
+        });
+    } catch (error) {
+        reject(error);
+    }
+});
+}
+
 module.exports = {
-   getLogin
+   getLogin,
+   postNotification,
+   getNotification
 }

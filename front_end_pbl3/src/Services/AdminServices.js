@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const getAllUser = () => {
-    return axios.get('http://localhost:3002/admin/user')
+    return axios.get('https://be-pbl3.onrender.com/admin/user')
 };
 export const deleteUser = (id) => {
-    return axios.post(`http://localhost:3002/admin/user/delete-user/${id}`)
+    return axios.post(`https://be-pbl3.onrender.com/admin/user/delete-user/${id}`)
 }
 export const editUser = (id, name, phone, email) => {
     const dataToUpdate = {};
@@ -20,17 +20,17 @@ export const editUser = (id, name, phone, email) => {
     }
     if (Object.keys(dataToUpdate).length > 0) {
 
-        return axios.post(`http://localhost:3002/admin/user/update-user/${id}`, dataToUpdate);
+        return axios.post(`https://be-pbl3.onrender.com/admin/user/update-user/${id}`, dataToUpdate);
     } else {
         return Promise.resolve(null);
     }
 };
 
 export const getDetailUserAdmin = (id) => {
-    return axios.get(`http://localhost:3002/admin/user/detail-user/${id}`)
+    return axios.get(`https://be-pbl3.onrender.com/admin/user/detail-user/${id}`)
 }
 export const createUser = (name, phone, email, password) => {
-    return axios.post('http://localhost:3002/admin/user/create-user',
+    return axios.post('https://be-pbl3.onrender.com/admin/user/create-user',
         {
             name,
             phone,
@@ -39,18 +39,18 @@ export const createUser = (name, phone, email, password) => {
         })
 }
 export const deleteProduct = (id) => {
-    return axios.post(`http://localhost:3002/admin/product/delete-product/${id}`)
+    return axios.post(`https://be-pbl3.onrender.com/admin/product/delete-product/${id}`)
 }
 export const ratingProduct = (id) => {
-    return axios.get(`http://localhost:3002/admin/product/rating/${id}`)
+    return axios.get(`https://be-pbl3.onrender.com/admin/product/rating/${id}`)
 }
 export const getDetailProduct = (id) => {
-    return axios.post(`http://localhost:3002/admin/product/detail-product/${id}`)
+    return axios.post(`https://be-pbl3.onrender.com/admin/product/detail-product/${id}`)
 }
 export const editProduct = (id, name, description, product_code, product_type, connection, switch_type,
     durability, format, guarantee, new_price, old_price, image, type, countInStock, total_rate, sold
 ) => {
-    return axios.post(`http://localhost:3002/admin/product/update-product/${id}`, {
+    return axios.post(`https://be-pbl3.onrender.com/admin/product/update-product/${id}`, {
         name,
         "description": {
             name_description: description,
@@ -74,7 +74,7 @@ export const editProduct = (id, name, description, product_code, product_type, c
 export const createProduct = (name, description, product_code, product_type, connection, switch_type,
     durability, format, guarantee, new_price, old_price, image, type, countInStock, total_rate, sold
 ) => {
-    return axios.post('http://localhost:3002/admin/product/create-product', {
+    return axios.post('https://be-pbl3.onrender.com/admin/product/create-product', {
         name,
         "description": {
             name_description: description,
@@ -96,10 +96,10 @@ export const createProduct = (name, description, product_code, product_type, con
     })
 }
 export const getDetailCoupon = (id) => {
-    return axios.get(`http://localhost:3002/admin/coupon/detail-coupon/${id}`)
+    return axios.get(`https://be-pbl3.onrender.com/admin/coupon/detail-coupon/${id}`)
 }
 export const editCoupon = (id, name, methodDiscount, description, dateStart, dateEnd, value, image) => {
-    return axios.post(`http://localhost:3002/admin/coupon/update-coupon/${id}`, {
+    return axios.post(`https://be-pbl3.onrender.com/admin/coupon/update-coupon/${id}`, {
         name,
         methodDiscount,
         description,
@@ -110,10 +110,10 @@ export const editCoupon = (id, name, methodDiscount, description, dateStart, dat
     })
 }
 export const deleteCoupon = (id) => {
-    return axios.post(`http://localhost:3002/admin/coupon/delete-coupon/${id}`)
+    return axios.post(`https://be-pbl3.onrender.com/admin/coupon/delete-coupon/${id}`)
 }
 export const createCoupon = (name, methodDiscount, description, dateStart, dateEnd, value, image) => {
-    return axios.get('http://localhost:3002/admin/coupon/create', {
+    return axios.get('https://be-pbl3.onrender.com/admin/coupon/create', {
         name,
         methodDiscount,
         description,
@@ -124,41 +124,41 @@ export const createCoupon = (name, methodDiscount, description, dateStart, dateE
     })
 }
 export const getAllDetailOrder = () => {
-    return axios.get('http://localhost:3002/admin/order')
+    return axios.get('https://be-pbl3.onrender.com/admin/order')
 }
 export const getDetailOrder = (id) => {
-    return axios.get(`http://localhost:3002/admin/order/detail-order/${id}`)
+    return axios.get(`https://be-pbl3.onrender.com/admin/order/detail-order/${id}`)
 }
 export const sortOrder = (sortBy, sortType) => {
     if (sortBy === 'totalPrice') {
-        return axios.get(`http://localhost:3002/admin/order/sort?sortName=${sortBy}&sortType=${sortType}`)
+        return axios.get(`https://be-pbl3.onrender.com/admin/order/sort?sortName=${sortBy}&sortType=${sortType}`)
     }
     else {
-        return axios.get(`http://localhost:3002/admin/order/sort?nameSearch=${sortBy}`)
+        return axios.get(`https://be-pbl3.onrender.com/admin/order/sort?nameSearch=${sortBy}`)
     }
 }
 export const getAllPayment = () => {
-    return axios.get('http://localhost:3002/admin/payment')
+    return axios.get('https://be-pbl3.onrender.com/admin/payment')
 }
 export const sortPayment = (sortBy, sortType) => {
     if (sortBy === 'totalPrice') {
-        return axios.get(`http://localhost:3002/admin/payment/sort?sortName=${sortBy}&sortType=${sortType}`)
+        return axios.get(`https://be-pbl3.onrender.com/admin/payment/sort?sortName=${sortBy}&sortType=${sortType}`)
     }
     else {
-        return axios.get(`http://localhost:3002/admin/payment/sort?nameSearch=${sortBy}`)
+        return axios.get(`https://be-pbl3.onrender.com/admin/payment/sort?nameSearch=${sortBy}`)
     }
 }
 export const getDetailPayment = (id) => {
-    return axios.get(`http://localhost:3002/admin/payment/detail-payment/${id}`)
+    return axios.get(`https://be-pbl3.onrender.com/admin/payment/detail-payment/${id}`)
 }
 export const getDetailOrderUser = (id) => {
-    return axios.get(`http://localhost:3002/admin/user/order/${id}`)
+    return axios.get(`https://be-pbl3.onrender.com/admin/user/order/${id}`)
 }
 export const getDetailPaymentUser = (id) => {
-    return axios.get(`http://localhost:3002/admin/user/payment/${id}`)
+    return axios.get(`https://be-pbl3.onrender.com/admin/user/payment/${id}`)
 }
 export const authorizeAdmin = (token) => {
-    return axios.post('http://localhost:3002/admin/auth', {}, {
+    return axios.post('https://be-pbl3.onrender.com/admin/auth', {}, {
         headers: {
             token: token
         }

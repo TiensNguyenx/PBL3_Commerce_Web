@@ -38,7 +38,7 @@ function AdminChat() {
     const [userStatus, setUserStatus] = useState({ isUserOnline: false, lastDisconnect: null });
     const navigate = useNavigate();
     useEffect(() => {
-        setSocket(io("http://localhost:3002"));
+        setSocket(io("https://be-pbl3.onrender.com"));
         getAllPeople();
     }, []);
     useEffect(() => {
@@ -93,7 +93,7 @@ function AdminChat() {
     }, [messages]);
 
     const getAllPeople = async () => {
-        const res = await fetch(`http://localhost:3002/admin/conversation`, {
+        const res = await fetch(`https://be-pbl3.onrender.com/admin/conversation`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ function AdminChat() {
         } else {
             setIdSocket(null)
         }
-        const res = await fetch(`http://localhost:3002/api/conversation/${user.user}`, {
+        const res = await fetch(`https://be-pbl3.onrender.com/api/conversation/${user.user}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ function AdminChat() {
     }
     const sendMessage = async () => {
         const idSocketSelect = localStorage.getItem('idSocket')
-        const res = await fetch(`http://localhost:3002/admin/conversation/send-message/${idReceive}`, {
+        const res = await fetch(`https://be-pbl3.onrender.com/admin/conversation/send-message/${idReceive}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

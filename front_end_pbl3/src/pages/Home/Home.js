@@ -75,7 +75,7 @@ function Home() {
 
     const postNotification = async (content) => {
         try {
-            await fetch('http://localhost:3002/admin/post-notification', {
+            await fetch('https://be-pbl3.onrender.com/admin/post-notification', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

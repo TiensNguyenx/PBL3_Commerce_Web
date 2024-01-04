@@ -1,5 +1,5 @@
 import axios from "axios";
 const request = axios.create({
-    baseURL: "http://localhost:3002/api/",
+    baseURL: "https://be-pbl3.onrender.com/api/",
 });
 export default request;

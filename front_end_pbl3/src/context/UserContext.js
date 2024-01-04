@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
         if (token) {
             const decoded = jwtDecode(token);
             if (decoded.payload?.id) {
-                fetch(`http://localhost:3002/api/user/get-detail/${decoded.payload.id}`, {
+                fetch(`https://be-pbl3.onrender.com/api/user/get-detail/${decoded.payload.id}`, {
                     headers: {
                         token: `Beare ${token}`
                     },
@@ -43,7 +43,7 @@ const UserProvider = ({ children }) => {
 
                             localStorage.setItem('isAdmin', data.data.isAdmin)
                             localStorage.setItem('userId', data.data._id)
-                 
+
                         }
                     })
             }
@@ -51,7 +51,7 @@ const UserProvider = ({ children }) => {
     };
     const getLengthCartContext = async () => {
         if (user.id) {
-            axios.get(`http://localhost:3002/api/cart/get-details-cart/${user.id}`)
+            axios.get(`https://be-pbl3.onrender.com/api/cart/get-details-cart/${user.id}`)
                 .then((res) => {
                     if (res.data.status === 'success') {
                         setLengthCart(res.data.data.totalItems)
@@ -72,7 +72,7 @@ const UserProvider = ({ children }) => {
         setLengthCart(0)
     }
     const handleAddCartContext = (idUser, idProduct) => {
-        return axios.post(`http://localhost:3002/api/cart/add-to-cart`, {
+        return axios.post(`https://be-pbl3.onrender.com/api/cart/add-to-cart`, {
             newCart: {
                 userID: idUser,
                 productID: idProduct,

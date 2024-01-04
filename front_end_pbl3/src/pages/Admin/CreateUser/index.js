@@ -49,35 +49,35 @@ function CreateUser() {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setEmail(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Email
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Email" size="lg" />
+                            <Form.Control type="text" placeholder="Email" size="lg" onChange={(e) => setEmail(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setPhone(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Phone
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="phone" placeholder="Phone" size="lg" />
+                            <Form.Control type="phone" placeholder="Phone" size="lg" onChange={(e) => setPhone(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setPassword(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Password
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="password" placeholder="Password" size="lg" />
+                            <Form.Control type="password" placeholder="Password" size="lg" onChange={(e) => setPassword(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setConfirmPassword(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Confirm Password
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="password" placeholder="ConfirmPassword" size="lg" />
+                            <Form.Control type="password" placeholder="ConfirmPassword" size="lg" onChange={(e) => setConfirmPassword(e.target.value)} />
                         </Col>
                     </Form.Group>
 

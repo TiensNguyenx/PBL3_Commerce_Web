@@ -30,6 +30,12 @@ function CreateUser() {
         const res = await createUser(name, phone, email, password)
         if (res.data.status === 'success') {
             toast.success('Tạo tài khoản thành công')
+            setName('')
+            setPhone('')
+            setEmail('')
+            setPassword('')
+            setConfirmPassword('')
+
         }
         else {
             toast.error('Tạo tài khoản thất bại')
@@ -45,39 +51,39 @@ function CreateUser() {
                             Name
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Name" size="lg" onChange={(e) => setName(e.target.value)} />
+                            <Form.Control type="text" value={name} placeholder="Name" size="lg" onChange={(e) => setName(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setEmail(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Email
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Email" size="lg" />
+                            <Form.Control type="text" value={email} placeholder="Email" size="lg" onChange={(e) => setEmail(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setPhone(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Phone
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="phone" placeholder="Phone" size="lg" />
+                            <Form.Control type="phone" value={phone} placeholder="Phone" size="lg" onChange={(e) => setPhone(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setPassword(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Password
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="password" placeholder="Password" size="lg" />
+                            <Form.Control type="password" value={password} placeholder="Password" size="lg" onChange={(e) => setPassword(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
-                        <Form.Label column sm="2" style={{ fontSize: '14px' }} onChange={(e) => setConfirmPassword(e.target.value)}>
+                        <Form.Label column sm="2" style={{ fontSize: '14px' }} >
                             Confirm Password
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="password" placeholder="ConfirmPassword" size="lg" />
+                            <Form.Control type="password" value={confirmPassword} placeholder="ConfirmPassword" size="lg" onChange={(e) => setConfirmPassword(e.target.value)} />
                         </Col>
                     </Form.Group>
 

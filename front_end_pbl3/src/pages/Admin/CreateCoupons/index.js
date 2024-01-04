@@ -30,6 +30,14 @@ function CreateCoupons() {
     const handleCreateCoupon = async () => {
         await createCoupon(name, methodDisCount, description, dateStart, dateEnd, value, image)
         toast.success('Tạo mã giảm giá thành công')
+        setName('')
+        setMethodDisCount('')
+        setDescription('')
+        setDateStart('')
+        setDateEnd('')
+        setValue(0)
+        setImage('')
+
     }
     return (
         <div className={cx('containner')} style={!user ? { display: 'none' } : { display: 'block' }} >

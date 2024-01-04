@@ -30,6 +30,12 @@ function CreateUser() {
         const res = await createUser(name, phone, email, password)
         if (res.data.status === 'success') {
             toast.success('Tạo tài khoản thành công')
+            setName('')
+            setPhone('')
+            setEmail('')
+            setPassword('')
+            setConfirmPassword('')
+            
         }
         else {
             toast.error('Tạo tài khoản thất bại')

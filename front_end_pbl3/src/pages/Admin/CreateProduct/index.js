@@ -42,6 +42,24 @@ function CreateProduct() {
         console.log(res)
         if (res.data.status === 'success') {
             toast.success('Sửa sản phẩm thành công')
+            setName('')
+            setDescription('')
+            setProductCode('')
+            setProductType('')
+            setConnectionStandard('')
+            setSwitchType('')
+            setDurability('')
+            setFormat('')
+            setGuarantee('')
+            setNewPrice('')
+            setOldPrice('')
+            setImage('')
+            setType('')
+            setCountInStock('')
+            setTotalRate('')
+            setSold('')
+
+
         }
         else {
             toast.error('Sửa sản phẩm thất bại')

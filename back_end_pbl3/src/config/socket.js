@@ -6,7 +6,7 @@ module.exports = {
     init: (httpServer) => {
         io = socketIO(httpServer, {
             cors: {
-                origin: "http://localhost:3000", // or your client's URL
+                origin: "https://pbl-3-commerce-web.vercel.app", // or your client's URL
                 methods: ["GET", "POST"],
             },
         });

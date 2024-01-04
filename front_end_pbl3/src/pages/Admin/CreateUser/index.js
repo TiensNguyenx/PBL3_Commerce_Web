@@ -35,7 +35,7 @@ function CreateUser() {
             setEmail('')
             setPassword('')
             setConfirmPassword('')
-            
+
         }
         else {
             toast.error('Tạo tài khoản thất bại')
@@ -51,7 +51,7 @@ function CreateUser() {
                             Name
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Name" size="lg" onChange={(e) => setName(e.target.value)} />
+                            <Form.Control type="text" value={name} placeholder="Name" size="lg" onChange={(e) => setName(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -59,7 +59,7 @@ function CreateUser() {
                             Email
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="text" placeholder="Email" size="lg" onChange={(e) => setEmail(e.target.value)} />
+                            <Form.Control type="text" value={email} placeholder="Email" size="lg" onChange={(e) => setEmail(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -67,7 +67,7 @@ function CreateUser() {
                             Phone
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="phone" placeholder="Phone" size="lg" onChange={(e) => setPhone(e.target.value)} />
+                            <Form.Control type="phone" value={phone} placeholder="Phone" size="lg" onChange={(e) => setPhone(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3">
@@ -75,7 +75,7 @@ function CreateUser() {
                             Password
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="password" placeholder="Password" size="lg" onChange={(e) => setPassword(e.target.value)} />
+                            <Form.Control type="password" value={password} placeholder="Password" size="lg" onChange={(e) => setPassword(e.target.value)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" >
@@ -83,7 +83,7 @@ function CreateUser() {
                             Confirm Password
                         </Form.Label>
                         <Col sm="10">
-                            <Form.Control type="password" placeholder="ConfirmPassword" size="lg" onChange={(e) => setConfirmPassword(e.target.value)} />
+                            <Form.Control type="password" value={confirmPassword} placeholder="ConfirmPassword" size="lg" onChange={(e) => setConfirmPassword(e.target.value)} />
                         </Col>
                     </Form.Group>
 

@@ -32,7 +32,7 @@ function HomeOrderManagement() {
 
     const fetchAllOrderData = async () => {
         try {
-            const response = await fetch('http://localhost:3002/admin/order/all-order-chart');
+            const response = await fetch('https://be-pbl3.onrender.com/admin/order/all-order-chart');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -47,7 +47,7 @@ function HomeOrderManagement() {
 
     const fetchOrderDataByYear = async (year) => {
         try {
-            const response = await fetch(`http://localhost:3002/admin/order/all-order-chart-by-year?year=${year}`);
+            const response = await fetch(`https://be-pbl3.onrender.com/admin/order/all-order-chart-by-year?year=${year}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

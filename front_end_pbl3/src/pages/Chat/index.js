@@ -84,7 +84,7 @@ function Chat() {
     }, [messages]);
 
     const fetchMessages = async (user) => {
-        const res = await fetch(`http://localhost:3002/api/conversation/${userId}`, {
+        const res = await fetch(`https://be-pbl3.onrender.com/api/conversation/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ function Chat() {
     }
 
     const sendMessage = async () => {
-        const res = await fetch(`http://localhost:3002/api/conversation/send-message/${userId}`, {
+        const res = await fetch(`https://be-pbl3.onrender.com/api/conversation/send-message/${userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

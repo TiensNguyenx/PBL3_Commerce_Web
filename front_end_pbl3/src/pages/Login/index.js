@@ -62,7 +62,7 @@ function Login() {
         }
 
         setLoadingApi(true);
-        fetch('http://localhost:3002/api/user/sign-in', {
+        fetch('https://be-pbl3.onrender.com/api/user/sign-in', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ function Login() {
                     if (data.access_token) {
                         const decoded = jwtDecode(data.access_token);
                         if (decoded.payload?.id) {
-                            fetch(`http://localhost:3002/api/user/get-detail/${decoded.payload.id}`, {
+                            fetch(`https://be-pbl3.onrender.com/api/user/get-detail/${decoded.payload.id}`, {
                                 headers: {
                                     token: `Beare ${data.access_token}`
                                 },

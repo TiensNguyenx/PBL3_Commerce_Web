@@ -27,7 +27,7 @@ function SeeAllProduct() {
 
     }
     const handleSort = (sortBy, sortType, sortActive) => {
-        fetch(`http://localhost:3002/api/product/get-all?page=${page}&limit=15&sort=${sortType}&sort=${sortBy}`)
+        fetch(`https://be-pbl3.onrender.com/api/product/get-all?page=${page}&limit=15&sort=${sortType}&sort=${sortBy}`)
             .then(response => response.json())
             .then((data) => {
                 console.log(data)
@@ -75,7 +75,7 @@ function SeeAllProduct() {
             setLableProduct('TẤT CẢ SẢN PHẨM')
         }
     }
-    
+
     useEffect(() => {
         renderProduct()
     }, [page])

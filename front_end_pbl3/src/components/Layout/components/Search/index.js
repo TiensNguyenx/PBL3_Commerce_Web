@@ -31,7 +31,7 @@ function Search() {
             return;
         }
         setLoading(true);
-        fetch(`http://localhost:3002/api/product/search?searchName=${encodeURIComponent(debounced)}`)
+        fetch(`https://be-pbl3.onrender.com/api/product/search?searchName=${encodeURIComponent(debounced)}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data)

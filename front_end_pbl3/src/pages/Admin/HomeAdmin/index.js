@@ -57,10 +57,10 @@ function HomeAdmin() {
             socket?.off('getMessageToAdmin');
             socket?.off('userPayment');
         };
-    }, [user,socket,messageShown])
+    }, [user, socket, messageShown])
     const postNotification = async (content) => {
         try {
-            await fetch('http://localhost:3002/admin/post-notification', {
+            await fetch('https://be-pbl3.onrender.com/admin/post-notification', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,75 +90,75 @@ function HomeAdmin() {
     }
     const getNotification = async () => {
         try {
-          const res = await fetch('http://localhost:3002/admin/get-notification', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-    
-          const data = await res.json();
-          setNotifications(data.notifications); // Assuming data is an array of notifications
-          console.log(data);
+            const res = await fetch('https://be-pbl3.onrender.com/admin/get-notification', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await res.json();
+            setNotifications(data.notifications); // Assuming data is an array of notifications
+            console.log(data);
         } catch (error) {
-          console.error("Error while fetching notifications:", error);
+            console.error("Error while fetching notifications:", error);
         }
-      };
-      const notificationContainerStyle = {
+    };
+    const notificationContainerStyle = {
         maxHeight: '300px',
         overflowY: 'auto',
         border: '1px solid #ddd',
         borderRadius: '5px',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
         padding: '10px',
-      };
-      
-      const notificationListStyle = {
+    };
+
+    const notificationListStyle = {
         listStyleType: 'none',
         padding: '0',
         margin: '0',
-      };
-      
-      const notificationItemStyle = {
+    };
+
+    const notificationItemStyle = {
         borderBottom: '1px solid #ddd',
         padding: '10px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-      };
-      
-      const notificationContentStyle = {
+    };
+
+    const notificationContentStyle = {
         flex: '1',
         marginRight: '10px',
-      };
-      
-      const notificationDateStyle = {
+    };
+
+    const notificationDateStyle = {
         color: '#888',
-      };
-      return (
+    };
+    return (
         <>
-          <div style={!user.isAdmin || !user ? { display: 'none' } : { display: 'block' }}>
-            <HeaderAdmin />
-            <div>
-              <h2 style={{ color: '#1877f2' }}>Notifications</h2>
-              <div style={notificationContainerStyle}>
-                <ul style={notificationListStyle}>
-                  {notifications.map((notification) => (
-                    <li key={notification._id} style={notificationItemStyle}>
-                      <span style={notificationContentStyle}>{notification.content}</span>
-                      <span style={notificationDateStyle}>
-                        {new Date(notification.createdAt).toLocaleString()}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div style={!user.isAdmin || !user ? { display: 'none' } : { display: 'block' }}>
+                <HeaderAdmin />
+                <div>
+                    <h2 style={{ color: '#1877f2' }}>Notifications</h2>
+                    <div style={notificationContainerStyle}>
+                        <ul style={notificationListStyle}>
+                            {notifications.map((notification) => (
+                                <li key={notification._id} style={notificationItemStyle}>
+                                    <span style={notificationContentStyle}>{notification.content}</span>
+                                    <span style={notificationDateStyle}>
+                                        {new Date(notification.createdAt).toLocaleString()}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
             </div>
-          </div>
         </>
-      );
-      
-      
-    }
-    
-    export default HomeAdmin;
+    );
+
+
+}
+
+export default HomeAdmin;

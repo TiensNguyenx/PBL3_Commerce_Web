@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Chart } from "react-google-charts";
 import { UserContext } from "~/context/UserContext";
 import HeaderAdmin from "~/components/Layout/components/HeaderAdmin";
+import { toast } from 'react-toastify';
 
 import socket from "~/pages/socket";
 const cx = classNames.bind(styles);
@@ -24,12 +25,27 @@ function HomeOrderManagement() {
             socket?.on('userPayment', (msg) => {
                 fetchAllOrderData();
                 fetchOrderDataByYear(selectedYear);
+                toast.success(msg);
+                postNotification(msg);
+
             });
             fetchAllOrderData();
             fetchOrderDataByYear(selectedYear);
         }
     }, [user, navigate, selectedYear]);
-
+    const postNotification = async (content) => {
+        try {
+            await fetch('https://be-pbl3.onrender.com/admin/post-notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content }),
+            });
+        } catch (error) {
+            console.error('Error while fetching notifications:', error);
+        }
+    };
     const fetchAllOrderData = async () => {
         try {
             const response = await fetch('https://be-pbl3.onrender.com/admin/order/all-order-chart');

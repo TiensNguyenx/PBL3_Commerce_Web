@@ -13,16 +13,18 @@ import { BiUserCircle } from "react-icons/bi"
 import { BsNewspaper } from "react-icons/bs"
 import avatarUser from '../../../../assets/images/avatarUser.jpg'
 import ModalConfirmLogout from '../ModalConfirmLogout/ModalConfirmLogout';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '~/context/UserContext';
 import Search from '../Search';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { getDetailUserService } from '~/Services/UserServices'
 
 const cx = classNames.bind(styles)
 function Header() {
-    const { user, lengthCart, getLengthCartContext } = useContext(UserContext);
+    const { user, lengthCart, getLengthCartContext, isRenderUserContext } = useContext(UserContext);
     const [isShowModalConfirm, setIsShowModalConfirm] = useState(false);
+    const [name, setName] = useState('')
     const navigate = useNavigate();
     const handleLogout = () => {
         setIsShowModalConfirm(true);
@@ -40,6 +42,14 @@ function Header() {
             navigate('/login')
         }
     }
+    const renderInforUser = async () => {
+        const res = await getDetailUserService(localStorage.getItem('userId'))
+        console.log(res)
+        setName(res.data.data.name)
+    }
+    useEffect(() => {
+        renderInforUser()
+    }, [isRenderUserContext])
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -77,7 +87,7 @@ function Header() {
                                 <div className={cx('whenlogin')}>
 
                                     {/* <button className={cx('icon')}> <AiOutlineUser  /></button> */}
-                                    <div className={cx('avatar-user')}>   <img src={avatarUser} alt='avatar' />   <span className={cx('username')} > {user.name} </span></div>
+                                    <div className={cx('avatar-user')}>   <img src={avatarUser} alt='avatar' />   <span className={cx('username')} > {name} </span></div>
                                     <div>
                                         <ul className={cx('nav')}>
                                             <Link to='/information'> <li className={cx('subnav')}><button> <span className={cx('icon-subnav')}><BiUserCircle /></span>Thông tin tài khoản</button></li></Link>

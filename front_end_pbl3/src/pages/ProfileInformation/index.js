@@ -11,7 +11,7 @@ function ProfileInformation() {
 
 
     const [onChangeEmail, setOnChangeEmail] = useState(false)
-    const { user } = useContext(UserContext)
+    const { user, isRenderUserContext } = useContext(UserContext)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
@@ -38,6 +38,7 @@ function ProfileInformation() {
                     if (data.status === 'success') {
                         toast.success('Cập nhật thông tin thành công')
                         renderInforUser()
+                        isRenderUserContext()
                     }
                     else {
                         toast.error('Cập nhật thông tin thất bại')
@@ -59,6 +60,7 @@ function ProfileInformation() {
                     if (data.data.status === 'success') {
                         toast.success('Cập nhật thành công')
                         renderInforUser()
+                        isRenderUserContext()
                     }
                     else {
                         toast.error('Cập nhật thông tin thất bại')
@@ -78,6 +80,7 @@ function ProfileInformation() {
         setName(res.data.data.name)
         setPhone(res.data.data.phone)
         setIsAuthEmail(res.data.data.isAuth)
+
     }
     const handleOnChangEmail = (e) => {
         setOnChangeEmail(true)
@@ -95,6 +98,7 @@ function ProfileInformation() {
     const handleOnChangeName = (e) => {
 
         setName(e.target.value)
+
     }
     const handleOnChangePhone = (e) => {
         function isValidPhone(phone) {
